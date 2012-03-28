@@ -14,15 +14,15 @@ import (
 )
 
 const (
-	version_string = "Desktop File Generator v.0.2"
+	version_string  = "Desktop File Generator v.0.2"
 	icon_search_url = "https://admin.fedoraproject.org/pkgdb/appicon/show/%s"
 )
 
 var (
-	multimedia_kw = []string{"video", "audio", "sound", "graphics", "draw", "demo"}
+	multimedia_kw  = []string{"video", "audio", "sound", "graphics", "draw", "demo"}
 	programming_kw = []string{"code", "c", "ide", "programming", "develop", "compile"}
-	network_kw = []string{"network", "p2p"}
-	game_kw = []string{"racing", "game", "arcade", "rts", "mmorpg", "rpg", "fps", "nintendo emulator"}
+	network_kw     = []string{"network", "p2p"}
+	game_kw        = []string{"racing", "game", "arcade", "rts", "mmorpg", "rpg", "fps", "nintendo emulator"}
 )
 
 func createDesktopContents(name string, genericName string, comment string, exec string, icon string, useTerminal bool, categories []string) *bytes.Buffer {
@@ -46,7 +46,7 @@ func createDesktopContents(name string, genericName string, comment string, exec
 }
 
 func capitalize(name string) string {
-	return strings.ToTitle(name[0:1]) + name[1:];
+	return strings.ToTitle(name[0:1]) + name[1:]
 }
 
 func writeDesktopFile(name string, comment string, exec string, categories string) {
@@ -58,8 +58,8 @@ func writeDesktopFile(name string, comment string, exec string, categories strin
 		categories = "Application"
 	}
 	// Only supports png icons
-    buf := createDesktopContents(capitalize(name), capitalize(name), comment, exec, name + ".png", false, strings.Split(categories, ";"))
-	ioutil.WriteFile(name + ".desktop", buf.Bytes(), 0666)
+	buf := createDesktopContents(capitalize(name), capitalize(name), comment, exec, name+".png", false, strings.Split(categories, ";"))
+	ioutil.WriteFile(name+".desktop", buf.Bytes(), 0666)
 }
 
 func startsWith(line string, word string) bool {
@@ -99,8 +99,8 @@ func betweenQuotesOrAfterEquals(orig string) string {
 
 // Does a keyword exist in a lowercase string?
 func has(s string, kw string) bool {
-  // Replace "-" with " " when searching for keywords
-  return -1 != strings.Index(strings.Replace(strings.ToLower(s), "-", " ", -1), " " + kw + " ")
+	// Replace "-" with " " when searching for keywords
+	return -1 != strings.Index(strings.Replace(strings.ToLower(s), "-", " ", -1), " "+kw+" ")
 }
 
 func keywordsInDescription(pkgdesc string, keywords []string) bool {
@@ -379,8 +379,8 @@ func main() {
 			categories = "Application;Game"
 		}
 		const nSpaces = 32
-		spaces := strings.Repeat(" ", nSpaces)[:nSpaces-min(nSpaces,len(pkgname))]
-        fmt.Printf("%s%s%s%s%s ", darkGrayText("["), lightBlueText(pkgname), darkGrayText("]"), spaces, darkGrayText("Generating desktop file..."))
+		spaces := strings.Repeat(" ", nSpaces)[:nSpaces-min(nSpaces, len(pkgname))]
+		fmt.Printf("%s%s%s%s%s ", darkGrayText("["), lightBlueText(pkgname), darkGrayText("]"), spaces, darkGrayText("Generating desktop file..."))
 		writeDesktopFile(pkgname, pkgdesc, exec, categories)
 		fmt.Printf("%s\n", darkGreenText("ok"))
 
@@ -393,7 +393,7 @@ func main() {
 				fmt.Printf("%s\n", lightCyanText("ok"))
 			} else {
 				fmt.Printf("%s\n", darkYellowText("no"))
-			    fmt.Printf("%s%s%s%s%s ", darkGrayText("["), lightBlueText(pkgname), darkGrayText("]"), spaces, darkGrayText("Using default icon instead..."))
+				fmt.Printf("%s%s%s%s%s ", darkGrayText("["), lightBlueText(pkgname), darkGrayText("]"), spaces, darkGrayText("Using default icon instead..."))
 				err := writeDefaultIconFile(pkgname)
 				if err == nil {
 					fmt.Printf("%s\n", lightPurpleText("yes"))
