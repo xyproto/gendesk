@@ -1,5 +1,0 @@
-Desktop File Generator
-
-Generates .desktop and downloads .png icons for a given PKGBUILD
-
-See gendesk --help for more info
