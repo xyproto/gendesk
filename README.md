@@ -19,6 +19,7 @@ TODO
 * Add category "Game;LogicGame" for keyword "puzzle"
 * Consider adding \_genericname too
 * Consider adding "Type=Application"
+* Add category "Game;ArcadeGame" for keyword "fighting"
 
 
 Changes from 0.3 to 0.4 (not yet released)
