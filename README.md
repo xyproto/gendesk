@@ -14,12 +14,20 @@ TODO
 * Add \_comment to be able to specify a shorter comment (for gpg-crypter, see svn log)
 * Add a way to add MimeTypes
 * Keywords could have a priority-number, as more specific categories are better (AdventureGame vs just "Application")
-* Possibly add support for StartupNotify, Type=Application and others
+* Possibly add support for StartupNotify=true/false and others
 * Add more categories and keywords
+* Add category "Game;LogicGame" for keyword "puzzle"
+* Consider adding \_genericname too
+* Consider adding "Type=Application"
 
 
-Changes from 0.2 to 0.3
------------------------
+Changes from 0.3 to 0.4 (not yet released)
+------------------------------------------
+* Fixed weird formatting in --help output
+
+
+Changes from 0.2 to 0.3 (released)
+----------------------------------
 * New flag: -q for quiet
 * New flag: --nocolor for no color
 * New flag: -n for not downloading anything (only generate a .desktop file)
@@ -35,4 +43,3 @@ Changes from 0.2 to 0.3
 * kw "shooter" is now "Application;Game;ActionGame;"
 * kw "roguelike" is now "Application;Game;AdventureGame;"
 * kw "git" is now category Development;RevisionControl
-
