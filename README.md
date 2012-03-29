@@ -15,14 +15,11 @@ TODO
 * Possibly add support for StartupNotify=true/false and Terminal=true/false
 * Add even more categories and keywords
 * Add a way to add a custom lines at the end, perhaps with \_custom=()
-
-Changes from 0.4 to 0.5 (not yet released)
-------------------------------------------
+* Fix weird formatting in --help output
 
 
-Changes from 0.3 to 0.4 (released)
+Changes from 0.3 to 0.4 (not released yet)
 ----------------------------------
-* Fixed weird formatting in --help output
 * Added \_genericname=()
 * Added \_comment=()
 * Added \_mimetype=()
