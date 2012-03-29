@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	version_string  = "Desktop File Generator v.0.3.1"
+	version_string  = "Desktop File Generator v.0.4"
 	icon_search_url = "https://admin.fedoraproject.org/pkgdb/appicon/show/%s"
 )
 
