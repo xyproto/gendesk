@@ -20,12 +20,22 @@ const (
 )
 
 var (
-	multimedia_kw  = []string{"video", "audio", "sound", "graphics", "draw", "demo"}
-	programming_kw = []string{"code", "c", "ide", "programming", "develop", "compile"}
-	network_kw     = []string{"network", "p2p"}
-	game_kw        = []string{"racing", "game", "arcade", "rts", "mmorpg", "rpg", "fps", "nintendo emulator"}
-	use_color      = true
-	verbose        = true
+	multimedia_kw = []string{"video", "audio", "sound", "graphics", "draw", "demo"}
+	network_kw    = []string{"network", "p2p"}
+	audiovideo_kw = []string{"synth", "synthesizer"}
+	editor_kw     = []string{"editor"}
+	science_kw    = []string{"gps", "inspecting"}
+	vcs_kw        = []string{"git"}
+	// Emulator and player aren't always for games, but those cases should be picked up by one of the other categories first
+	game_kw          = []string{"game", "rts", "mmorpg", "emulator", "player"}
+	arcadegame_kw    = []string{"combat", "arcade", "racing"}
+	actiongame_kw    = []string{"shooter", "fps"}
+	adventuregame_kw = []string{"roguelike", "rpg"}
+	programming_kw   = []string{"code", "c", "ide", "programming", "develop", "compile"}
+
+	// Global flags
+	use_color = true
+	verbose   = true
 )
 
 // Generate the contents for the .desktop file
@@ -108,12 +118,15 @@ func betweenQuotesOrAfterEquals(orig string) string {
 	return s
 }
 
+// TODO: Improve the keyword check algorithm to be able to check for the keyword "C" properly
 // Does a keyword exist in a lowercase string?
 func has(s string, kw string) bool {
-	// Replace "-" with " " when searching for keywords. Checking for " " + kw can be improved.
-	return -1 != strings.Index(strings.Replace(strings.ToLower(s), "-", " ", -1), " "+kw)
+	// Replace "-" with " " when searching for keywords.
+	// Checking for " " + kw can definitely be improved.
+	return -1 != strings.Index(strings.Replace(strings.ToLower(s), "-", " ", -1), kw + " ")
 }
 
+// Check if a keyword appears in a package description
 func keywordsInDescription(pkgdesc string, keywords []string) bool {
 	for _, keyword := range keywords {
 		if has(pkgdesc, keyword) {
@@ -365,6 +378,7 @@ func main() {
 	var iconurl string
 	pkgdescMap := make(map[string]string)
 	execMap := make(map[string]string)
+	nameMap := make(map[string]string)
 
 	for _, line := range strings.Split(filetext, "\n") {
 		if startsWith(line, "pkgname") {
@@ -395,7 +409,7 @@ func main() {
 			name := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
 			if pkgname != "" {
-				nameMap[pkgname] = exec
+				nameMap[pkgname] = name
 			}
 		} else if strings.Contains(line, "http://") && strings.Contains(line, ".png") {
 			// Only supports png icons downloaded over http, picks the first fitting url
@@ -442,12 +456,26 @@ func main() {
 		categories := ""
 		if keywordsInDescription(pkgdesc, multimedia_kw) {
 			categories = "Application;Multimedia"
-		} else if keywordsInDescription(pkgdesc, programming_kw) {
-			categories = "Application;Development"
 		} else if keywordsInDescription(pkgdesc, network_kw) {
 			categories = "Application;Network"
+		} else if keywordsInDescription(pkgdesc, audiovideo_kw) {
+			categories = "Application;AudioVideo"
+		} else if keywordsInDescription(pkgdesc, editor_kw) {
+			categories = "Application;Development;TextEditor"
+		} else if keywordsInDescription(pkgdesc, science_kw) {
+			categories = "Application;Science"
+		} else if keywordsInDescription(pkgdesc, vcs_kw) {
+			categories = "Application;Development;RevisionControl"
+		} else if keywordsInDescription(pkgdesc, arcadegame_kw) {
+			categories = "Application;Game;ArcadeGame"
+		} else if keywordsInDescription(pkgdesc, actiongame_kw) {
+			categories = "Application;Game;ActionGame"
+		} else if keywordsInDescription(pkgdesc, adventuregame_kw) {
+			categories = "Application;Game;AdventureGame"
 		} else if keywordsInDescription(pkgdesc, game_kw) {
 			categories = "Application;Game"
+		} else if keywordsInDescription(pkgdesc, programming_kw) {
+			categories = "Application;Development"
 		}
 		const nSpaces = 32
 		spaces := strings.Repeat(" ", nSpaces)[:nSpaces-min(nSpaces, len(pkgname))]
