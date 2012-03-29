@@ -47,7 +47,9 @@ func createDesktopContents(name string, genericName string, comment string, exec
 	b.WriteString("Encoding=UTF-8\n")
 	b.WriteString("Type=Application\n")
 	b.WriteString("Name=" + name + "\n")
-	b.WriteString("GenericName=" + genericName + "\n")
+	if genericName != "" {
+		b.WriteString("GenericName=" + genericName + "\n")
+	}
 	b.WriteString("Comment=" + comment + "\n")
 	b.WriteString("Exec=" + exec + "\n")
 	b.WriteString("Icon=" + icon + "\n")
@@ -61,7 +63,6 @@ func createDesktopContents(name string, genericName string, comment string, exec
 	} else {
 		b.WriteString("StartupNotify=false\n")
 	}
-	b.WriteString("Type=Application\n")
 	b.WriteString("Categories=" + strings.Join(categories, ";") + ";\n")
 	if len(mimeTypes) > 0 {
 		b.WriteString("MimeType=" + strings.Join(mimeTypes, ";") + ";\n")
@@ -433,7 +434,7 @@ func main() {
 			genericName := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
 			if pkgname != "" {
-				genericNameMap[pkgname] = genericName
+				genericNameMap[pkgname] = pkgdesc
 			}
 		} else if startsWith(line, "_mimetype") {
 			// Custom MimeType for the .desktop file per (split) package
