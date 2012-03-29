@@ -11,20 +11,21 @@ Patches are welcome
 TODO
 ----
 * Contact upstream about missing icons and desktop files
-* Add \_comment to be able to specify a shorter comment (for gpg-crypter, see svn log)
-* Add a way to add MimeTypes
 * Keywords could have a priority-number, as more specific categories are better (AdventureGame vs just "Application")
-* Possibly add support for StartupNotify=true/false and others
-* Add more categories and keywords
-* Add category "Game;LogicGame" for keyword "puzzle"
-* Consider adding \_genericname too
-* Consider adding "Type=Application"
-* Add category "Game;ArcadeGame" for keyword "fighting"
+* Possibly add support for StartupNotify=true/false and Terminal=true/false
+* Add even more categories and keywords
+* Add a way to add a custom lines at the end, perhaps with \_custom=()
 
 
 Changes from 0.3 to 0.4 (not yet released)
 ------------------------------------------
 * Fixed weird formatting in --help output
+* Added \_genericname=()
+* Added \_comment=()
+* Added \_mimetype=()
+* Added Type=Application
+* Added category "Game;LogicGame" for keyword "puzzle"
+* Added category "Game;ArcadeGame" for keyword "fighting"
 
 
 Changes from 0.2 to 0.3 (released)
@@ -44,3 +45,4 @@ Changes from 0.2 to 0.3 (released)
 * kw "shooter" is now "Application;Game;ActionGame;"
 * kw "roguelike" is now "Application;Game;AdventureGame;"
 * kw "git" is now category Development;RevisionControl
+
