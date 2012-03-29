@@ -434,7 +434,7 @@ func main() {
 			genericName := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
 			if pkgname != "" {
-				genericNameMap[pkgname] = pkgdesc
+				genericNameMap[pkgname] = genericName
 			}
 		} else if startsWith(line, "_mimetype") {
 			// Custom MimeType for the .desktop file per (split) package
@@ -494,7 +494,7 @@ func main() {
 		genericName, found := genericNameMap[pkgname]
 		if !found {
 			// Fall back on the package Name
-			name = capitalize(name)
+			genericName = capitalize(name)
 		}
 		comment, found := commentMap[pkgname]
 		if !found {
