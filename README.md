@@ -12,7 +12,6 @@ TODO
 ----
 * Contact upstream about missing icons and desktop files
 * Add even more categories and keywords
-* Test, test, test, then release 0.4
 * Check if gendesk can be installed with go install
 * Possibly write a makepkg patch to lower the threshold for using gendesk
 * Possibly put kw/category mappings in a single map instead
