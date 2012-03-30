@@ -11,20 +11,16 @@ Patches are welcome
 TODO
 ----
 * Contact upstream about missing icons and desktop files
-* Keywords could have a priority-number, as more specific categories are better (AdventureGame vs just "Application")
-* Possibly add support for StartupNotify=true/false and Terminal=true/false
 * Add even more categories and keywords
-* Add a way to add a custom lines at the end, perhaps with \_custom=()
-* Put kw/category mappings in a single map
-* Move funcions and settings related to terminal output to a separate file (struct + methods)
-* Check if gendesk can be installed with go install
-* Glob for .svg icons too
 * Test, test, test, then release 0.4
-* Just maybe write a makepkg patch to lower the threshold for using gendesk
+* Check if gendesk can be installed with go install
+* Possibly write a makepkg patch to lower the threshold for using gendesk
+* Possibly put kw/category mappings in a single map instead
+* Possibly add support for StartupNotify=true/false and Terminal=true/false
 
 
 Changes from 0.3 to 0.4 (not released yet)
-----------------------------------
+------------------------------------------
 * Added \_genericname=()
 * Added \_comment=()
 * Added \_mimetype=()
@@ -32,6 +28,10 @@ Changes from 0.3 to 0.4 (not released yet)
 * Added category "Game;LogicGame" for keyword "puzzle"
 * Added category "Game;ArcadeGame" for keyword "fighting"
 * Fixed weird formatting in --help output
+* Added \_custom=() for adding custom fields at the end of the .desktop file
+* Glob for existing .svg icons too
+* Shorter lines
+* Moved functions and settings related to terminal output to a separate file
 
 
 Changes from 0.2 to 0.3 (released)
@@ -51,4 +51,5 @@ Changes from 0.2 to 0.3 (released)
 * kw "shooter" is now "Application;Game;ActionGame;"
 * kw "roguelike" is now "Application;Game;AdventureGame;"
 * kw "git" is now category Development;RevisionControl
+
 
