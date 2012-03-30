@@ -147,13 +147,18 @@ func betweenQuotesOrAfterEquals(orig string) string {
 	return s
 }
 
-// Does a keyword exist in a lowercase string?
-// TODO: Improve the keyword check algorithm
+// Does a keyword exist in the string?
 func has(s string, kw string) bool {
-	// Replace "-" with " " when searching for keywords.
-	// Checking for " " + kw can definitely be improved.
-	hyphenless := strings.Replace(strings.ToLower(s), "-", " ", -1)
-	return -1 != strings.Index(hyphenless, kw+" ")
+	lowercase := strings.ToLower(s)
+	// Remove the most common special characters
+	massaged := strings.Trim(lowercase, "-_.,!?()[]{}\\/:;+@")
+	words := strings.Split(massaged, " ")
+	for _, word := range words {
+		if word == kw {
+			return true
+		}
+	}
+	return false
 }
 
 // Check if a keyword appears in a package description
@@ -457,8 +462,8 @@ func main() {
 		}
 		genericName, found := genericNameMap[pkgname]
 		if !found {
-			// Fall back on the package Name
-			genericName = capitalize(name)
+			// Fall back on no generic name
+			genericName = ""
 		}
 		comment, found := commentMap[pkgname]
 		if !found {
