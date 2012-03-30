@@ -368,7 +368,7 @@ func main() {
 		fmt.Println("      " + icon_search_url)
 		fmt.Println("      This may or may not result in the icon you wished for.")
 		fmt.Println("    * Categories are guessed based on keywords in the")
-		fmt.Println("	   package description")
+		fmt.Println("      package description")
 		fmt.Println("    * Icons are assumed to be installed to")
 		fmt.Println("      \"/usr/share/pixmaps/$pkgname.png\" by the PKGBUILD")
 		fmt.Println()
