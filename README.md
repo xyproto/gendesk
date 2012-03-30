@@ -19,8 +19,8 @@ TODO
 * Possibly add support for StartupNotify=true/false and Terminal=true/false
 
 
-Changes from 0.3 to 0.4 (not released yet)
-------------------------------------------
+Changes from 0.3 to 0.4 (released)
+----------------------------------
 * Added \_genericname=()
 * Added \_comment=()
 * Added \_mimetype=()
