@@ -20,8 +20,7 @@ const (
 )
 
 var (
-	multimedia_kw = []string{"video", "audio", "sound", "graphics", "draw",
-		"demo"}
+	multimedia_kw = []string{"video", "audio", "sound", "graphics", "draw", "demo"}
 	network_kw    = []string{"network", "p2p"}
 	audiovideo_kw = []string{"synth", "synthesizer"}
 	editor_kw     = []string{"editor"}
@@ -30,13 +29,11 @@ var (
 	// Emulator and player aren't always for games, but those cases should be
 	// picked up by one of the other categories first
 	game_kw       = []string{"game", "rts", "mmorpg", "emulator", "player"}
-	arcadegame_kw = []string{"combat", "arcade", "racing", "fighting",
-		"fight"}
+	arcadegame_kw = []string{"combat", "arcade", "racing", "fighting", "fight"}
 	actiongame_kw    = []string{"shooter", "fps"}
 	adventuregame_kw = []string{"roguelike", "rpg"}
 	logicgame_kw     = []string{"puzzle"}
-	programming_kw   = []string{"code", "c", "ide", "programming", "develop",
-		"compile"}
+	programming_kw   = []string{"code", "ide", "programming", "develop", "compile"}
 
 	// Global flags
 	use_color = true
@@ -144,8 +141,7 @@ func betweenQuotesOrAfterEquals(orig string) string {
 	return s
 }
 
-// TODO: Improve the keyword check algorithm to be able to
-//       check for the keyword "C" properly
+// TODO: Improve the keyword check algorithm
 // Does a keyword exist in a lowercase string?
 func has(s string, kw string) bool {
 	// Replace "-" with " " when searching for keywords.
@@ -270,7 +266,7 @@ func pkgList(splitpkgname string) []string {
 	}
 	if strings.Contains(center, " ") {
 		unquoted := strings.Replace(center, "\"", "", -1)
-		unquoted = strings.Replace(center, "'", "", -1)
+		unquoted = strings.Replace(unquoted, "'", "", -1)
 		return strings.Split(unquoted, " ")
 	}
 	return []string{splitpkgname}
@@ -363,18 +359,18 @@ func main() {
 		fmt.Println()
 		fmt.Println("Note:")
 		fmt.Println("    * \"../PKGBUILD\" is the default filename")
-		fmt.Println("    * _exec in the PKGBUILD can be used to specific a " +
-			"different executable for the .desktop file")
+		fmt.Println("    * _exec in the PKGBUILD can be used to specific a")
+		fmt.Println("      different executable for the .desktop file")
 		fmt.Println("      Example: _exec=('appname-gui')")
 		fmt.Println("    * Split packages are supported")
-		fmt.Println("    * If a .png icon is not found as a file or in the " +
-			"PKGBUILD, an icon will be downloaded from:")
+		fmt.Println("    * If a .png icon is not found as a file or in the")
+		fmt.Println("      PKGBUILD, an icon will be downloaded from:")
 		fmt.Println("      " + icon_search_url)
 		fmt.Println("      This may or may not result in the icon you wished for.")
-		fmt.Println("    * Categories are guessed based on keywords in the " +
-			"package description")
-		fmt.Println("    * Icons are assumed to be installed to " +
-			"\"/usr/share/pixmaps/$pkgname.png\" by the PKGBUILD")
+		fmt.Println("    * Categories are guessed based on keywords in the")
+		fmt.Println("	   package description")
+		fmt.Println("    * Icons are assumed to be installed to")
+		fmt.Println("      \"/usr/share/pixmaps/$pkgname.png\" by the PKGBUILD")
 		fmt.Println()
 	}
 	version := flag.Bool("version", false, version_help)
@@ -450,7 +446,7 @@ func main() {
 			// Custom GenericName for the .desktop file per (split) package
 			genericName := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
-			if pkgname != "" {
+			if (pkgname != "") && (genericName != "") {
 				genericNameMap[pkgname] = genericName
 			}
 		} else if startsWith(line, "_mimetype") {
@@ -482,8 +478,8 @@ func main() {
 						"${pkgname}", pkgname, -1)
 				}
 				if strings.Contains(iconurl, "$") {
-					// TODO: Will only replace pkgname, but there are more
-					// replacements that could have been made.
+					// If there are more $variables, don't bother (for now)
+					// TODO: replace all defined $variables...
 					iconurl = ""
 				}
 			}

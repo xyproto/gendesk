@@ -15,7 +15,12 @@ TODO
 * Possibly add support for StartupNotify=true/false and Terminal=true/false
 * Add even more categories and keywords
 * Add a way to add a custom lines at the end, perhaps with \_custom=()
-* Fix weird formatting in --help output
+* Put kw/category mappings in a single map
+* Move funcions and settings related to terminal output to a separate file (struct + methods)
+* Check if gendesk can be installed with go install
+* Glob for .svg icons too
+* Test, test, test, then release 0.4
+* Just maybe write a makepkg patch to lower the threshold for using gendesk
 
 
 Changes from 0.3 to 0.4 (not released yet)
@@ -26,6 +31,7 @@ Changes from 0.3 to 0.4 (not released yet)
 * Added Type=Application
 * Added category "Game;LogicGame" for keyword "puzzle"
 * Added category "Game;ArcadeGame" for keyword "fighting"
+* Fixed weird formatting in --help output
 
 
 Changes from 0.2 to 0.3 (released)
