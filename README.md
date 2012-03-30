@@ -1,11 +1,11 @@
 Desktop File Generator
 ======================
 
-Generates .desktop and downloads .png icons for a given PKGBUILD
+Generates .desktop files and downloads .png icons for a given PKGBUILD.
 
-See gendesk --help for more info
+See gendesk --help for more info.
 
-Patches are welcome
+Patches and pull requests are welcome.
 
 
 TODO
