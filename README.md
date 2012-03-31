@@ -16,6 +16,8 @@ TODO
 * Possibly write a makepkg patch to lower the threshold for using gendesk
 * Possibly put kw/category mappings in a single map instead
 * Possibly add support for StartupNotify=true/false and Terminal=true/false
+* Add category "Development;IDE;Java;" for Java IDEs
+* Add category "Graphics;3DGraphics;" for 3D modellers
 
 
 Changes from 0.4 to 0.4.1 (released)
