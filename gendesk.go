@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	version_string  = "Desktop File Generator v.0.4"
+	version_string  = "Desktop File Generator v.0.4.1"
 	icon_search_url = "https://admin.fedoraproject.org/pkgdb/appicon/show/%s"
 )
 
@@ -396,14 +396,14 @@ func main() {
 			mimeType := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
 			if pkgname != "" {
-				nameMap[pkgname] = mimeType
+				mimeTypeMap[pkgname] = mimeType
 			}
 		} else if startsWith(line, "_comment") {
 			// Custom Comment for the .desktop file per (split) package
 			comment := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
 			if pkgname != "" {
-				nameMap[pkgname] = comment
+				commentMap[pkgname] = comment
 			}
 		} else if startsWith(line, "_custom") {
 			// Custom string to be added to the end

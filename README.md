@@ -18,6 +18,11 @@ TODO
 * Possibly add support for StartupNotify=true/false and Terminal=true/false
 
 
+Changes from 0.4 to 0.4.1 (released)
+------------------------------------
+* Fixed a bug where \_name=() and \_comment=() didn't work as they should
+
+
 Changes from 0.3 to 0.4 (released)
 ----------------------------------
 * Added \_genericname=()
