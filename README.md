@@ -19,7 +19,7 @@ TODO
 * Add category "Development;IDE;Java;" for Java IDEs
 * Add category "Graphics;3DGraphics;" for 3D modellers
 * Add category "System;" for sensor monitors
-
+* Add category "Game;BoardGame;" for kw "board", "chess", "goban" or "chessboard"
 
 Changes from 0.4 to 0.4.1 (released)
 ------------------------------------
