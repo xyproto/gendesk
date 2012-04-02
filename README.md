@@ -20,6 +20,7 @@ TODO
 * Add category "Graphics;3DGraphics;" for 3D modellers
 * Add category "System;" for sensor monitors
 * Add category "Game;BoardGame;" for kw "board", "chess", "goban" or "chessboard"
+* Add category "Office" for kw "e-book" and "ebook" and check before "editor"
 
 Changes from 0.4 to 0.4.1 (released)
 ------------------------------------
