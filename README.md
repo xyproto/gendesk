@@ -21,6 +21,7 @@ TODO
 * Add category "System;" for sensor monitors
 * Add category "Game;BoardGame;" for kw "board", "chess", "goban" or "chessboard"
 * Add category "Office" for kw "e-book" and "ebook" and check before "editor"
+* Don't use ".png" by default when specifiying an icon
 
 Changes from 0.4 to 0.4.1 (released)
 ------------------------------------
