@@ -15,14 +15,16 @@ import (
 )
 
 const (
-	version_string  = "Desktop File Generator v.0.4.1"
+	version_string  = "Desktop File Generator v.0.4.2"
 	icon_search_url = "https://admin.fedoraproject.org/pkgdb/appicon/show/%s"
 )
 
 var (
+	model3d_kw    = []string{"rendering", "modeling", "modeler", "render", "raytracing"}
 	multimedia_kw = []string{"video", "audio", "sound", "graphics", "draw", "demo"}
-	network_kw    = []string{"network", "p2p"}
+	network_kw    = []string{"network", "p2p", "browser"}
 	audiovideo_kw = []string{"synth", "synthesizer"}
+	office_kw     = []string{"ebook", "e-book"}
 	editor_kw     = []string{"editor"}
 	science_kw    = []string{"gps", "inspecting"}
 	vcs_kw        = []string{"git"}
@@ -33,7 +35,9 @@ var (
 	actiongame_kw    = []string{"shooter", "fps"}
 	adventuregame_kw = []string{"roguelike", "rpg"}
 	logicgame_kw     = []string{"puzzle"}
+	boardgame_kw     = []string{"board", "chess", "goban", "chessboard"}
 	programming_kw   = []string{"code", "ide", "programming", "develop", "compile"}
+	system_kw        = []string{"sensor"}
 
 	// Global flags
 	use_color = true
@@ -98,9 +102,9 @@ func writeDesktopFile(pkgname string, name string, comment string, exec string,
 		mimeTypeList = strings.Split(mimeTypes, ";")
 	}
 
-	// Only supports png icons, mimeTypes may be empty. Disabled terminal
+	// mimeTypes may be empty. Disabled terminal
 	// and startupnotify for now.
-	buf := createDesktopContents(name, genericName, comment, exec, pkgname+".png",
+	buf := createDesktopContents(name, genericName, comment, exec, pkgname,
 		false, categoryList, mimeTypeList, false)
 	if custom != "" {
 		// Write the custom string to the end of the .desktop file (may contain \n)
@@ -308,7 +312,7 @@ func main() {
 		fmt.Println("    * Categories are guessed based on keywords in the")
 		fmt.Println("      package description")
 		fmt.Println("    * Icons are assumed to be installed to")
-		fmt.Println("      \"/usr/share/pixmaps/$pkgname.png\" by the PKGBUILD")
+		fmt.Println("      \"/usr/share/pixmaps/\" by the PKGBUILD")
 		fmt.Println()
 	}
 	version := flag.Bool("version", false, version_help)
@@ -482,12 +486,16 @@ func main() {
 		}
 		// Approximately identify various categories
 		categories := ""
-		if keywordsInDescription(pkgdesc, multimedia_kw) {
+		if keywordsInDescription(pkgdesc, model3d_kw) {
+			categories = "Application;Graphics;3DGraphics"
+		} else if keywordsInDescription(pkgdesc, multimedia_kw) {
 			categories = "Application;Multimedia"
 		} else if keywordsInDescription(pkgdesc, network_kw) {
 			categories = "Application;Network"
 		} else if keywordsInDescription(pkgdesc, audiovideo_kw) {
 			categories = "Application;AudioVideo"
+		} else if keywordsInDescription(pkgdesc, office_kw) {
+			categories = "Application;Office"
 		} else if keywordsInDescription(pkgdesc, editor_kw) {
 			categories = "Application;Development;TextEditor"
 		} else if keywordsInDescription(pkgdesc, science_kw) {
@@ -500,10 +508,14 @@ func main() {
 			categories = "Application;Game;ActionGame"
 		} else if keywordsInDescription(pkgdesc, adventuregame_kw) {
 			categories = "Application;Game;AdventureGame"
+		} else if keywordsInDescription(pkgdesc, boardgame_kw) {
+			categories = "Application;Game;BoardGame"
 		} else if keywordsInDescription(pkgdesc, game_kw) {
 			categories = "Application;Game"
 		} else if keywordsInDescription(pkgdesc, programming_kw) {
 			categories = "Application;Development"
+		} else if keywordsInDescription(pkgdesc, system_kw) {
+			categories = "Application;System"
 		}
 		const nSpaces = 32
 		spaces := strings.Repeat(" ", nSpaces)[:nSpaces-min(nSpaces, len(pkgname))]

@@ -16,12 +16,16 @@ TODO
 * Possibly write a makepkg patch to lower the threshold for using gendesk
 * Possibly put kw/category mappings in a single map instead
 * Possibly add support for StartupNotify=true/false and Terminal=true/false
-* Add category "Development;IDE;Java;" for Java IDEs
-* Add category "Graphics;3DGraphics;" for 3D modellers
-* Add category "System;" for sensor monitors
-* Add category "Game;BoardGame;" for kw "board", "chess", "goban" or "chessboard"
-* Add category "Office" for kw "e-book" and "ebook" and check before "editor"
-* Don't use ".png" by default when specifiying an icon
+
+
+Changes from 0.4.1 to 0.4.2 (released)
+--------------------------------------
+* Added category "Graphics;3DGraphics;" for 3D modellers
+* Added category "System;" for sensor monitors
+* Added category "Game;BoardGame;" for kw "board", "chess", "goban" or "chessboard"
+* Added category "Office" for kw "e-book" and "ebook"
+* Doesn't use ".png" by default when specifiying an icon
+
 
 Changes from 0.4 to 0.4.1 (released)
 ------------------------------------
