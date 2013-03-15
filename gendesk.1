@@ -1,0 +1,67 @@
+.\"             -*-Nroff-*-
+.\"
+.TH "gendesk" 1 "15 Mar 2013" "" ""
+.SH NAME
+gendesk \- generate .desktop files from PKGBUILD files
+.SH SYNOPSIS
+.B gendesk
+path to PKGBUILD file (optional)
+.SH DESCRIPTION
+Supported PKGBUILD variables that will be included in the generated file:
+.sp
+.B _name
+.sp
+.B _genericname
+.sp
+.B _comment
+.sp
+.B _mimetype
+.sp
+.B _exec
+.sp
+.B _categories
+.sp
+Gendesk will try to find the correct icon from the Fedora project or else fall back on the default icon.
+.sp
+The correct application category will be guessed if not provided.
+.SH "EXAMPLES"
+.B gendesk
+  Exits with errorcode 1 if ../PKGBUILD is not found
+.sp
+.B gendesk PKGBUILD
+  Looks for a PKGBUILD in the current directory and generates a .desktop file.
+.sp
+.B gendesk /home/user/archpackages/mypackage/PKGBUILD
+  Generates a .desktop file from the given PKGBUILD.
+.sp
+Note that if any existing .desktop files with the same name will be overwritten!
+.PP
+.SH OPTIONS
+.TP
+.B \-\-version
+displays the current version information
+.TP
+.B \-h or \-\-help
+displays brief usage information
+.TP
+.B \-n
+don't attempt to download an icon, if missing
+.TP
+.B \-\-nocolor
+don't use colored text
+.TP
+.B \-q
+quiet; don't output text
+.PP
+.SH "WHY"
+.sp
+Aims to make it easy for Arch Linux package maintainers to add menu entries
+for the applications they try to package, without including anything that
+hasn't been supplied by upstream in the package itself.
+.SH BUGS
+Only unknown bugs so far. Bugs can be reported at https://github.com/xyproto/gendesk/issues.
+.SH VERSION
+0.4.3
+.SH AUTHOR
+.B gendesk
+was written by Alexander Rødseth <rodseth@gmail.com>

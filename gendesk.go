@@ -15,13 +15,13 @@ import (
 )
 
 const (
-	version_string  = "Desktop File Generator v.0.4.2"
+	version_string  = "Desktop File Generator v.0.4.3"
 	icon_search_url = "https://admin.fedoraproject.org/pkgdb/appicon/show/%s"
 )
 
 var (
 	model3d_kw    = []string{"rendering", "modeling", "modeler", "render", "raytracing"}
-	multimedia_kw = []string{"video", "audio", "sound", "graphics", "draw", "demo"}
+	multimedia_kw = []string{"non-linear", "audio", "sound", "graphics", "draw", "demo"}
 	network_kw    = []string{"network", "p2p", "browser"}
 	audiovideo_kw = []string{"synth", "synthesizer"}
 	office_kw     = []string{"ebook", "e-book"}
@@ -310,7 +310,7 @@ func main() {
 		fmt.Println("      " + icon_search_url)
 		fmt.Println("      This may or may not result in the icon you wished for.")
 		fmt.Println("    * Categories are guessed based on keywords in the")
-		fmt.Println("      package description")
+		fmt.Println("      package description, but there's also _categories=().")
 		fmt.Println("    * Icons are assumed to be installed to")
 		fmt.Println("      \"/usr/share/pixmaps/\" by the PKGBUILD")
 		fmt.Println()
@@ -356,6 +356,7 @@ func main() {
 	mimeTypeMap := make(map[string]string)
 	commentMap := make(map[string]string)
 	customMap := make(map[string]string)
+	categoriesMap := make(map[string]string)
 
 	for _, line := range strings.Split(filetext, "\n") {
 		if startsWith(line, "pkgname") {
@@ -416,6 +417,12 @@ func main() {
 			// Use the last found pkgname as the key
 			if pkgname != "" {
 				customMap[pkgname] = custom
+			}
+		} else if startsWith(line, "_categories") {
+			categories := betweenQuotesOrAfterEquals(line)
+			// Use the last found pkgname as the key
+			if pkgname != "" {
+				categoriesMap[pkgname] = categories
 			}
 		} else if strings.Contains(line, "http://") &&
 			strings.Contains(line, ".png") {
@@ -484,38 +491,43 @@ func main() {
 			// Fall back on no custom additional lines
 			custom = ""
 		}
-		// Approximately identify various categories
-		categories := ""
-		if keywordsInDescription(pkgdesc, model3d_kw) {
-			categories = "Application;Graphics;3DGraphics"
-		} else if keywordsInDescription(pkgdesc, multimedia_kw) {
-			categories = "Application;Multimedia"
-		} else if keywordsInDescription(pkgdesc, network_kw) {
-			categories = "Application;Network"
-		} else if keywordsInDescription(pkgdesc, audiovideo_kw) {
-			categories = "Application;AudioVideo"
-		} else if keywordsInDescription(pkgdesc, office_kw) {
-			categories = "Application;Office"
-		} else if keywordsInDescription(pkgdesc, editor_kw) {
-			categories = "Application;Development;TextEditor"
-		} else if keywordsInDescription(pkgdesc, science_kw) {
-			categories = "Application;Science"
-		} else if keywordsInDescription(pkgdesc, vcs_kw) {
-			categories = "Application;Development;RevisionControl"
-		} else if keywordsInDescription(pkgdesc, arcadegame_kw) {
-			categories = "Application;Game;ArcadeGame"
-		} else if keywordsInDescription(pkgdesc, actiongame_kw) {
-			categories = "Application;Game;ActionGame"
-		} else if keywordsInDescription(pkgdesc, adventuregame_kw) {
-			categories = "Application;Game;AdventureGame"
-		} else if keywordsInDescription(pkgdesc, boardgame_kw) {
-			categories = "Application;Game;BoardGame"
-		} else if keywordsInDescription(pkgdesc, game_kw) {
-			categories = "Application;Game"
-		} else if keywordsInDescription(pkgdesc, programming_kw) {
-			categories = "Application;Development"
-		} else if keywordsInDescription(pkgdesc, system_kw) {
-			categories = "Application;System"
+		categories, found := categoriesMap[pkgname]
+		if !found {
+			// Approximately identify various categories
+			categories = ""
+			if keywordsInDescription(pkgdesc, model3d_kw) {
+				categories = "Application;Graphics;3DGraphics"
+			} else if keywordsInDescription(pkgdesc, multimedia_kw) {
+				categories = "Application;Multimedia"
+			} else if keywordsInDescription(pkgdesc, network_kw) {
+				categories = "Application;Network"
+			} else if keywordsInDescription(pkgdesc, audiovideo_kw) {
+				categories = "Application;AudioVideo"
+			} else if keywordsInDescription(pkgdesc, office_kw) {
+				categories = "Application;Office"
+			} else if keywordsInDescription(pkgdesc, editor_kw) {
+				categories = "Application;Development;TextEditor"
+			} else if keywordsInDescription(pkgdesc, science_kw) {
+				categories = "Application;Science"
+			} else if keywordsInDescription(pkgdesc, vcs_kw) {
+				categories = "Application;Development;RevisionControl"
+			} else if keywordsInDescription(pkgdesc, arcadegame_kw) {
+				categories = "Application;Game;ArcadeGame"
+			} else if keywordsInDescription(pkgdesc, actiongame_kw) {
+				categories = "Application;Game;ActionGame"
+			} else if keywordsInDescription(pkgdesc, adventuregame_kw) {
+				categories = "Application;Game;AdventureGame"
+			} else if keywordsInDescription(pkgdesc, logicgame_kw) {
+				categories = "Application;Game;"
+			} else if keywordsInDescription(pkgdesc, boardgame_kw) {
+				categories = "Application;Game;BoardGame"
+			} else if keywordsInDescription(pkgdesc, game_kw) {
+				categories = "Application;Game"
+			} else if keywordsInDescription(pkgdesc, programming_kw) {
+				categories = "Application;Development"
+			} else if keywordsInDescription(pkgdesc, system_kw) {
+				categories = "Application;System"
+			}
 		}
 		const nSpaces = 32
 		spaces := strings.Repeat(" ", nSpaces)[:nSpaces-min(nSpaces, len(pkgname))]

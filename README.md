@@ -1,25 +1,30 @@
 Desktop File Generator
 ======================
 
+
 Generates .desktop files and downloads .png icons for a given PKGBUILD.
 
 See gendesk --help for more info.
 
 Patches and pull requests are welcome.
 
+MIT licensed
+
 
 TODO
 ----
-* Contact upstream about missing icons and desktop files
-* Add even more categories and keywords
-* Check if gendesk can be installed with go install
-* Possibly write a makepkg patch to lower the threshold for using gendesk
-* Possibly put kw/category mappings in a single map instead
-* Possibly add support for StartupNotify=true/false and Terminal=true/false
+* Move kw/category mappings into a configuration file instead
+* Maybe add support for StartupNotify=true/false and Terminal=true/false
 
 
-Changes from 0.4.1 to 0.4.2 (released)
---------------------------------------
+Changes from 0.4.2 to 0.4.3
+---------------------------
+* Fixed minor bug where puzzle games were not placed in the right category
+* Added \_categories=()
+
+
+Changes from 0.4.1 to 0.4.2
+---------------------------
 * Added category "Graphics;3DGraphics;" for 3D modellers
 * Added category "System;" for sensor monitors
 * Added category "Game;BoardGame;" for kw "board", "chess", "goban" or "chessboard"
@@ -27,13 +32,13 @@ Changes from 0.4.1 to 0.4.2 (released)
 * Doesn't use ".png" by default when specifiying an icon
 
 
-Changes from 0.4 to 0.4.1 (released)
-------------------------------------
+Changes from 0.4 to 0.4.1
+-------------------------
 * Fixed a bug where \_name=() and \_comment=() didn't work as they should
 
 
-Changes from 0.3 to 0.4 (released)
-----------------------------------
+Changes from 0.3 to 0.4
+-----------------------
 * Added \_genericname=()
 * Added \_comment=()
 * Added \_mimetype=()
@@ -47,8 +52,8 @@ Changes from 0.3 to 0.4 (released)
 * Moved functions and settings related to terminal output to a separate file
 
 
-Changes from 0.2 to 0.3 (released)
-----------------------------------
+Changes from 0.2 to 0.3
+-----------------------
 * New flag: -q for quiet
 * New flag: --nocolor for no color
 * New flag: -n for not downloading anything (only generate a .desktop file)
@@ -64,5 +69,4 @@ Changes from 0.2 to 0.3 (released)
 * kw "shooter" is now "Application;Game;ActionGame;"
 * kw "roguelike" is now "Application;Game;AdventureGame;"
 * kw "git" is now category Development;RevisionControl
-
 

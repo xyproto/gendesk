@@ -3,6 +3,8 @@ package main
 /*
  *
  * Colored text output
+ * 
+ * Only supports a few selected colors
  *
  */
 
