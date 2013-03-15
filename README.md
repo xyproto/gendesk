@@ -17,6 +17,10 @@ TODO
 * Maybe add support for StartupNotify=true/false and Terminal=true/false
 
 
+Changes from 0.4.3 to 0.4.4
+---------------------------
+* Changed the URL for searching for icons from Fedora to Open Icon Library
+
 Changes from 0.4.2 to 0.4.3
 ---------------------------
 * Fixed minor bug where puzzle games were not placed in the right category

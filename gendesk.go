@@ -15,8 +15,9 @@ import (
 )
 
 const (
-	version_string  = "Desktop File Generator v.0.4.3"
-	icon_search_url = "https://admin.fedoraproject.org/pkgdb/appicon/show/%s"
+	version_string  = "Desktop File Generator v.0.4.4"
+	//icon_search_url = "https://admin.fedoraproject.org/pkgdb/appicon/show/%s"
+    icon_search_url = "http://openiconlibrary.sourceforge.net/gallery2/open_icon_library-full/icons/png/48x48/apps/%s.png"
 )
 
 var (
@@ -180,7 +181,7 @@ func writeIconFile(pkgname string, o *Output) error {
 	// Only supports png icons
 	filename := pkgname + ".png"
 	var client http.Client
-	resp, err := client.Get(fmt.Sprintf(icon_search_url, capitalize(pkgname)))
+	resp, err := client.Get(fmt.Sprintf(icon_search_url, pkgname))
 	if err != nil {
 		o.errText("Could not download icon")
 		os.Exit(1)
@@ -198,6 +199,11 @@ func writeIconFile(pkgname string, o *Output) error {
 
 	// If the icon is the "No icon found" icon (known hash), return with an error
 	if fmt.Sprintf("%x", h.Sum(nil)) == "12928aa3233965175ea30f5acae593bf" {
+		return errors.New("No icon found")
+	}
+
+	if b[0] == 60 && b[1] == 104 && b[2] == 116 {
+		// if it starts with "<ht", it's not a png
 		return errors.New("No icon found")
 	}
 
