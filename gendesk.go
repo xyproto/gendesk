@@ -308,14 +308,13 @@ func main() {
 		fmt.Println(version_string)
 		fmt.Println("generates .desktop files from a PKGBUILD")
 		fmt.Println()
-		fmt.Println("Syntax: gendesk [flags] filename")
+		fmt.Println("Syntax: gendesk [flags] [PKGBUILD filename]")
 		fmt.Println()
 		fmt.Println("Possible flags:")
 		fmt.Println("    --version                    " + version_help)
 		fmt.Println("    -n                           " + nodownload_help)
 		fmt.Println("    --nocolor                    " + nocolor_help)
 		fmt.Println("    -q                           " + quiet_help)
-		fmt.Println("    --help                       This text")
 		fmt.Println("    --pkgname=PKGNAME            " + pkgname_help)
 		fmt.Println("    --pkgdesc=PKGDESC            " + pkgdesc_help)
 		fmt.Println("    --name=NAME                  " + name_help)
@@ -328,6 +327,7 @@ func main() {
 		fmt.Println("    --mimettypes=a,b,c,d         " + mimetypes_help)
 		//fmt.Println("    --startupnotify=[true|false] " + startupnotify_help)
 		fmt.Println("    --custom=CUSTOM              " + custom_help)
+		fmt.Println("    --help                       This text")
 		fmt.Println()
 		fmt.Println("Note:")
 		fmt.Println("    * Either use a PKGBUILD or a bunch of arguments")
@@ -350,8 +350,8 @@ func main() {
 	nodownload := flag.Bool("n", false, nodownload_help)
 	nocolor := flag.Bool("nocolor", false, nocolor_help)
 	quiet := flag.Bool("q", false, quiet_help)
-	givenPkgname := flag.String("pkgname", "pkgname", pkgname_help)
-	pkgdesc := flag.String("pkgdesc", "pkgdesc", pkgdesc_help)
+	givenPkgname := flag.String("pkgname", "", pkgname_help)
+	pkgdesc := flag.String("pkgdesc", "", pkgdesc_help)
 	name := flag.String("name", "", name_help)
 	genericname := flag.String("genericname", "", genericname_help)
 	comment := flag.String("comment", "", comment_help)
@@ -371,20 +371,20 @@ func main() {
 	if *version {
 		o.Println(version_string)
 		os.Exit(0)
-	} else if len(args) == 0 {
-		filename = "../PKGBUILD"
-	} else if len(args) > 0 {
-		if strings.Contains(args[0], "-") {
+	}
+
+	pkgname := *givenPkgname
+	iconurl := *givenIconurl
+
+	if pkgname == "" {
+		if len(args) == 0 {
+			filename = "../PKGBUILD"
+		} else if len(args) == 1 {
 			filename = args[0]
-		} else {
-			// Settings by arguments instead of by filename
-			filename = ""
 		}
 	}
 
-	var pkgname string = *givenPkgname
 	var pkgnames []string
-	var iconurl string = *givenIconurl
 
 	// Several fields are stored per pkgname, hence the maps
 	pkgdescMap := make(map[string]string)
