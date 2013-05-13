@@ -301,7 +301,7 @@ func main() {
 	categories_help := "Categories, see other .desktop files in /usr/share/applications for examples"
 	mimetypes_help := "Mime types, see other .desktop files for examples"
 	//startupnotify_help := "Use this is the application takes a year to start and the user needs to know"
-	custom_help := "CCCCCCCCustom line to be appended at the end of the .desktop file"
+	custom_help := "Custom line to be appended at the end of the .desktop file"
 
 	flag.Usage = func() {
 		fmt.Println()
