@@ -15,9 +15,8 @@ import (
 )
 
 const (
-	version_string  = "Desktop File Generator v.0.4.4"
-	//icon_search_url = "https://admin.fedoraproject.org/pkgdb/appicon/show/%s"
-    icon_search_url = "http://openiconlibrary.sourceforge.net/gallery2/open_icon_library-full/icons/png/48x48/apps/%s.png"
+	version_string  = "Desktop File Generator v.0.5.0"
+	icon_search_url = "http://openiconlibrary.sourceforge.net/gallery2/open_icon_library-full/icons/png/48x48/apps/%s.png"
 )
 
 var (
@@ -291,6 +290,19 @@ func main() {
 	nodownload_help := "Don't download anything"
 	nocolor_help := "Don't use colors"
 	quiet_help := "Don't output anything on stdout"
+	pkgname_help := "The name of the package"
+	pkgdesc_help := "Description of the package"
+	name_help := "Name of the shortcut"
+	genericname_help := "Type of application"
+	comment_help := "Shortcut comment"
+	exec_help := "Path to executable"
+	iconurl_help := "URL to icon"
+	//terminal_help := "Start application by using a terminal?"
+	categories_help := "Categories, see other .desktop files in /usr/share/applications for examples"
+	mimetypes_help := "Mime types, see other .desktop files for examples"
+	//startupnotify_help := "Use this is the application takes a year to start and the user needs to know"
+	custom_help := "CCCCCCCCustom line to be appended at the end of the .desktop file"
+
 	flag.Usage = func() {
 		fmt.Println()
 		fmt.Println(version_string)
@@ -299,13 +311,26 @@ func main() {
 		fmt.Println("Syntax: gendesk [flags] filename")
 		fmt.Println()
 		fmt.Println("Possible flags:")
-		fmt.Println("    * --version        " + version_help)
-		fmt.Println("    * -n               " + nodownload_help)
-		fmt.Println("    * --nocolor        " + nocolor_help)
-		fmt.Println("    * -q               " + quiet_help)
-		fmt.Println("    * --help           This text")
+		fmt.Println("    --version                    " + version_help)
+		fmt.Println("    -n                           " + nodownload_help)
+		fmt.Println("    --nocolor                    " + nocolor_help)
+		fmt.Println("    -q                           " + quiet_help)
+		fmt.Println("    --help                       This text")
+		fmt.Println("    --pkgname=PKGNAME            " + pkgname_help)
+		fmt.Println("    --pkgdesc=PKGDESC            " + pkgdesc_help)
+		fmt.Println("    --name=NAME                  " + name_help)
+		fmt.Println("    --genericname=GENERICNAME    " + genericname_help)
+		fmt.Println("    --comment=COMMENT            " + comment_help)
+		fmt.Println("    --exec=EXEC                  " + exec_help)
+		fmt.Println("    --iconurl=ICON               " + iconurl_help)
+		//fmt.Println("    --terminal=[true|false]      " + terminal_help)
+		fmt.Println("    --categories=a,b,c,d         " + categories_help)
+		fmt.Println("    --mimettypes=a,b,c,d         " + mimetypes_help)
+		//fmt.Println("    --startupnotify=[true|false] " + startupnotify_help)
+		fmt.Println("    --custom=CUSTOM              " + custom_help)
 		fmt.Println()
 		fmt.Println("Note:")
+		fmt.Println("    * Either use a PKGBUILD or a bunch of arguments")
 		fmt.Println("    * \"../PKGBUILD\" is the default filename")
 		fmt.Println("    * _exec in the PKGBUILD can be used to specific a")
 		fmt.Println("      different executable for the .desktop file")
@@ -325,6 +350,18 @@ func main() {
 	nodownload := flag.Bool("n", false, nodownload_help)
 	nocolor := flag.Bool("nocolor", false, nocolor_help)
 	quiet := flag.Bool("q", false, quiet_help)
+	givenPkgname := flag.String("pkgname", "pkgname", pkgname_help)
+	pkgdesc := flag.String("pkgdesc", "pkgdesc", pkgdesc_help)
+	name := flag.String("name", "", name_help)
+	genericname := flag.String("genericname", "", genericname_help)
+	comment := flag.String("comment", "", comment_help)
+	exec := flag.String("exec", "", exec_help)
+	givenIconurl := flag.String("iconurl", "", iconurl_help)
+	//terminal := flag.Bool("terminal", false, terminal_help)
+	categories := flag.String("categories", "", categories_help)
+	mimetypes := flag.String("mimetypes", "", mimetypes_help)
+	custom := flag.String("custom", "", custom_help)
+	//startupnotify := flag.Bool("startupnotify", false, startupnotify_help)
 	flag.Parse()
 	args := flag.Args()
 
@@ -336,23 +373,18 @@ func main() {
 		os.Exit(0)
 	} else if len(args) == 0 {
 		filename = "../PKGBUILD"
-	} else if len(args) == 1 {
-		filename = args[0]
-	} else {
-		o.errText("Too many arguments")
-		os.Exit(1)
+	} else if len(args) > 0 {
+		if strings.Contains(args[0], "-") {
+			filename = args[0]
+		} else {
+			// Settings by arguments instead of by filename
+			filename = ""
+		}
 	}
 
-	filedata, err := ioutil.ReadFile(filename)
-	if err != nil {
-		o.errText("Could not read " + filename)
-		os.Exit(1)
-	}
-	filetext := string(filedata)
-
-	var pkgname string
+	var pkgname string = *givenPkgname
 	var pkgnames []string
-	var iconurl string
+	var iconurl string = *givenIconurl
 
 	// Several fields are stored per pkgname, hence the maps
 	pkgdescMap := make(map[string]string)
@@ -361,99 +393,133 @@ func main() {
 	genericNameMap := make(map[string]string)
 	mimeTypeMap := make(map[string]string)
 	commentMap := make(map[string]string)
-	customMap := make(map[string]string)
 	categoriesMap := make(map[string]string)
+	customMap := make(map[string]string)
 
-	for _, line := range strings.Split(filetext, "\n") {
-		if startsWith(line, "pkgname") {
-			pkgname = betweenQuotesOrAfterEquals(line)
-			pkgnames = pkgList(pkgname)
-			// Select the first pkgname in the array as the "current" pkgname
-			if len(pkgnames) > 0 {
-				pkgname = pkgnames[0]
-			}
-		} else if startsWith(line, "package_") {
-			pkgname = between(line, "_", "(")
-		} else if startsWith(line, "pkgdesc") {
-			// Description for the package
-			pkgdesc := betweenQuotesOrAfterEquals(line)
-			// Use the last found pkgname as the key
-			if pkgname != "" {
-				pkgdescMap[pkgname] = pkgdesc
-			}
-		} else if startsWith(line, "_exec") {
-			// Custom executable for the .desktop file per (split) package
-			exec := betweenQuotesOrAfterEquals(line)
-			// Use the last found pkgname as the key
-			if pkgname != "" {
-				execMap[pkgname] = exec
-			}
-		} else if startsWith(line, "_name") {
-			// Custom Name for the .desktop file per (split) package
-			name := betweenQuotesOrAfterEquals(line)
-			// Use the last found pkgname as the key
-			if pkgname != "" {
-				nameMap[pkgname] = name
-			}
-		} else if startsWith(line, "_genericname") {
-			// Custom GenericName for the .desktop file per (split) package
-			genericName := betweenQuotesOrAfterEquals(line)
-			// Use the last found pkgname as the key
-			if (pkgname != "") && (genericName != "") {
-				genericNameMap[pkgname] = genericName
-			}
-		} else if startsWith(line, "_mimetype") {
-			// Custom MimeType for the .desktop file per (split) package
-			mimeType := betweenQuotesOrAfterEquals(line)
-			// Use the last found pkgname as the key
-			if pkgname != "" {
-				mimeTypeMap[pkgname] = mimeType
-			}
-		} else if startsWith(line, "_comment") {
-			// Custom Comment for the .desktop file per (split) package
-			comment := betweenQuotesOrAfterEquals(line)
-			// Use the last found pkgname as the key
-			if pkgname != "" {
-				commentMap[pkgname] = comment
-			}
-		} else if startsWith(line, "_custom") {
-			// Custom string to be added to the end
-			// of the .desktop file in question
-			custom := betweenQuotesOrAfterEquals(line)
-			// Use the last found pkgname as the key
-			if pkgname != "" {
-				customMap[pkgname] = custom
-			}
-		} else if startsWith(line, "_categories") {
-			categories := betweenQuotesOrAfterEquals(line)
-			// Use the last found pkgname as the key
-			if pkgname != "" {
-				categoriesMap[pkgname] = categories
-			}
-		} else if strings.Contains(line, "http://") &&
-			strings.Contains(line, ".png") {
-			// Only supports png icons downloaded over http,
-			// picks the first fitting url
-			if iconurl == "" {
-				iconurl = "h" + between(line, "h", "g") + "g"
-				if strings.Contains(iconurl, "$pkgname") {
-					iconurl = strings.Replace(iconurl,
-						"$pkgname", pkgname, -1)
+	if filename == "" {
+		// Fill in the dictionaries using the arguments
+		pkgnames = []string{pkgname}
+		if *pkgdesc != "" {
+			pkgdescMap[pkgname] = *pkgdesc
+		}
+		if *exec != "" {
+			execMap[pkgname] = *exec
+		}
+		if *name != "" {
+			nameMap[pkgname] = *name
+		}
+		if *genericname != "" {
+			genericNameMap[pkgname] = *genericname
+		}
+		if *mimetypes != "" {
+			mimeTypeMap[pkgname] = *mimetypes
+		}
+		if *comment != "" {
+			commentMap[pkgname] = *comment
+		}
+		if *categories != "" {
+			categoriesMap[pkgname] = *categories
+		}
+		if *custom != "" {
+			customMap[pkgname] = *custom
+		}
+	} else {
+		// Fill in the dictionaries using a PKGBUILD
+		filedata, err := ioutil.ReadFile(filename)
+		if err != nil {
+			o.errText("Could not read " + filename)
+			os.Exit(1)
+		}
+		filetext := string(filedata)
+		for _, line := range strings.Split(filetext, "\n") {
+			if startsWith(line, "pkgname") {
+				pkgname = betweenQuotesOrAfterEquals(line)
+				pkgnames = pkgList(pkgname)
+				// Select the first pkgname in the array as the "current" pkgname
+				if len(pkgnames) > 0 {
+					pkgname = pkgnames[0]
 				}
-				if strings.Contains(iconurl, "${pkgname}") {
-					iconurl = strings.Replace(iconurl,
-						"${pkgname}", pkgname, -1)
+			} else if startsWith(line, "package_") {
+				pkgname = between(line, "_", "(")
+			} else if startsWith(line, "pkgdesc") {
+				// Description for the package
+				pkgdesc := betweenQuotesOrAfterEquals(line)
+				// Use the last found pkgname as the key
+				if pkgname != "" {
+					pkgdescMap[pkgname] = pkgdesc
 				}
-				if strings.Contains(iconurl, "$") {
-					// If there are more $variables, don't bother (for now)
-					// TODO: replace all defined $variables...
-					iconurl = ""
+			} else if startsWith(line, "_exec") {
+				// Custom executable for the .desktop file per (split) package
+				exec := betweenQuotesOrAfterEquals(line)
+				// Use the last found pkgname as the key
+				if pkgname != "" {
+					execMap[pkgname] = exec
+				}
+			} else if startsWith(line, "_name") {
+				// Custom Name for the .desktop file per (split) package
+				name := betweenQuotesOrAfterEquals(line)
+				// Use the last found pkgname as the key
+				if pkgname != "" {
+					nameMap[pkgname] = name
+				}
+			} else if startsWith(line, "_genericname") {
+				// Custom GenericName for the .desktop file per (split) package
+				genericName := betweenQuotesOrAfterEquals(line)
+				// Use the last found pkgname as the key
+				if (pkgname != "") && (genericName != "") {
+					genericNameMap[pkgname] = genericName
+				}
+			} else if startsWith(line, "_mimetype") {
+				// Custom MimeType for the .desktop file per (split) package
+				mimeType := betweenQuotesOrAfterEquals(line)
+				// Use the last found pkgname as the key
+				if pkgname != "" {
+					mimeTypeMap[pkgname] = mimeType
+				}
+			} else if startsWith(line, "_comment") {
+				// Custom Comment for the .desktop file per (split) package
+				comment := betweenQuotesOrAfterEquals(line)
+				// Use the last found pkgname as the key
+				if pkgname != "" {
+					commentMap[pkgname] = comment
+				}
+			} else if startsWith(line, "_custom") {
+				// Custom string to be added to the end
+				// of the .desktop file in question
+				custom := betweenQuotesOrAfterEquals(line)
+				// Use the last found pkgname as the key
+				if pkgname != "" {
+					customMap[pkgname] = custom
+				}
+			} else if startsWith(line, "_categories") {
+				categories := betweenQuotesOrAfterEquals(line)
+				// Use the last found pkgname as the key
+				if pkgname != "" {
+					categoriesMap[pkgname] = categories
+				}
+			} else if strings.Contains(line, "http://") &&
+				strings.Contains(line, ".png") {
+				// Only supports png icons downloaded over http,
+				// picks the first fitting url
+				if iconurl == "" {
+					iconurl = "h" + between(line, "h", "g") + "g"
+					if strings.Contains(iconurl, "$pkgname") {
+						iconurl = strings.Replace(iconurl,
+							"$pkgname", pkgname, -1)
+					}
+					if strings.Contains(iconurl, "${pkgname}") {
+						iconurl = strings.Replace(iconurl,
+							"${pkgname}", pkgname, -1)
+					}
+					if strings.Contains(iconurl, "$") {
+						// If there are more $variables, don't bother (for now)
+						// TODO: replace all defined $variables...
+						iconurl = ""
+					}
 				}
 			}
 		}
 	}
-
-	//o.Println("pkgnames:", pkgnames)
 
 	// Write .desktop and .png icon for each package
 	for _, pkgname := range pkgnames {

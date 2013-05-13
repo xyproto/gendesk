@@ -2,13 +2,15 @@ Desktop File Generator
 ======================
 
 
-Generates .desktop files and downloads .png icons for a given PKGBUILD.
+Generates .desktop files and downloads .png icons from commandline arguments,
+or by specifiying a PKGBUILD file.
 
 See gendesk --help for more info.
 
-Patches and pull requests are welcome.
+Pull requests are welcome.
 
 MIT licensed
+Alexander Rødseth, 2013
 
 
 TODO
@@ -16,6 +18,10 @@ TODO
 * Move kw/category mappings into a configuration file instead
 * Maybe add support for StartupNotify=true/false and Terminal=true/false
 
+
+Changes from 0.4.4 to 0.5.0
+---------------------------
+* Commandline options, no need to specify a PKGBUILD
 
 Changes from 0.4.3 to 0.4.4
 ---------------------------
