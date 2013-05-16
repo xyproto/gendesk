@@ -1,7 +1,6 @@
 Desktop File Generator
 ======================
 
-
 Generates .desktop files and downloads .png icons from commandline arguments,
 or by specifiying a PKGBUILD file.
 
@@ -9,7 +8,9 @@ See gendesk --help for more info.
 
 Pull requests are welcome.
 
-MIT licensed
+
+MIT license
+
 Alexander Rødseth, 2013
 
 
