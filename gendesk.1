@@ -1,6 +1,6 @@
 .\"             -*-Nroff-*-
 .\"
-.TH "gendesk" 1 "13 May 2013" "" ""
+.TH "gendesk" 1 "16 May 2013" "" ""
 .SH NAME
 gendesk \- generate .desktop files from PKGBUILD files
 .SH SYNOPSIS
@@ -24,18 +24,28 @@ Supported PKGBUILD variables that will be included in the generated file:
 Gendesk will try to find the correct icon from the Fedora project or else fall back on the default icon.
 .sp
 The correct application category will be guessed if not provided.
+.sp.
+Supported environment variables:
+.sp
+.B pkgname
+.sp
+.B pkgdesc
+.sp
 .SH "EXAMPLES"
 .B gendesk
-  Exits with errorcode 1 if ../PKGBUILD is not found
+  Exits with errorcode 1 if ../PKGBUILD is not found and pkgname is not given and $pkgname is not defined. Will try to use both $pkgname and $pkgdesc.
 .sp
 .B gendesk PKGBUILD
   Looks for a PKGBUILD in the current directory and generates a .desktop file.
 .sp
 .B gendesk --pkgname test --pkgdesc test
-  Generates a .desktop file for the package name "test" with the description "test"
+  Generates a .desktop file for the name "test" with the description "test".
 .sp
 .B gendesk /home/user/archpackages/mypackage/PKGBUILD
   Generates a .desktop file from the given PKGBUILD.
+.sp
+A package name must be given, either by specifying a PKGBUILD file, using
+\-\-pkgname or by defining a $pkgname environment variable.
 .sp
 Note that if any existing .desktop files with the same name will be overwritten!
 .PP
@@ -56,7 +66,35 @@ don't use colored text
 .B \-q
 quiet; don't output text
 .TP
-more alternatives are available, see gendesk --help
+.B \-\-pkgname
+use this package name for the application (ie. emacs)
+.TP
+.B \-\-pkgdesc
+use this package description for describing the application and try to find a suitable category
+.TP
+.B \-\-name
+use this name for the desktop shortcut (ie. Emacs)
+.TP
+.B \-\-genericname
+use this generic name for the desktop shortcut (ie. Text Editor)
+.TP
+.B \-\-comment
+use this comment for the desktop shortcut (ie. Use this to edit files)
+.TP
+.B \-\-exec
+specify an alternative executable, (ie. /usr/bin/emacs)
+.TP
+.B \-\-iconurl
+download an icon from the given url
+.TP
+.B \-\-categories
+specify categories (ie. Utility;TextEditor;)
+.TP
+.B \-\-mimetypes
+specify mimetypes 
+.TP
+.B \-\-custom
+specify an extra line to append at the end
 .PP
 .SH "WHY"
 .sp
@@ -66,7 +104,7 @@ hasn't been supplied by upstream in the package itself.
 .SH BUGS
 Only unknown bugs so far. Bugs can be reported at https://github.com/xyproto/gendesk/issues.
 .SH VERSION
-0.5.0
+0.5.1
 .SH AUTHOR
 .B gendesk
 was written by Alexander Rødseth <rodseth@gmail.com>

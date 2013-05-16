@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	version_string  = "Desktop File Generator v.0.5.0"
+	version_string  = "Desktop File Generator v.0.5.1"
 	icon_search_url = "http://openiconlibrary.sourceforge.net/gallery2/open_icon_library-full/icons/png/48x48/apps/%s.png"
 )
 
@@ -182,16 +182,15 @@ func writeIconFile(pkgname string, o *Output) error {
 	var client http.Client
 	resp, err := client.Get(fmt.Sprintf(icon_search_url, pkgname))
 	if err != nil {
-		o.errText("Could not download icon")
+		o.ErrText("Could not download icon")
 		os.Exit(1)
 	}
 	defer resp.Body.Close()
 	b, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		o.errText("Could not dump body")
+		o.ErrText("Could not dump body")
 		os.Exit(1)
 	}
-
 	var h hash.Hash = md5.New()
 	h.Write(b)
 	//fmt.Printf("Icon MD5: %x\n", h.Sum())
@@ -208,7 +207,7 @@ func writeIconFile(pkgname string, o *Output) error {
 
 	err = ioutil.WriteFile(filename, b, 0666)
 	if err != nil {
-		o.errText("Could not write icon to " + filename + "!")
+		o.ErrText("Could not write icon to " + filename + "!")
 		os.Exit(1)
 	}
 	return nil
@@ -218,37 +217,38 @@ func writeDefaultIconFile(pkgname string, o *Output) error {
 	defaultIconFilename := "/usr/share/pixmaps/default.png"
 	b, err := ioutil.ReadFile(defaultIconFilename)
 	if err != nil {
-		o.errText("could not read " + defaultIconFilename + "!")
+		o.ErrText("could not read " + defaultIconFilename + "!")
 		os.Exit(1)
 	}
 	filename := pkgname + ".png"
 	err = ioutil.WriteFile(filename, b, 0666)
 	if err != nil {
-		o.errText("could not write icon to " + filename + "!")
+		o.ErrText("could not write icon to " + filename + "!")
 		os.Exit(1)
 	}
 	return nil
 }
 
 // Download a file
-func downloadFile(url string, filename string, o *Output) {
+func downloadFile(url string, filename string, o *Output) error {
 	var client http.Client
 	resp, err := client.Get(url)
 	if err != nil {
-		o.errText("Could not download file")
+		o.ErrText("Could not download " + url)
 		os.Exit(1)
 	}
 	defer resp.Body.Close()
 	b, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		o.errText("Could not dump body")
+		o.ErrText("Could not dump body")
 		os.Exit(1)
 	}
 	err = ioutil.WriteFile(filename, b, 0666)
 	if err != nil {
-		o.errText("Could not write data to " + filename + "!")
+		o.ErrText("Could not write to " + filename + "!")
 		os.Exit(1)
 	}
+	return err
 }
 
 // Use a function for each element in a string list and
@@ -351,7 +351,7 @@ func main() {
 	nocolor := flag.Bool("nocolor", false, nocolor_help)
 	quiet := flag.Bool("q", false, quiet_help)
 	givenPkgname := flag.String("pkgname", "", pkgname_help)
-	pkgdesc := flag.String("pkgdesc", "", pkgdesc_help)
+	givenPkgdesc := flag.String("pkgdesc", "", pkgdesc_help)
 	name := flag.String("name", "", name_help)
 	genericname := flag.String("genericname", "", genericname_help)
 	comment := flag.String("comment", "", comment_help)
@@ -374,17 +374,28 @@ func main() {
 	}
 
 	pkgname := *givenPkgname
-	iconurl := *givenIconurl
+	pkgdesc := *givenPkgdesc
+	manualIconurl := *givenIconurl
 
 	if pkgname == "" {
 		if len(args) == 0 {
-			filename = "../PKGBUILD"
+			if os.Getenv("pkgname") == "" {
+				filename = "../PKGBUILD"
+			} else {
+				pkgname = os.Getenv("pkgname")
+			}
 		} else if len(args) == 1 {
 			filename = args[0]
 		}
 	}
 
+	if pkgdesc == "" {
+		// $pkgdesc is either empty or not
+		pkgdesc = os.Getenv("pkgdesc")
+	}
+
 	var pkgnames []string
+	var iconurl string
 
 	// Several fields are stored per pkgname, hence the maps
 	pkgdescMap := make(map[string]string)
@@ -399,8 +410,8 @@ func main() {
 	if filename == "" {
 		// Fill in the dictionaries using the arguments
 		pkgnames = []string{pkgname}
-		if *pkgdesc != "" {
-			pkgdescMap[pkgname] = *pkgdesc
+		if pkgdesc != "" {
+			pkgdescMap[pkgname] = pkgdesc
 		}
 		if *exec != "" {
 			execMap[pkgname] = *exec
@@ -427,7 +438,7 @@ func main() {
 		// Fill in the dictionaries using a PKGBUILD
 		filedata, err := ioutil.ReadFile(filename)
 		if err != nil {
-			o.errText("Could not read " + filename)
+			o.ErrText("Could not read " + filename)
 			os.Exit(1)
 		}
 		filetext := string(filedata)
@@ -603,16 +614,16 @@ func main() {
 		}
 		const nSpaces = 32
 		spaces := strings.Repeat(" ", nSpaces)[:nSpaces-min(nSpaces, len(pkgname))]
-		if o.isEnabled() {
+		if o.IsEnabled() {
 			fmt.Printf("%s%s%s%s%s ",
-				o.darkGrayText("["), o.lightBlueText(pkgname),
-				o.darkGrayText("]"), spaces,
-				o.darkGrayText("Generating desktop file..."))
+				o.DarkGrayText("["), o.LightBlueText(pkgname),
+				o.DarkGrayText("]"), spaces,
+				o.DarkGrayText("Generating desktop file..."))
 		}
 		writeDesktopFile(pkgname, name, comment, exec,
 			categories, genericName, mimeType, custom)
-		if o.isEnabled() {
-			fmt.Printf("%s\n", o.darkGreenText("ok"))
+		if o.IsEnabled() {
+			fmt.Printf("%s\n", o.DarkGreenText("ok"))
 		}
 
 		// Download an icon if it's not downloaded by
@@ -621,32 +632,44 @@ func main() {
 		svgFilenames, _ := filepath.Glob("*.svg")
 		if ((0 == (len(pngFilenames) + len(svgFilenames))) && (iconurl == "")) && (*nodownload == false) {
 			if len(pkgname) < 1 {
-				o.errText("No pkgname, can't download icon")
+				o.ErrText("No pkgname, can't download icon")
 				os.Exit(1)
 			}
 			fmt.Printf("%s%s%s%s%s ",
-				o.darkGrayText("["), o.lightBlueText(pkgname),
-				o.darkGrayText("]"), spaces,
-				o.darkGrayText("Downloading icon..."))
-			err := writeIconFile(pkgname, o)
+				o.DarkGrayText("["), o.LightBlueText(pkgname),
+				o.DarkGrayText("]"), spaces,
+				o.DarkGrayText("Downloading icon..."))
+			var err error
+			if manualIconurl == "" {
+				err = writeIconFile(pkgname, o)
+			} else {
+				// Default filename
+				iconFilename := pkgname + ".png"
+				// Get the last part of the URL, after the "/" to use as the filename
+				if strings.Contains(manualIconurl, "/") {
+					pos := strings.LastIndex(manualIconurl, "/")
+					iconFilename = manualIconurl[pos+1:]
+				}
+				err = downloadFile(manualIconurl, iconFilename, o)
+			}
 			if err == nil {
-				if o.isEnabled() {
-					fmt.Printf("%s\n", o.lightCyanText("ok"))
+				if o.IsEnabled() {
+					fmt.Printf("%s\n", o.LightCyanText("ok"))
 				}
 			} else {
-				if o.isEnabled() {
-					fmt.Printf("%s\n", o.darkYellowText("no"))
+				if o.IsEnabled() {
+					fmt.Printf("%s\n", o.DarkYellowText("no"))
 					fmt.Printf("%s%s%s%s%s ",
-						o.darkGrayText("["),
-						o.lightBlueText(pkgname),
-						o.darkGrayText("]"),
+						o.DarkGrayText("["),
+						o.LightBlueText(pkgname),
+						o.DarkGrayText("]"),
 						spaces,
-						o.darkGrayText("Using default icon instead..."))
+						o.DarkGrayText("Using default icon instead..."))
 				}
 				err := writeDefaultIconFile(pkgname, o)
 				if err == nil {
-					if o.isEnabled() {
-						fmt.Printf("%s\n", o.lightPurpleText("yes"))
+					if o.IsEnabled() {
+						fmt.Printf("%s\n", o.LightPurpleText("yes"))
 					}
 				}
 			}
