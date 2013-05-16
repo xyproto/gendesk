@@ -17,7 +17,13 @@ TODO
 ----
 * Move kw/category mappings into a configuration file instead
 * Maybe add support for StartupNotify=true/false and Terminal=true/false
+* More refactoring
 
+
+Changes from 0.5.0 to 0.5.1
+---------------------------
+* Support for $pkgname and $pkgdesc
+* Will try to download icons specified with --iconurl
 
 Changes from 0.4.4 to 0.5.0
 ---------------------------
