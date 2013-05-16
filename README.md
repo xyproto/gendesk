@@ -18,8 +18,11 @@ TODO
 ----
 * Move kw/category mappings into a configuration file instead
 * Maybe add support for StartupNotify=true/false and Terminal=true/false
-* More refactoring
+* Refactoring
 
+Changes from 0.5.1 to 0.5.2
+---------------------------
+* Support for additional environment variables
 
 Changes from 0.5.0 to 0.5.1
 ---------------------------

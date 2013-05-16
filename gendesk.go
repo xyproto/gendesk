@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	version_string  = "Desktop File Generator v.0.5.1"
+	version_string  = "Desktop File Generator v.0.5.2"
 	icon_search_url = "http://openiconlibrary.sourceforge.net/gallery2/open_icon_library-full/icons/png/48x48/apps/%s.png"
 )
 
@@ -298,10 +298,10 @@ func main() {
 	exec_help := "Path to executable"
 	iconurl_help := "URL to icon"
 	//terminal_help := "Start application by using a terminal?"
-	categories_help := "Categories, see other .desktop files in /usr/share/applications for examples"
+	categories_help := "Categories, see other .desktop files for examples"
 	mimetypes_help := "Mime types, see other .desktop files for examples"
 	//startupnotify_help := "Use this is the application takes a year to start and the user needs to know"
-	custom_help := "Custom line to be appended at the end of the .desktop file"
+	custom_help := "Custom line to append at the end of the .desktop file"
 
 	flag.Usage = func() {
 		fmt.Println()
@@ -338,7 +338,9 @@ func main() {
 		fmt.Println("    * Split packages are supported")
 		fmt.Println("    * If a .png or .svg icon is not found as a file or in")
 		fmt.Println("      the PKGBUILD, an icon will be downloaded from:")
-		fmt.Println("      " + icon_search_url)
+		shortname := strings.Split(icon_search_url, "/")
+		firstpart := strings.Join(shortname[:3], "/")
+		fmt.Println("      " + firstpart)
 		fmt.Println("      This may or may not result in the icon you wished for.")
 		fmt.Println("    * Categories are guessed based on keywords in the")
 		fmt.Println("      package description, but there's also _categories=().")
@@ -389,9 +391,36 @@ func main() {
 		}
 	}
 
+	// Environment variables
+
 	if pkgdesc == "" {
 		// $pkgdesc is either empty or not
 		pkgdesc = os.Getenv("pkgdesc")
+	}
+	if *exec == "" {
+		*exec = os.Getenv("_exec")
+	}
+	if *name == "" {
+		*name = os.Getenv("_name")
+	}
+	if *genericname == "" {
+		*genericname = os.Getenv("_genericname")
+	}
+	if *mimetypes == "" {
+		*mimetypes = os.Getenv("_mimetypes")
+	}
+	// support "_mimetype" as well (deprecated)
+	if *mimetypes == "" {
+		*mimetypes = os.Getenv("_mimetype")
+	}
+	if *comment == "" {
+		*comment = os.Getenv("_comment")
+	}
+	if *categories == "" {
+		*categories = os.Getenv("_categories")
+	}
+	if *custom == "" {
+		*custom = os.Getenv("_custom")
 	}
 
 	var pkgnames []string
@@ -402,7 +431,7 @@ func main() {
 	execMap := make(map[string]string)
 	nameMap := make(map[string]string)
 	genericNameMap := make(map[string]string)
-	mimeTypeMap := make(map[string]string)
+	mimeTypesMap := make(map[string]string)
 	commentMap := make(map[string]string)
 	categoriesMap := make(map[string]string)
 	customMap := make(map[string]string)
@@ -423,7 +452,7 @@ func main() {
 			genericNameMap[pkgname] = *genericname
 		}
 		if *mimetypes != "" {
-			mimeTypeMap[pkgname] = *mimetypes
+			mimeTypesMap[pkgname] = *mimetypes
 		}
 		if *comment != "" {
 			commentMap[pkgname] = *comment
@@ -485,7 +514,7 @@ func main() {
 				mimeType := betweenQuotesOrAfterEquals(line)
 				// Use the last found pkgname as the key
 				if pkgname != "" {
-					mimeTypeMap[pkgname] = mimeType
+					mimeTypesMap[pkgname] = mimeType
 				}
 			} else if startsWith(line, "_comment") {
 				// Custom Comment for the .desktop file per (split) package
@@ -564,10 +593,10 @@ func main() {
 			// Fall back on pkgdesc
 			comment = pkgdesc
 		}
-		mimeType, found := mimeTypeMap[pkgname]
+		mimeTypes, found := mimeTypesMap[pkgname]
 		if !found {
 			// Fall back on no mime type
-			mimeType = ""
+			mimeTypes = ""
 		}
 		custom, found := customMap[pkgname]
 		if !found {
@@ -621,7 +650,7 @@ func main() {
 				o.DarkGrayText("Generating desktop file..."))
 		}
 		writeDesktopFile(pkgname, name, comment, exec,
-			categories, genericName, mimeType, custom)
+			categories, genericName, mimeTypes, custom)
 		if o.IsEnabled() {
 			fmt.Printf("%s\n", o.DarkGreenText("ok"))
 		}
