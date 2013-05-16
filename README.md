@@ -23,6 +23,7 @@ TODO
 Changes from 0.5.0 to 0.5.1
 ---------------------------
 * Support for $pkgname and $pkgdesc
+* Updated the man page
 * Will try to download icons specified with --iconurl
 
 Changes from 0.4.4 to 0.5.0
