@@ -250,7 +250,7 @@ func main() {
 		fmt.Println("Note:")
 		fmt.Println("    * Either use a PKGBUILD or a bunch of arguments")
 		fmt.Println("    * \"../PKGBUILD\" is the default filename")
-		fmt.Println("    * _exec in the PKGBUILD can be used to specific a")
+		fmt.Println("    * _exec in the PKGBUILD can be used to specifiy a")
 		fmt.Println("      different executable for the .desktop file")
 		fmt.Println("      Example: _exec=('appname-gui')")
 		fmt.Println("    * Split packages are supported")
@@ -262,7 +262,7 @@ func main() {
 		fmt.Println("      This may or may not result in the icon you wished for.")
 		fmt.Println("    * Categories are guessed based on keywords in the")
 		fmt.Println("      package description, but there's also _categories=().")
-		fmt.Println("    * Icons are assumed to be installed to")
+		fmt.Println("    * Icons are assumed to be installed in")
 		fmt.Println("      \"/usr/share/pixmaps/\" by the PKGBUILD")
 		fmt.Println()
 	}
