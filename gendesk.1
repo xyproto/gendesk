@@ -1,6 +1,6 @@
 .\"             -*-Nroff-*-
 .\"
-.TH "gendesk" 1 "16 May 2013" "" ""
+.TH "gendesk" 1 "23 Aug 2013" "" ""
 .SH NAME
 gendesk \- generate .desktop files from PKGBUILD files
 .SH SYNOPSIS
@@ -90,6 +90,9 @@ download an icon from the given url
 .B \-\-categories
 specify categories (ie. Utility;TextEditor;)
 .TP
+. B \-\-terminal
+specify if the application should be run in a terminal (default is false)
+.TP
 .B \-\-mimetypes
 specify mimetypes 
 .TP
@@ -104,7 +107,7 @@ hasn't been supplied by upstream in the package itself.
 .SH BUGS
 Only unknown bugs so far. Bugs can be reported at https://github.com/xyproto/gendesk/issues.
 .SH VERSION
-0.5.2
+0.5.3
 .SH AUTHOR
 .B gendesk
 was written by Alexander Rødseth <rodseth@gmail.com>

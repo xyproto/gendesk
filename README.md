@@ -17,8 +17,14 @@ Alexander Rødseth, 2013
 TODO
 ----
 * Move kw/category mappings into a configuration file instead
-* Maybe add support for StartupNotify=true/false and Terminal=true/false
+* Maybe add support for StartupNotify=true/false
 * Refactoring
+
+
+Changes from 0.5.2 to 0.5.3
+---------------------------
+* Added a --terminal flag for specifying if the application should be run in a terminal
+* Some refactoring
 
 Changes from 0.5.1 to 0.5.2
 ---------------------------
