@@ -15,7 +15,7 @@ const (
 )
 
 // Download a file
-func DownloadFile(url string, filename string, o *Output) error {
+func DownloadFile(url string, filename string, o *Output, force bool) error {
 	var client http.Client
 	resp, err := client.Get(url)
 	if err != nil {
@@ -28,6 +28,13 @@ func DownloadFile(url string, filename string, o *Output) error {
 		o.ErrText("Could not dump body")
 		os.Exit(1)
 	}
+
+	// Check if the file exists (and that force is not enabled)
+	if _, err := os.Stat(filename); err == nil && (!force) {
+		o.ErrText("no! " + filename + " already exists. Use -f to overwrite.")
+		os.Exit(1)
+	}
+
 	err = ioutil.WriteFile(filename, b, 0666)
 	if err != nil {
 		o.ErrText("Could not write to " + filename + "!")
@@ -37,7 +44,7 @@ func DownloadFile(url string, filename string, o *Output) error {
 }
 
 // Download icon from the search url in icon_search_url
-func WriteIconFile(name string, o *Output) error {
+func WriteIconFile(name string, o *Output, force bool) error {
 	// Only supports png icons
 	filename := name + ".png"
 	var client http.Client
@@ -64,6 +71,12 @@ func WriteIconFile(name string, o *Output) error {
 	if b[0] == 60 && b[1] == 104 && b[2] == 116 {
 		// if it starts with "<ht", it's not a png
 		return errors.New("No icon found")
+	}
+
+	// Check if the file exists (and that force is not enabled)
+	if _, err := os.Stat(filename); err == nil && (!force) {
+		o.ErrText("no! " + filename + " already exists. Use -f to overwrite.")
+		os.Exit(1)
 	}
 
 	err = ioutil.WriteFile(filename, b, 0666)

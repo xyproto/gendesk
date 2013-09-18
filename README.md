@@ -16,10 +16,14 @@ Alexander Rødseth, 2013
 
 TODO
 ----
-* Move kw/category mappings into a configuration file instead
+* Consider moving kw/category mappings into a configuration file instead
 * Maybe add support for StartupNotify=true/false
-* Refactoring
+* More refactoring
 
+Changes from 0.5.3 to 0.5.4
+---------------------------
+* Added a -f flag for overwriting files (will not overwrite without it)
+* Some refactoring
 
 Changes from 0.5.2 to 0.5.3
 ---------------------------

@@ -1,6 +1,6 @@
 .\"             -*-Nroff-*-
 .\"
-.TH "gendesk" 1 "23 Aug 2013" "" ""
+.TH "gendesk" 1 "18 Sep 2013" "" ""
 .SH NAME
 gendesk \- generate .desktop files from PKGBUILD files
 .SH SYNOPSIS
@@ -66,6 +66,9 @@ don't use colored text
 .B \-q
 quiet; don't output text
 .TP
+.B \-f
+overwrite files if needed
+.TP
 .B \-\-pkgname
 use this package name for the application (ie. emacs)
 .TP
@@ -107,7 +110,7 @@ hasn't been supplied by upstream in the package itself.
 .SH BUGS
 Only unknown bugs so far. Bugs can be reported at https://github.com/xyproto/gendesk/issues.
 .SH VERSION
-0.5.3
+0.5.4
 .SH AUTHOR
 .B gendesk
 was written by Alexander Rødseth <rodseth@gmail.com>
