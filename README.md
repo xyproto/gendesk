@@ -20,6 +20,10 @@ TODO
 * Maybe add support for StartupNotify=true/false
 * More refactoring
 
+Changes from 0.5.4 to 0.5.5
+---------------------------
+* Bug fix when generating .desktop files from PKGBUILD files
+
 Changes from 0.5.3 to 0.5.4
 ---------------------------
 * Added a -f flag for overwriting files (will not overwrite without it)

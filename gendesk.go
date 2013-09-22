@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	version_string = "Desktop File Generator v.0.5.4"
+	version_string = "Desktop File Generator v.0.5.5"
 )
 
 var (
@@ -81,7 +81,8 @@ func writeDesktopFile(pkgname string, name string, comment string, exec string,
 
 	// Check if the file exists (and that force is not enabled)
 	if _, err := os.Stat(pkgname + ".desktop"); err == nil && (!force) {
-		o.ErrText("no! " + pkgname + ".desktop already exists. Use -f to overwrite.")
+		o.ErrText("no")
+		o.Println(pkgname + ".desktop already exists. Use -f as the first argument to overwrite.")
 		os.Exit(1)
 	}
 
@@ -273,7 +274,7 @@ func main() {
 		}
 	} else {
 		// TODO: Use a struct per pkgname instead
-		parsePKGBUILD(o, filename, &iconurl, &pkgdescMap, &execMap, &nameMap, &genericNameMap, &mimeTypesMap, &commentMap, &categoriesMap, &customMap)
+		parsePKGBUILD(o, filename, &iconurl, &pkgname, &pkgnames, &pkgdescMap, &execMap, &nameMap, &genericNameMap, &mimeTypesMap, &commentMap, &categoriesMap, &customMap)
 	}
 
 	// Write .desktop and .png icon for each package
