@@ -55,6 +55,8 @@ func (o *Output) colorOff() string {
 	return ""
 }
 
+// TODO: Make all these as generated closures instead
+
 func (o *Output) DarkRedText(s string) string {
 	return o.colorOn(0, 31) + s + o.colorOff()
 }

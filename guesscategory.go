@@ -28,7 +28,7 @@ var (
 		multimedia_kw:    []string{"non-linear", "audio", "sound", "graphics", "draw", "demo"},
 		network_kw:       []string{"network", "p2p", "browser"},
 		audiovideo_kw:    []string{"synth", "synthesizer"},
-		office_kw:        []string{"ebook", "e-book"},
+		office_kw:        []string{"ebook", "e-book", "spreadsheet", "calculator", "processor"},
 		editor_kw:        []string{"editor"},
 		science_kw:       []string{"gps", "inspecting"},
 		vcs_kw:           []string{"git"},
@@ -36,11 +36,11 @@ var (
 		actiongame_kw:    []string{"shooter", "fps"},
 		adventuregame_kw: []string{"roguelike", "rpg"},
 		logicgame_kw:     []string{"puzzle"},
-		boardgame_kw:     []string{"board", "chess", "goban", "chessboard"},
+		boardgame_kw:     []string{"board", "chess", "goban", "chessboard", "checkers"},
 		// "emulator" and "player" aren't always for games, but those cases will be
 		// picked up by one of the other categories first
 		game_kw:        []string{"game", "rts", "mmorpg", "emulator", "player"},
-		programming_kw: []string{"code", "ide", "programming", "develop", "compile"},
+		programming_kw: []string{"code", "ide", "programming", "develop", "compile", "interpret"},
 		system_kw:      []string{"sensor"},
 	}
 	categorymap = map[int]string{model3d_kw: "Application;Graphics;3DGraphics",
