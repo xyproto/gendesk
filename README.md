@@ -20,6 +20,11 @@ TODO
 * Maybe add support for StartupNotify=true/false
 * More refactoring
 
+
+Changes from 0.5.5 to 0.6
+-------------------------
+* Added an option for generating .desktop files for launching window managers
+
 Changes from 0.5.4 to 0.5.5
 ---------------------------
 * Bug fix when generating .desktop files from PKGBUILD files
