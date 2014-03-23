@@ -1,6 +1,6 @@
 .\"             -*-Nroff-*-
 .\"
-.TH "gendesk" 1 "6 Des 2013" "" ""
+.TH "gendesk" 1 "23 Mar 2014" "" ""
 .SH NAME
 gendesk \- generate .desktop files from commandline arguments or PKGBUILD files
 .SH SYNOPSIS
@@ -102,8 +102,11 @@ specify if the application should be run in a terminal (default is false)
 .B \-\-mimetypes
 specify mimetypes 
 .TP
+.B \-\-startupnotify
+specifiy if a desktop notification should occur when the application starts (default is false)
+.TP
 .B \-\-custom
-specify an extra line to append at the end
+specify an extra line (or several lines) to append at the end
 .PP
 .SH "WHY"
 .sp
@@ -113,7 +116,7 @@ hasn't been supplied by upstream in the package itself.
 .SH BUGS
 Only unknown bugs so far. Bugs can be reported at https://github.com/xyproto/gendesk/issues.
 .SH VERSION
-0.6
+0.6.1
 .SH AUTHOR
 .B gendesk
 was written by Alexander Rødseth <rodseth@gmail.com>

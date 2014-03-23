@@ -1,12 +1,15 @@
 package main
 
-// TODO Use a large hash map or a json data file to store the mappings
+// TODO: Use an external file to read the mappings from (possibly JSON)
 
 const (
 	// Decides the order of the keyword/category checks
+	// (try to order from the more specific/specialized categories to the more general)
 	model3d_kw = iota
 	multimedia_kw
+	graphics_kw
 	network_kw
+	email_kw
 	audiovideo_kw
 	office_kw
 	editor_kw
@@ -24,15 +27,17 @@ const (
 )
 
 var (
-	keywordmap = map[int][]string{model3d_kw: []string{"rendering", "modeling", "modeler", "render", "raytracing"},
-		multimedia_kw:    []string{"non-linear", "audio", "sound", "graphics", "draw", "demo"},
+	keywordmap = map[int][]string{model3d_kw: []string{"rendering", "modeling", "modelling", "modeler", "render", "raytracing"},
+		multimedia_kw:    []string{"non-linear", "audio", "sound", "graphics", "demo"},
+		graphics_kw:      []string{"draw", "pixelart"},
 		network_kw:       []string{"network", "p2p", "browser"},
-		audiovideo_kw:    []string{"synth", "synthesizer"},
-		office_kw:        []string{"ebook", "e-book", "spreadsheet", "calculator", "processor"},
+		email_kw:         []string{"gmail"},
+		audiovideo_kw:    []string{"synth", "synthesizer", "ffmpeg"},
+		office_kw:        []string{"ebook", "e-book", "spreadsheet", "calculator", "processor", "documents"},
 		editor_kw:        []string{"editor"},
-		science_kw:       []string{"gps", "inspecting"},
+		science_kw:       []string{"gps", "inspecting", "molecular", "mathematics"},
 		vcs_kw:           []string{"git"},
-		arcadegame_kw:    []string{"combat", "arcade", "racing", "fighting", "fight"},
+		arcadegame_kw:    []string{"combat", "arcade", "racing", "fighting", "fight", "shooter"},
 		actiongame_kw:    []string{"shooter", "fps"},
 		adventuregame_kw: []string{"roguelike", "rpg"},
 		logicgame_kw:     []string{"puzzle"},
@@ -40,12 +45,14 @@ var (
 		// "emulator" and "player" aren't always for games, but those cases will be
 		// picked up by one of the other categories first
 		game_kw:        []string{"game", "rts", "mmorpg", "emulator", "player"},
-		programming_kw: []string{"code", "ide", "programming", "develop", "compile", "interpret"},
-		system_kw:      []string{"sensor"},
+		programming_kw: []string{"code", "ide", "programming", "develop", "compile", "interpret", "valgrind"},
+		system_kw:      []string{"sensor", "bus", "calibration", "usb", "file"},
 	}
 	categorymap = map[int]string{model3d_kw: "Application;Graphics;3DGraphics",
 		multimedia_kw:    "Application;Multimedia",
+		graphics_kw:      "Application;Graphics",
 		network_kw:       "Application;Network",
+		email_kw:         "Application;Network;Email",
 		audiovideo_kw:    "Application;AudioVideo",
 		office_kw:        "Application;Office",
 		editor_kw:        "Application;Development;TextEditor",
@@ -62,7 +69,7 @@ var (
 	}
 )
 
-// Approximately identify various categories
+// Given a short description, try to guess which category it belongs to
 func GuessCategory(pkgdesc string) string {
 	var keywordList []string
 	for key := 0; key < last_kw; key++ {

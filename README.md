@@ -1,8 +1,8 @@
 Desktop File Generator
 ======================
 
-Generates .desktop files and downloads .png icons from commandline arguments,
-or by specifiying a PKGBUILD file.
+Generates .desktop files and downloads .png icons based on commandline arguments.
+It's also possible to specify a PKGBUILD file and use the contents as a basis.
 
 See gendesk --help for more info.
 
@@ -11,15 +11,20 @@ Pull requests are welcome.
 
 MIT license
 
-Alexander Rødseth, 2013
+Alexander Rødseth, 2014
 
 
 TODO
 ----
-* Consider moving kw/category mappings into a configuration file instead
-* Maybe add support for StartupNotify=true/false
-* More refactoring
+* Move kw/category mappings into a configuration file
+* Move the icon download URL into a configuration file
 
+
+Changes from 0.6 to 0.6.1
+-------------------------
+* Support for StartupNotify=true/false
+* Both --mimetype and --mimetypes are allowed
+* Guesses more categories than before
 
 Changes from 0.5.5 to 0.6
 -------------------------

@@ -12,12 +12,6 @@ func capitalize(s string) string {
 	return s
 }
 
-// Checks if a trimmed line starts with a specific word
-func startsWith(line string, word string) bool {
-	//return 0 == strings.Index(strings.TrimSpace(line), word)
-	return strings.HasPrefix(line, word)
-}
-
 // Return what's between two strings, "a" and "b", in another string
 func between(orig string, a string, b string) string {
 	if strings.Contains(orig, a) && strings.Contains(orig, b) {
@@ -74,4 +68,10 @@ func stringMap(f func(string) string, stringlist []string) []string {
 		newlist[i] = f(elem)
 	}
 	return newlist
+}
+
+// Checks if a line starts with a specific word
+func startsWith(line string, word string) bool {
+	//return 0 == strings.Index(strings.TrimSpace(line), word)
+	return strings.HasPrefix(line, word)
 }
