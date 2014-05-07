@@ -1,6 +1,7 @@
 package main
 
 import (
+	. "github.com/xyproto/textgui"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -61,68 +62,67 @@ func dataFromEnvironment(pkgdesc, exec, name, genericname, mimetypes, comment, c
 	}
 }
 
-func parsePKGBUILD(o *Output, filename string, iconurl *string, pkgname *string, pkgnames *[]string, pkgdescMap, execMap, nameMap, genericNameMap, mimeTypesMap, commentMap, categoriesMap, customMap *map[string]string) {
+func parsePKGBUILD(o *TextOutput, filename string, iconurl *string, pkgname *string, pkgnames *[]string, pkgdescMap, execMap, nameMap, genericNameMap, mimeTypesMap, commentMap, categoriesMap, customMap *map[string]string) {
 	// Fill in the dictionaries using a PKGBUILD
 	filedata, err := ioutil.ReadFile(filename)
 	if err != nil {
-		o.ErrText("Could not read " + filename)
-		os.Exit(1)
+		o.ErrExit("Could not read " + filename)
 	}
 	filetext := string(filedata)
 	for _, line := range strings.Split(filetext, "\n") {
-		// TODO: Use a loop instead of "if / else if / else if"
-		if startsWith(line, "pkgname") {
+		switch {
+		case startsWith(line, "pkgname"):
 			*pkgname = betweenQuotesOrAfterEquals(line)
 			*pkgnames = pkgList(*pkgname)
 			// Select the first pkgname in the array as the "current" pkgname
 			if len(*pkgnames) > 0 {
 				*pkgname = (*pkgnames)[0]
 			}
-		} else if startsWith(line, "package_") {
+		case startsWith(line, "package_"):
 			*pkgname = between(line, "_", "(")
-		} else if startsWith(line, "pkgdesc") {
+		case startsWith(line, "pkgdesc"):
 			// Description for the package
 			pkgdesc := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
 			if *pkgname != "" {
 				(*pkgdescMap)[*pkgname] = pkgdesc
 			}
-		} else if startsWith(line, "_exec") {
+		case startsWith(line, "_exec"):
 			// Custom executable for the .desktop file per (split) package
 			exec := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
 			if *pkgname != "" {
 				(*execMap)[*pkgname] = exec
 			}
-		} else if startsWith(line, "_name") {
+		case startsWith(line, "_name"):
 			// Custom Name for the .desktop file per (split) package
 			name := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
 			if *pkgname != "" {
 				(*nameMap)[*pkgname] = name
 			}
-		} else if startsWith(line, "_genericname") {
+		case startsWith(line, "_genericname"):
 			// Custom GenericName for the .desktop file per (split) package
 			genericName := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
 			if (*pkgname != "") && (genericName != "") {
 				(*genericNameMap)[*pkgname] = genericName
 			}
-		} else if startsWith(line, "_mimetype") {
+		case startsWith(line, "_mimetype"):
 			// Custom MimeType for the .desktop file per (split) package
 			mimeType := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
 			if *pkgname != "" {
 				(*mimeTypesMap)[*pkgname] = mimeType
 			}
-		} else if startsWith(line, "_comment") {
+		case startsWith(line, "_comment"):
 			// Custom Comment for the .desktop file per (split) package
 			comment := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
 			if *pkgname != "" {
 				(*commentMap)[*pkgname] = comment
 			}
-		} else if startsWith(line, "_custom") {
+		case startsWith(line, "_custom"):
 			// Custom string to be added to the end
 			// of the .desktop file in question
 			custom := betweenQuotesOrAfterEquals(line)
@@ -130,15 +130,14 @@ func parsePKGBUILD(o *Output, filename string, iconurl *string, pkgname *string,
 			if *pkgname != "" {
 				(*customMap)[*pkgname] = custom
 			}
-		} else if startsWith(line, "_categories") {
+		case startsWith(line, "_categories"):
 			categories := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
 			if *pkgname != "" {
 				(*categoriesMap)[*pkgname] = categories
 			}
-		} else if strings.Contains(line, "http://") && strings.Contains(line, ".png") {
-			// Only supports png icons downloaded over http,
-			// picks the first fitting url
+		case (strings.Contains(line, "http://") || strings.Contains(line, "https://")) && strings.Contains(line, ".png"):
+			// Only supports detecting png icon filenames when represented as just the filename or an URL starting with http/https.
 			if *iconurl == "" {
 				*iconurl = "h" + between(line, "h", "g") + "g"
 				if strings.Contains(*iconurl, "$pkgname") {
@@ -157,5 +156,4 @@ func parsePKGBUILD(o *Output, filename string, iconurl *string, pkgname *string,
 			}
 		}
 	}
-
 }

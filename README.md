@@ -19,6 +19,10 @@ TODO
 * Move kw/category mappings into a configuration file
 * Move the icon download URL into a configuration file
 
+Changes from 0.6.1 to 0.6.2
+---------------------------
+* Added a configuration file option for the icon repository URL
+* Removed the --iconurl parameter
 
 Changes from 0.6 to 0.6.1
 -------------------------
