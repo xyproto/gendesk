@@ -21,8 +21,9 @@ TODO
 
 Changes from 0.6.1 to 0.6.2
 ---------------------------
-* Added a configuration file option for the icon repository URL
-* Removed the --iconurl parameter
+* Added the possibility of having a configuration file for specifying a different URL for searching for missing icons.
+* Removed the --iconurl parameter.
+* Refactored out some code to an external package.
 
 Changes from 0.6 to 0.6.1
 -------------------------

@@ -1,0 +1,3 @@
+[default]
+# URL for searching for icons by replacing %s with the package name
+icon_url = http://openiconlibrary.sourceforge.net/gallery2/open_icon_library-full/icons/png/48x48/apps/%s.png

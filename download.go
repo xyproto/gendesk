@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"code.google.com/p/goconf/conf"
 	"crypto/md5"
 	"errors"
@@ -67,15 +68,20 @@ func GetIconSearchURL(o *TextOutput) string {
 	}
 
 	// Found a configuration file, find the url under the [default] section with the key icon_search_url
-	icon_url, err := cfile.GetString("default", "icon_search_url")
+	icon_url, err := cfile.GetString("default", "icon_url")
 	if err != nil {
-		return default_icon_search_url
+		o.Err("error!\n")
+		o.Println(o.DarkRed(cfilename + " does not contain icon_url under under a [default] section. Example:"))
+		o.Println(o.LightGreen("[default]"))
+		o.Println(o.LightGreen("icon_url = http://some.iconrepository.com/%s.png\n"))
+		os.Exit(1)
 	}
 
-	if strings.Contains(icon_url, "%s") {
-		o.Err(cfilename + " does not contain an icon search url containing %s under a [default] section. Example:")
-		o.LightGreen("[default]")
-		o.LightGreen("icon_search_url = http://some.iconrepository.com/%s.png")
+	if !strings.Contains(icon_url, "%s") {
+		o.Err("error!\n")
+		o.Println(o.DarkRed(cfilename + " does not contain an icon search url containing %s under a [default] section. Example:"))
+		o.Println(o.LightGreen("[default]"))
+		o.Println(o.LightGreen("icon_url = http://some.iconrepository.com/%s.png\n"))
 		os.Exit(1)
 	}
 
@@ -98,18 +104,17 @@ func WriteIconFile(name string, o *TextOutput, force bool) error {
 	if err != nil {
 		o.ErrExit("Could not dump body")
 	}
-	var h hash.Hash = md5.New()
-	h.Write(b)
-	//fmt.Printf("Icon MD5: %x\n", h.Sum())
 
 	// If the icon is the "No icon found" icon (known hash), return with an error
+	var h hash.Hash = md5.New()
+	h.Write(b)
 	if fmt.Sprintf("%x", h.Sum(nil)) == "12928aa3233965175ea30f5acae593bf" {
 		return errors.New("No icon found")
 	}
 
-	if b[0] == 60 && b[1] == 104 && b[2] == 116 {
-		// if it starts with "<ht", it's not a png
-		return errors.New("No icon found")
+	pngheader := []byte{0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A}
+	if !bytes.HasPrefix(b, pngheader) {
+		return errors.New("No PNG icon found")
 	}
 
 	// Check if the file exists (and that force is not enabled)
