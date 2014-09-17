@@ -4,16 +4,15 @@ Desktop File Generator
 [![Build Status](https://travis-ci.org/xyproto/gendesk.svg?branch=master)](https://travis-ci.org/xyproto/gendesk)
 
 Generates .desktop files and downloads .png icons based on commandline arguments.
-It's also possible to specify a PKGBUILD file and use the contents as a basis.
+It is also possible to specify a PKGBUILD file and use the contents as a basis.
 
-See gendesk --help for more info.
+See `gendesk --help` or the man page for more info.
 
 Pull requests are welcome.
 
 TODO
 ----
 * Move kw/category mappings into a configuration file
-* Move the icon download URL into a configuration file
 
 Changes from 0.6.1 to 0.6.2
 ---------------------------
