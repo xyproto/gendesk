@@ -1,18 +1,14 @@
 Desktop File Generator
 ======================
 
+[![Build Status](https://travis-ci.org/xyproto/gendesk.svg?branch=master)](https://travis-ci.org/xyproto/gendesk)
+
 Generates .desktop files and downloads .png icons based on commandline arguments.
 It's also possible to specify a PKGBUILD file and use the contents as a basis.
 
 See gendesk --help for more info.
 
 Pull requests are welcome.
-
-
-MIT license
-
-Alexander Rødseth, 2014
-
 
 TODO
 ----
@@ -119,4 +115,11 @@ Changes from 0.2 to 0.3
 * kw "shooter" is now "Application;Game;ActionGame;"
 * kw "roguelike" is now "Application;Game;AdventureGame;"
 * kw "git" is now category Development;RevisionControl
+
+
+General information
+-------------------
+
+* License: MIT
+* Author: Alexander Rødseth
 
