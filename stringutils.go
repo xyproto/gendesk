@@ -59,19 +59,3 @@ func has(s string, kw string) bool {
 	}
 	return false
 }
-
-// Use a function for each element in a string list and
-// return the modified list
-func stringMap(f func(string) string, stringlist []string) []string {
-	newlist := make([]string, len(stringlist))
-	for i, elem := range stringlist {
-		newlist[i] = f(elem)
-	}
-	return newlist
-}
-
-// Checks if a line starts with a specific word
-func startsWith(line string, word string) bool {
-	//return 0 == strings.Index(strings.TrimSpace(line), word)
-	return strings.HasPrefix(line, word)
-}

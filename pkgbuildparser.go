@@ -71,58 +71,58 @@ func parsePKGBUILD(o *TextOutput, filename string, iconurl *string, pkgname *str
 	filetext := string(filedata)
 	for _, line := range strings.Split(filetext, "\n") {
 		switch {
-		case startsWith(line, "pkgname"):
+		case strings.HasPrefix(line, "pkgname"):
 			*pkgname = betweenQuotesOrAfterEquals(line)
 			*pkgnames = pkgList(*pkgname)
 			// Select the first pkgname in the array as the "current" pkgname
 			if len(*pkgnames) > 0 {
 				*pkgname = (*pkgnames)[0]
 			}
-		case startsWith(line, "package_"):
+		case strings.HasPrefix(line, "package_"):
 			*pkgname = between(line, "_", "(")
-		case startsWith(line, "pkgdesc"):
+		case strings.HasPrefix(line, "pkgdesc"):
 			// Description for the package
 			pkgdesc := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
 			if *pkgname != "" {
 				(*pkgdescMap)[*pkgname] = pkgdesc
 			}
-		case startsWith(line, "_exec"):
+		case strings.HasPrefix(line, "_exec"):
 			// Custom executable for the .desktop file per (split) package
 			exec := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
 			if *pkgname != "" {
 				(*execMap)[*pkgname] = exec
 			}
-		case startsWith(line, "_name"):
+		case strings.HasPrefix(line, "_name"):
 			// Custom Name for the .desktop file per (split) package
 			name := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
 			if *pkgname != "" {
 				(*nameMap)[*pkgname] = name
 			}
-		case startsWith(line, "_genericname"):
+		case strings.HasPrefix(line, "_genericname"):
 			// Custom GenericName for the .desktop file per (split) package
 			genericName := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
 			if (*pkgname != "") && (genericName != "") {
 				(*genericNameMap)[*pkgname] = genericName
 			}
-		case startsWith(line, "_mimetype"):
+		case strings.HasPrefix(line, "_mimetype"):
 			// Custom MimeType for the .desktop file per (split) package
 			mimeType := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
 			if *pkgname != "" {
 				(*mimeTypesMap)[*pkgname] = mimeType
 			}
-		case startsWith(line, "_comment"):
+		case strings.HasPrefix(line, "_comment"):
 			// Custom Comment for the .desktop file per (split) package
 			comment := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
 			if *pkgname != "" {
 				(*commentMap)[*pkgname] = comment
 			}
-		case startsWith(line, "_custom"):
+		case strings.HasPrefix(line, "_custom"):
 			// Custom string to be added to the end
 			// of the .desktop file in question
 			custom := betweenQuotesOrAfterEquals(line)
@@ -130,7 +130,7 @@ func parsePKGBUILD(o *TextOutput, filename string, iconurl *string, pkgname *str
 			if *pkgname != "" {
 				(*customMap)[*pkgname] = custom
 			}
-		case startsWith(line, "_categories"):
+		case strings.HasPrefix(line, "_categories"):
 			categories := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
 			if *pkgname != "" {
