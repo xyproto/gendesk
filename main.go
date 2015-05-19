@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
-	. "github.com/xyproto/textgui"
+	. "github.com/xyproto/term"
 	"io/ioutil"
 	"os"
 	"path/filepath"

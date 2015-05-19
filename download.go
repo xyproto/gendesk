@@ -6,7 +6,7 @@ import (
 	"crypto/md5"
 	"errors"
 	"fmt"
-	. "github.com/xyproto/textgui"
+	. "github.com/xyproto/term"
 	"hash"
 	"io/ioutil"
 	"net/http"

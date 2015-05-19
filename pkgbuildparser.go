@@ -1,7 +1,7 @@
 package main
 
 import (
-	. "github.com/xyproto/textgui"
+	. "github.com/xyproto/term"
 	"io/ioutil"
 	"os"
 	"strings"
