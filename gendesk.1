@@ -1,8 +1,8 @@
 .\"             -*-Nroff-*-
 .\"
-.TH "gendesk" 1 "7 May 2014" "" ""
+.TH "gendesk" 1 "11 Des 2015" "" ""
 .SH NAME
-gendesk \- generate .desktop files from commandline arguments or PKGBUILD files
+gendesk \- generate .desktop files based on commandline arguments (or a PKGBUILD file)
 .SH SYNOPSIS
 .B gendesk
 path to PKGBUILD file (optional)
@@ -47,7 +47,7 @@ Supported environment variables:
 A package name must be given, either by specifying a PKGBUILD file, using
 \-\-pkgname or by defining a $pkgname environment variable.
 .sp
-Note that if any existing .desktop files with the same name will be overwritten!
+Note that the "-git" suffix in package names will be ignored, if present.
 .PP
 .SH OPTIONS
 .TP
@@ -113,7 +113,7 @@ hasn't been supplied by upstream in the package itself.
 .SH BUGS
 Only unknown bugs so far. Bugs can be reported at https://github.com/xyproto/gendesk/issues.
 .SH VERSION
-0.6.2
+0.6.3
 .SH AUTHOR
 .B gendesk
-was written by Alexander Rødseth <rodseth@gmail.com>
+was written by Alexander F Rødseth <rodseth@gmail.com>

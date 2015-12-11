@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	version_string = "Desktop File Generator v.0.6.2"
+	version_string = "Desktop File Generator v.0.6.3"
 )
 
 var (
@@ -141,9 +141,6 @@ func WriteDefaultIconFile(pkgname string, o *TextOutput) error {
 		o.Err("could not write icon to " + filename + "!")
 	}
 	return nil
-}
-
-func parseFlagsRetrieveInformation() {
 }
 
 func main() {
@@ -314,10 +311,13 @@ func main() {
 
 	// Write .desktop and .png icon for each package
 	for _, pkgname := range pkgnames {
-		if strings.Contains(pkgname, "-nox") ||
-			strings.Contains(pkgname, "-cli") {
+		if strings.Contains(pkgname, "-nox") || strings.Contains(pkgname, "-cli") {
 			// Don't bother if it's a -nox or -cli package
 			continue
+		}
+		// Strip the "-git" suffix, if present
+		if strings.HasSuffix(pkgname, "-git") {
+			pkgname = pkgname[:len(pkgname)-4]
 		}
 		// TODO: Find a better way for all the if checks below
 		pkgdesc, found := pkgdescMap[pkgname]

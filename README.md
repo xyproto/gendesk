@@ -14,6 +14,10 @@ TODO
 ----
 * Move kw/category mappings into a configuration file
 
+Changes from 0.6.2 to 0.6.3
+---------------------------
+* Will ignore the "-git" suffix if it is part of a package name.
+
 Changes from 0.6.1 to 0.6.2
 ---------------------------
 * Added the possibility of having a configuration file for specifying a different URL for searching for missing icons.

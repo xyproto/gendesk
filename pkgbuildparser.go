@@ -29,37 +29,24 @@ func pkgList(splitpkgname string) []string {
 	return []string{splitpkgname}
 }
 
+// Retrieve value from environment if the given value is empty
+func fromEnvIfEmpty(field *string, envVarName string) {
+	if *field == "" {
+		*field = os.Getenv(envVarName)
+	}
+}
+
 func dataFromEnvironment(pkgdesc, exec, name, genericname, mimetypes, comment, categories, custom *string) {
 	// Environment variables
-	if *pkgdesc == "" {
-		// $pkgdesc is either empty or not
-		*pkgdesc = os.Getenv("pkgdesc")
-	}
-	if *exec == "" {
-		*exec = os.Getenv("_exec")
-	}
-	if *name == "" {
-		*name = os.Getenv("_name")
-	}
-	if *genericname == "" {
-		*genericname = os.Getenv("_genericname")
-	}
-	if *mimetypes == "" {
-		*mimetypes = os.Getenv("_mimetypes")
-	}
-	// support "_mimetype" as well (deprecated)
-	if *mimetypes == "" {
-		*mimetypes = os.Getenv("_mimetype")
-	}
-	if *comment == "" {
-		*comment = os.Getenv("_comment")
-	}
-	if *categories == "" {
-		*categories = os.Getenv("_categories")
-	}
-	if *custom == "" {
-		*custom = os.Getenv("_custom")
-	}
+	fromEnvIfEmpty(pkgdesc, "pkgdesc")
+	fromEnvIfEmpty(exec, "_exec")
+	fromEnvIfEmpty(name, "_name")
+	fromEnvIfEmpty(genericname, "_genericname")
+	fromEnvIfEmpty(mimetypes, "_mimetypes")
+	fromEnvIfEmpty(mimetypes, "_mimetype")
+	fromEnvIfEmpty(comment, "_comment")
+	fromEnvIfEmpty(categories, "_categories")
+	fromEnvIfEmpty(custom, "_custom")
 }
 
 func parsePKGBUILD(o *TextOutput, filename string, iconurl *string, pkgname *string, pkgnames *[]string, pkgdescMap, execMap, nameMap, genericNameMap, mimeTypesMap, commentMap, categoriesMap, customMap *map[string]string) {
@@ -155,5 +142,6 @@ func parsePKGBUILD(o *TextOutput, filename string, iconurl *string, pkgname *str
 				}
 			}
 		}
+
 	}
 }
