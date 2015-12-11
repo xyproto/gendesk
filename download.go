@@ -2,10 +2,10 @@ package main
 
 import (
 	"bytes"
-	"code.google.com/p/goconf/conf"
 	"crypto/md5"
 	"errors"
 	"fmt"
+	"github.com/akrennmair/goconf"
 	. "github.com/xyproto/term"
 	"hash"
 	"io/ioutil"

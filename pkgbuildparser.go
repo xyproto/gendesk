@@ -142,6 +142,10 @@ func parsePKGBUILD(o *TextOutput, filename string, iconurl *string, pkgname *str
 				}
 			}
 		}
+		// Strip the "-git" suffix, if present
+		if strings.HasSuffix(*pkgname, "-git") {
+			*pkgname = (*pkgname)[:len(*pkgname)-4]
+		}
 
 	}
 }

@@ -14,6 +14,10 @@ TODO
 ----
 * Move kw/category mappings into a configuration file
 
+Changes from 0.6.3 to 0.6.4
+---------------------------
+* Fix bug where some flags could not be overridden.
+
 Changes from 0.6.2 to 0.6.3
 ---------------------------
 * Will ignore the "-git" suffix if it is part of a package name.

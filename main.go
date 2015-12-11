@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	version_string = "Desktop File Generator v.0.6.3"
+	version_string = "Desktop File Generator v.0.6.4"
 )
 
 var (
