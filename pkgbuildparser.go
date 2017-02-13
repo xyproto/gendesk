@@ -1,7 +1,7 @@
 package main
 
 import (
-	. "github.com/xyproto/term"
+	"github.com/xyproto/term"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -49,7 +49,7 @@ func dataFromEnvironment(pkgdesc, exec, name, genericname, mimetypes, comment, c
 	fromEnvIfEmpty(custom, "_custom")
 }
 
-func parsePKGBUILD(o *TextOutput, filename string, iconurl *string, pkgname *string, pkgnames *[]string, pkgdescMap, execMap, nameMap, genericNameMap, mimeTypesMap, commentMap, categoriesMap, customMap *map[string]string) {
+func parsePKGBUILD(o *term.TextOutput, filename string, iconurl *string, pkgname *string, pkgnames *[]string, pkgdescMap, execMap, nameMap, genericNameMap, mimeTypesMap, commentMap, categoriesMap, customMap *map[string]string) {
 	// Fill in the dictionaries using a PKGBUILD
 	filedata, err := ioutil.ReadFile(filename)
 	if err != nil {

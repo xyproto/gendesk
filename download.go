@@ -6,8 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/akrennmair/goconf"
-	. "github.com/xyproto/term"
-	"hash"
+	"github.com/xyproto/term"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -20,7 +19,7 @@ const (
 )
 
 // Download a file
-func DownloadFile(url string, filename string, o *TextOutput, force bool) error {
+func DownloadFile(url string, filename string, o *term.TextOutput, force bool) error {
 	var client http.Client
 	resp, err := client.Get(url)
 	if err != nil {
@@ -45,7 +44,7 @@ func DownloadFile(url string, filename string, o *TextOutput, force bool) error 
 }
 
 // Find the icon search url (must contain %s) from the first found configuration file
-func GetIconSearchURL(o *TextOutput) string {
+func GetIconSearchURL(o *term.TextOutput) string {
 	usr, err := user.Current()
 	if err != nil {
 		return default_icon_search_url
@@ -90,7 +89,7 @@ func GetIconSearchURL(o *TextOutput) string {
 }
 
 // Download icon from the search url in icon_search_url
-func WriteIconFile(name string, o *TextOutput, force bool) error {
+func WriteIconFile(name string, o *term.TextOutput, force bool) error {
 	icon_search_url := GetIconSearchURL(o)
 	// Only supports png icons
 	filename := name + ".png"
@@ -106,7 +105,7 @@ func WriteIconFile(name string, o *TextOutput, force bool) error {
 	}
 
 	// If the icon is the "No icon found" icon (known hash), return with an error
-	var h hash.Hash = md5.New()
+	h := md5.New()
 	h.Write(b)
 	if fmt.Sprintf("%x", h.Sum(nil)) == "12928aa3233965175ea30f5acae593bf" {
 		return errors.New("No icon found")
