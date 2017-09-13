@@ -315,8 +315,8 @@ func main() {
 			// Don't bother if it's a -nox or -cli package
 			continue
 		}
-		// Strip the "-git" suffix, if present
-		if strings.HasSuffix(pkgname, "-git") {
+		// Strip the "-git" or "-svn" suffix, if present
+		if strings.HasSuffix(pkgname, "-git") || strings.HasSuffix(pkgname, "-svn") {
 			pkgname = pkgname[:len(pkgname)-4]
 		}
 		// TODO: Find a better way for all the if checks below
