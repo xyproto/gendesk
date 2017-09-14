@@ -19,7 +19,7 @@ const (
 )
 
 // Download a file
-func DownloadFile(url string, filename string, o *term.TextOutput, force bool) error {
+func DownloadFile(url, filename string, o *term.TextOutput, force bool) error {
 	var client http.Client
 	resp, err := client.Get(url)
 	if err != nil {
