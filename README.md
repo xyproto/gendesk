@@ -14,6 +14,14 @@ TODO
 ----
 * Move kw/category mappings into a configuration file
 
+Changes from 0.6.4 to 0.6.5
+---------------------------
+* Ignore the `-svn` suffix in package names (same as for `-git`, thanks @mstraube).
+* Use `text/template` for generating the `.desktop` file contents.
+* Minor changes to the command line output / documentation.
+* Some refactoring.
+* Tested with Go 1.9.
+
 Changes from 0.6.3 to 0.6.4
 ---------------------------
 * Fix bug where some flags could not be overridden.
