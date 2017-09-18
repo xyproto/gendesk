@@ -1,0 +1,6 @@
+[submodule "vendor/github.com/akrennmair/goconf"]
+	path = vendor/github.com/akrennmair/goconf
+	url = https://github.com/akrennmair/goconf
+[submodule "vendor/github.com/xyproto/term"]
+	path = vendor/github.com/xyproto/term
+	url = https://github.com/xyproto/term
