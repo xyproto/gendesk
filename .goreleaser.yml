@@ -1,0 +1,49 @@
+# .goreleaser.yml
+# https://goreleaser.com/
+
+project_name: gendesk
+
+# Build customization
+builds:
+  - binary: gendesk
+    goos:
+      - windows
+      - darwin
+      - linux
+      - freebsd
+    goarch:
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - 6
+      - 7
+    ignore:
+      - goos: darwin
+        goarch: arm
+      - goos: darwin
+        goarch: arm64
+      - goos: windows
+        goarch: arm
+      - goos: windows
+        goarch: arm64
+      - goos: linux
+        goarch: arm
+        goarm: 7
+      - goos: freebsd
+        goarch: arm
+        goarm: 7
+    hooks:
+      pre: ./.pre.sh
+
+# Archive customization
+archive:
+  format: tar.gz
+  replacements:
+    amd64: x86_64
+    darwin: macos
+  files:
+    - default.png
+    - gendesk.1
+    - LICENSE
+    - ChangeLog.md

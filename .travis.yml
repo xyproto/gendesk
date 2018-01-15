@@ -3,3 +3,7 @@ language: go
 go:
     - 1.9
     - tip
+
+# https://goreleaser.com/#continuous_integration
+after_success:
+    - test "$TRAVIS_OS_NAME" = "linux" -a -n "$TRAVIS_TAG" && curl -sL https://git.io/goreleaser | bash

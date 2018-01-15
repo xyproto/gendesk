@@ -1,3 +1,5 @@
 gendesk
 *.desktop
 *.png
+ChangeLog.md
+dist/
