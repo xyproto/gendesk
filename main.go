@@ -16,12 +16,6 @@ const (
 	version_string = "Desktop File Generator v.0.6.5"
 )
 
-var (
-	// Global flags
-	use_color = true
-	verbose   = true
-)
-
 // Information needed to generate a .desktop file for a Window Manager
 type WMStarter struct {
 	Name string
@@ -204,7 +198,7 @@ func main() {
 		fmt.Println("    * Split PKGBUILD packages are supported.")
 		fmt.Println("    * If a .png, .svg or .xpm icon is not found as a file or in the PKGBUILD,")
 		fmt.Println("      an icon will be downloaded from either the location specified in the")
-		shortname := strings.Split(default_icon_search_url, "/")
+		shortname := strings.Split(defaultIconSearchURL, "/")
 		firstpart := strings.Join(shortname[:3], "/")
 		fmt.Println("      configuration or from: " + firstpart)
 		fmt.Println("      (This may or may not result in the icon you wished for).")
@@ -232,10 +226,11 @@ func main() {
 	mimetype := flag.String("mimetype", "", mimetypes_help)
 	custom := flag.String("custom", "", custom_help)
 	startupnotify := flag.Bool("startupnotify", false, startupnotify_help)
+
 	flag.Parse()
 	args := flag.Args()
 
-	// New output. Color? Enabled?
+	// New text output. Color? Enabled?
 	o := term.NewTextOutput(!*nocolor, !*quiet)
 
 	if *version {
@@ -247,7 +242,7 @@ func main() {
 	pkgdesc := *givenPkgdesc
 	manualIconurl := ""
 
-	// TODO: Write in a cleaner way
+	// TODO: Write in a cleaner way, possibly by refactoring into a function. Write a test first.
 	if pkgname == "" {
 		if len(args) == 0 {
 			if os.Getenv("pkgname") == "" {
@@ -388,9 +383,9 @@ func main() {
 			fmt.Printf("%s\n", o.DarkGreen("ok"))
 		}
 
-		// TODO: Put in a function
+		// TODO: Refactor into a function
 		// Download an icon if it's not downloaded by
-		// the PKGBUILD and not there already (.png or .svg)
+		// the PKGBUILD and not there already (.png, .svg or .xpm)
 		pngFilenames, _ := filepath.Glob("*.png")
 		svgFilenames, _ := filepath.Glob("*.svg")
 		xpmFilenames, _ := filepath.Glob("*.xpm")

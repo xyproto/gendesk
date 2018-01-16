@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"github.com/akrennmair/goconf"
 	"github.com/xyproto/term"
+	"github.com/yhat/scrape"
+	"golang.org/x/net/html"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -15,7 +17,7 @@ import (
 )
 
 const (
-	default_icon_search_url = "http://openiconlibrary.sourceforge.net/gallery2/open_icon_library-full/icons/png/48x48/apps/%s.png"
+	defaultIconSearchURL = "http://www.iconarchive.com/search?q=%s&res=48&page=1&sort=popularity"
 )
 
 // Download a file
@@ -47,7 +49,7 @@ func DownloadFile(url, filename string, o *term.TextOutput, force bool) error {
 func GetIconSearchURL(o *term.TextOutput) string {
 	usr, err := user.Current()
 	if err != nil {
-		return default_icon_search_url
+		return defaultIconSearchURL
 	}
 	homedir := usr.HomeDir
 
@@ -61,18 +63,18 @@ func GetIconSearchURL(o *term.TextOutput) string {
 			cfilename = "/etc/gendeskrc"
 			conf.ReadConfigFile(cfilename)
 			if err != nil {
-				return default_icon_search_url
+				return defaultIconSearchURL
 			}
 		}
 	}
 
-	// Found a configuration file, find the url under the [default] section with the key icon_search_url
+	// Found a configuration file, find the url under the [default] section with the key iconSearchURL
 	icon_url, err := cfile.GetString("default", "icon_url")
 	if err != nil {
 		o.Err("error!\n")
 		o.Println(o.DarkRed(cfilename + " does not contain icon_url under under a [default] section. Example:"))
 		o.Println(o.LightGreen("[default]"))
-		o.Println(o.LightGreen("icon_url = http://some.iconrepository.com/%s.png\n"))
+		o.Println(o.LightGreen("icon_url = http://some.iconrepository.com/q=%s.png\n"))
 		os.Exit(1)
 	}
 
@@ -80,7 +82,7 @@ func GetIconSearchURL(o *term.TextOutput) string {
 		o.Err("error!\n")
 		o.Println(o.DarkRed(cfilename + " does not contain an icon search url containing %s under a [default] section. Example:"))
 		o.Println(o.LightGreen("[default]"))
-		o.Println(o.LightGreen("icon_url = http://some.iconrepository.com/%s.png\n"))
+		o.Println(o.LightGreen("icon_url = http://some.iconrepository.com/q=%s.png\n"))
 		os.Exit(1)
 	}
 
@@ -88,13 +90,64 @@ func GetIconSearchURL(o *term.TextOutput) string {
 	return icon_url
 }
 
-// Download icon from the search url in icon_search_url
+// findIconURL searches the given iconarchive-compatible URL for a keyword and returns an URL to the PNG image.
+// Returns an empty string if no match was found. nmatch is the desired icon if serveral are found.
+func findIconURL(searchURL, keyword string, nmatch int) (URL string) {
+	// request and parse the front page
+	resp, err := http.Get(fmt.Sprintf(searchURL, keyword))
+	if err != nil {
+		return
+	}
+	root, err := html.Parse(resp.Body)
+	if err != nil {
+		return
+	}
+
+	// Count the number of icons found to be able to pick out the Nth
+	counter := 0
+
+	// Find all tags with the class "icondetail"
+	matcher := scrape.ByClass("icondetail")
+	iconDetails := scrape.FindAll(root, matcher)
+	for _, iconDetail := range iconDetails {
+		// Find all tags with the class "lastitem" (these are also "a" tags)
+		atags := scrape.FindAll(iconDetail, scrape.ByClass("lastitem"))
+		for _, atag := range atags {
+			// Sanity check: check that the text is "PNG"
+			if scrape.Text(atag) == "PNG" {
+				// Found one!
+				URL = scrape.Attr(atag, "href")
+				counter++
+				// Use the Nth match, if we get this far (if not, use the last matched URL)
+				if counter >= nmatch {
+					return
+				}
+			}
+		}
+	}
+
+	// No match found
+	return
+}
+
+// Download icon from the search url in iconSearchURL, or from iconarchive.
+// Only supports downloading png icons.
 func WriteIconFile(name string, o *term.TextOutput, force bool) error {
-	icon_search_url := GetIconSearchURL(o)
-	// Only supports png icons
-	filename := name + ".png"
-	var client http.Client
-	resp, err := client.Get(fmt.Sprintf(icon_search_url, name))
+	var (
+		downloadURL   string
+		client        http.Client
+		iconSearchURL = GetIconSearchURL(o)
+		filename      = name + ".png"
+	)
+
+	// Use different methods for different icon archives
+	if strings.Contains(iconSearchURL, "iconarchive.com/") {
+		downloadURL = findIconURL(iconSearchURL, name, 3)
+	} else {
+		downloadURL = fmt.Sprintf(iconSearchURL, name)
+	}
+
+	resp, err := client.Get(downloadURL)
 	if err != nil {
 		o.ErrExit("Could not download icon")
 	}
@@ -111,8 +164,8 @@ func WriteIconFile(name string, o *term.TextOutput, force bool) error {
 		return errors.New("No icon found")
 	}
 
-	pngheader := []byte{0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A}
-	if !bytes.HasPrefix(b, pngheader) {
+	PNGheader := []byte{0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A}
+	if !bytes.HasPrefix(b, PNGheader) {
 		return errors.New("No PNG icon found")
 	}
 
@@ -121,7 +174,7 @@ func WriteIconFile(name string, o *term.TextOutput, force bool) error {
 		o.ErrExit("no! " + filename + " already exists. Use -f to overwrite.")
 	}
 
-	err = ioutil.WriteFile(filename, b, 0666)
+	err = ioutil.WriteFile(filename, b, 0644)
 	if err != nil {
 		o.ErrExit("Could not write icon to " + filename + "!")
 	}

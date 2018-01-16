@@ -27,7 +27,8 @@ const (
 )
 
 var (
-	keywordmap = map[int][]string{model3d_kw: []string{"rendering", "modeling", "modelling", "modeler", "render", "raytracing"},
+	keywordmap = map[int][]string{
+		model3d_kw:       []string{"rendering", "modeling", "modelling", "modeler", "render", "raytracing"},
 		multimedia_kw:    []string{"non-linear", "audio", "sound", "graphics", "demo"},
 		graphics_kw:      []string{"draw", "pixelart"},
 		network_kw:       []string{"network", "p2p", "browser"},
@@ -48,7 +49,8 @@ var (
 		programming_kw: []string{"code", "ide", "programming", "develop", "compile", "interpret", "valgrind"},
 		system_kw:      []string{"sensor", "bus", "calibration", "usb", "file"},
 	}
-	categorymap = map[int]string{model3d_kw: "Application;Graphics;3DGraphics",
+	categorymap = map[int]string{
+		model3d_kw:       "Application;Graphics;3DGraphics",
 		multimedia_kw:    "Application;Multimedia",
 		graphics_kw:      "Application;Graphics",
 		network_kw:       "Application;Network",
