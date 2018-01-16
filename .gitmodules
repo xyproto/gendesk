@@ -4,3 +4,24 @@
 [submodule "vendor/github.com/xyproto/term"]
 	path = vendor/github.com/xyproto/term
 	url = https://github.com/xyproto/term
+[submodule "vendor/github.com/fatih/color"]
+	path = vendor/github.com/fatih/color
+	url = https://github.com/fatih/color
+[submodule "vendor/github.com/getwe/figlet4go"]
+	path = vendor/github.com/getwe/figlet4go
+	url = https://github.com/getwe/figlet4go
+[submodule "vendor/github.com/mattn/go-colorable"]
+	path = vendor/github.com/mattn/go-colorable
+	url = https://github.com/mattn/go-colorable
+[submodule "vendor/github.com/mattn/go-isatty"]
+	path = vendor/github.com/mattn/go-isatty
+	url = https://github.com/mattn/go-isatty
+[submodule "vendor/github.com/mattn/go-runewidth"]
+	path = vendor/github.com/mattn/go-runewidth
+	url = https://github.com/mattn/go-runewidth
+[submodule "vendor/github.com/nsf/termbox-go"]
+	path = vendor/github.com/nsf/termbox-go
+	url = https://github.com/nsf/termbox-go
+[submodule "vendor/github.com/yhat/scrape"]
+	path = vendor/github.com/yhat/scrape
+	url = https://github.com/yhat/scrape
