@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	version_string = "Desktop File Generator v.0.6.5"
+	version_string = "Desktop File Generator v.0.7"
 )
 
 // Information needed to generate a .desktop file for a Window Manager

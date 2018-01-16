@@ -14,6 +14,13 @@ TODO
 ----
 * Move kw/category mappings into a configuration file
 
+Changes from 0.6.5 to 0.7
+-------------------------
+* Updated vendored dependencies.
+* Added support for [goreleaser](https://github.com/goreleaser/goreleaser).
+* Improved handling of icons, if an icon is missing.
+* Minor changes and refactoring.
+
 Changes from 0.6.4 to 0.6.5
 ---------------------------
 * Ignore the `-svn` suffix in package names (same as for `-git`, thanks @mstraube).
