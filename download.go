@@ -38,7 +38,7 @@ func DownloadFile(url, filename string, o *term.TextOutput, force bool) error {
 		o.ErrExit("no! " + filename + " already exists. Use -f to overwrite.")
 	}
 
-	err = ioutil.WriteFile(filename, b, 0666)
+	err = ioutil.WriteFile(filename, b, 0644)
 	if err != nil {
 		o.ErrExit("Could not write to " + filename + "!")
 	}
