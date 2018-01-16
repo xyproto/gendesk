@@ -41,9 +41,15 @@ archive:
   format: tar.gz
   replacements:
     amd64: x86_64
+    386: i686
     darwin: macos
+  wrap_in_directory: true
+  format_overrides:
+    - goos: windows
+      format: zip
   files:
     - default.png
     - gendesk.1
-    - LICENSE
-    - ChangeLog.md
+    - LICENSE*
+    - CHANGELOG.*
+    - README.*
