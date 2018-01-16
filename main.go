@@ -242,12 +242,14 @@ func main() {
 	pkgdesc := *givenPkgdesc
 	manualIconurl := ""
 
+	const defaultPKGBUILD = "../PKGBUILD"
+
 	// TODO: Write in a cleaner way, possibly by refactoring into a function. Write a test first.
 	if pkgname == "" {
 		if len(args) == 0 {
 			if os.Getenv("pkgname") == "" {
 				if os.Getenv("SRCDEST") == "" {
-					filename = "../PKGBUILD"
+					filename = defaultPKGBUILD
 				} else {
 					// If SRCDEST is set, use that
 					filename = os.Getenv("SRCDEST") + "/PKGBUILD"
@@ -308,6 +310,18 @@ func main() {
 			customMap[pkgname] = *custom
 		}
 	} else {
+		// Check if the PKGBUILD filename is found
+		if _, err := os.Stat(filename); err != nil {
+			if filename != defaultPKGBUILD {
+				// Not the default filename, complain that the file is missing
+				o.Err("Could not find " + filename + ", provide a --pkgname or a valid PKGBUILD file")
+				os.Exit(1)
+			} else {
+				// Could not find the default filename, complain about missing arguments
+				fmt.Println(o.LightBlue("Provide a package name with --pkgname, or a valid PKGBUILD file. Use --help for more info."))
+				os.Exit(1)
+			}
+		}
 		// TODO: Use a struct per pkgname instead
 		parsePKGBUILD(o, filename, &iconurl, &pkgname, &pkgnames, &pkgdescMap, &execMap, &nameMap, &genericNameMap, &mimeTypesMap, &commentMap, &categoriesMap, &customMap)
 	}

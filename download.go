@@ -147,9 +147,14 @@ func WriteIconFile(name string, o *term.TextOutput, force bool) error {
 		downloadURL = fmt.Sprintf(iconSearchURL, name)
 	}
 
+	if downloadURL == "" {
+		return errors.New("No icon download URL")
+	}
+
 	resp, err := client.Get(downloadURL)
 	if err != nil {
-		o.ErrExit("Could not download icon")
+		// Could not download the icon, for some reason
+		return err
 	}
 	defer resp.Body.Close()
 	b, err := ioutil.ReadAll(resp.Body)
