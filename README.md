@@ -3,8 +3,7 @@ Desktop File Generator
 
 [![Build Status](https://travis-ci.org/xyproto/gendesk.svg?branch=master)](https://travis-ci.org/xyproto/gendesk)
 
-Generates .desktop files and downloads .png icons based on commandline arguments.
-It is also possible to specify a PKGBUILD file and use the contents as a basis.
+Generates .desktop files and downloads .png icons based on command line arguments.
 
 See `gendesk --help` or the man page for more info.
 
@@ -12,7 +11,7 @@ Pull requests are welcome.
 
 TODO
 ----
-* Move kw/category mappings into a configuration file
+* Move kw/category mappings into a separate configuration file.
 
 Changes from 0.6.5 to 0.7
 -------------------------
@@ -79,7 +78,7 @@ Changes from 0.5.0 to 0.5.1
 
 Changes from 0.4.4 to 0.5.0
 ---------------------------
-* Commandline options, no need to specify a PKGBUILD
+* Command line options, no need to specify a PKGBUILD
 
 Changes from 0.4.3 to 0.4.4
 ---------------------------
@@ -97,7 +96,7 @@ Changes from 0.4.1 to 0.4.2
 * Added category "System;" for sensor monitors
 * Added category "Game;BoardGame;" for kw "board", "chess", "goban" or "chessboard"
 * Added category "Office" for kw "e-book" and "ebook"
-* Doesn't use ".png" by default when specifiying an icon
+* Doesn't use ".png" by default when specifying an icon
 
 
 Changes from 0.4 to 0.4.1
@@ -126,7 +125,7 @@ Changes from 0.2 to 0.3
 * New flag: --nocolor for no color
 * New flag: -n for not downloading anything (only generate a .desktop file)
 * New flag: -q for quiet (no stdout output)
-* Added \_name=('Name') to be able to specifiy a name that isn't only lowercase (like "ZynAddSubFX" or "jEdit")
+* Added \_name=('Name') to be able to specify a name that isn't only lowercase (like "ZynAddSubFX" or "jEdit")
 * kw "synthesizer" is now category AudioVideo
 * kw "editor" is now category TextEditor and/or Development;TextEditor
 * kw "emulator" is now category "Game"
