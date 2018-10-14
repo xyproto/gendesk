@@ -6,10 +6,14 @@ import (
 
 // Capitalize a string or return the same if it is too short
 func capitalize(s string) string {
-	if len(s) >= 2 {
+	switch {
+	case len(s) >= 2:
 		return strings.ToTitle(s[0:1]) + s[1:]
+	case len(s) == 1:
+		return strings.ToUpper(string(s[0]))
+	default:
+		return s
 	}
-	return s
 }
 
 // Return what's between two strings, "a" and "b", in another string
@@ -17,6 +21,9 @@ func between(orig string, a string, b string) string {
 	if strings.Contains(orig, a) && strings.Contains(orig, b) {
 		posa := strings.Index(orig, a) + len(a)
 		posb := strings.LastIndex(orig, b)
+		if posa > posb {
+			return ""
+		}
 		return orig[posa:posb]
 	}
 	return ""
