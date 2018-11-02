@@ -269,7 +269,7 @@ func main() {
 	var pkgnames []string
 	var iconurl string
 
-	// Several fields are stored per pkgname, hence the maps
+	// Several fields are stored per pkgname
 	pkgdescMap := make(map[string]string)
 	execMap := make(map[string]string)
 	nameMap := make(map[string]string)

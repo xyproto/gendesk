@@ -7,13 +7,6 @@ import (
 	"strings"
 )
 
-func min(a int, b int) int {
-	if a < b {
-		return a
-	}
-	return b
-}
-
 // Return a list of pkgnames for split packages
 // or just a list with the pkgname for regular packages
 func pkgList(splitpkgname string) []string {
