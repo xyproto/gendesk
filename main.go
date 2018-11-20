@@ -16,13 +16,15 @@ const (
 	version_string = "Desktop File Generator v.0.7"
 )
 
-// Information needed to generate a .desktop file for a Window Manager
+// WMStarter contains the information needed to generate
+// a .desktop file for a Window Manager
 type WMStarter struct {
 	Name string
 	Exec string
 }
 
-// Information needed to generate a .desktop file for an application
+// AppStarter contains the information needed to generate
+// a .desktop file for an application
 type AppStarter struct {
 	Name          string
 	GenericName   string
@@ -159,12 +161,12 @@ func main() {
 	genericname_help := "Type of application"
 	comment_help := "Shortcut comment"
 	exec_help := "Path to executable"
-	//iconurl_help := "URL to icon"
 	terminal_help := "Run the application in a terminal (default is false)"
 	categories_help := "Categories, see other .desktop files for examples"
 	mimetypes_help := "Mime types, see other .desktop files for examples"
 	startupnotify_help := "Notifcation when the application starts (default is false)"
 	custom_help := "Custom line to append at the end of the .desktop file"
+	icon_help := "Specify a filename that will be used for the icon"
 
 	flag.Usage = func() {
 		fmt.Println("\n" + version_string)
@@ -187,6 +189,7 @@ func main() {
 		fmt.Println("    --categories=CATEGORIES      " + categories_help)
 		fmt.Println("    --mimetypes=MIMETYPES        " + mimetypes_help)
 		fmt.Println("    --startupnotify=[true|false] " + startupnotify_help)
+		fmt.Println("    --icon=FILENAME              " + icon_help)
 		fmt.Println("    --custom=CUSTOM              " + custom_help)
 		fmt.Println("    --help                       This text")
 		fmt.Println("\nNote:")
@@ -422,7 +425,7 @@ func main() {
 					pos := strings.LastIndex(manualIconurl, "/")
 					iconFilename = manualIconurl[pos+1:]
 				}
-				err = DownloadFile(manualIconurl, iconFilename, o, *force)
+				MustDownloadFile(manualIconurl, iconFilename, o, *force)
 			}
 			if err == nil {
 				if o.IsEnabled() {

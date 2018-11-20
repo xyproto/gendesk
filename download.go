@@ -20,8 +20,10 @@ const (
 	defaultIconSearchURL = "http://www.iconarchive.com/search?q=%s&res=48&page=1&sort=popularity"
 )
 
-// Download a file
-func DownloadFile(url, filename string, o *term.TextOutput, force bool) error {
+// MustDownloadFile takes an URL to a filename and attempts to download it to the given filename
+// If force is true, any existing file may be overwritten.
+// May exit the program if there are fundamental problems.
+func MustDownloadFile(url, filename string, o *term.TextOutput, force bool) {
 	var client http.Client
 	resp, err := client.Get(url)
 	if err != nil {
@@ -42,10 +44,11 @@ func DownloadFile(url, filename string, o *term.TextOutput, force bool) error {
 	if err != nil {
 		o.ErrExit("Could not write to " + filename + "!")
 	}
-	return err
 }
 
-// Find the icon search url (must contain %s) from the first found configuration file
+// GetIconSearchURL reads configuration from ~/.gendeskrc, ~/.config/gendesk or /etc/gendeskrc
+// in order to retrieve an URL containing "%s" that can be used for searching for icons by name.
+// May exit the program if there are fundamental problems.
 func GetIconSearchURL(o *term.TextOutput) string {
 	usr, err := user.Current()
 	if err != nil {
@@ -54,10 +57,10 @@ func GetIconSearchURL(o *term.TextOutput) string {
 	homedir := usr.HomeDir
 
 	// Read the configuration file from various locations,
-	cfilename := "~/.gendeskrc"
+	cfilename := "~/.config/gendesk"
 	cfile, err := conf.ReadConfigFile(strings.Replace(cfilename, "~", homedir, -1))
 	if err != nil {
-		cfilename = "~/.config/gendesk"
+		cfilename = "~/.gendeskrc"
 		cfile, err = conf.ReadConfigFile(strings.Replace(cfilename, "~", homedir, -1))
 		if err != nil {
 			cfilename = "/etc/gendeskrc"
@@ -69,25 +72,25 @@ func GetIconSearchURL(o *term.TextOutput) string {
 	}
 
 	// Found a configuration file, find the url under the [default] section with the key iconSearchURL
-	icon_url, err := cfile.GetString("default", "icon_url")
+	iconURL, err := cfile.GetString("default", "icon_url")
 	if err != nil {
 		o.Err("error!\n")
 		o.Println(o.DarkRed(cfilename + " does not contain icon_url under under a [default] section. Example:"))
 		o.Println(o.LightGreen("[default]"))
-		o.Println(o.LightGreen("icon_url = http://some.iconrepository.com/q=%s.png\n"))
+		o.Println(o.LightGreen("icon_url = http://example.iconrepository.com/q=%s.png\n"))
 		os.Exit(1)
 	}
 
-	if !strings.Contains(icon_url, "%s") {
+	if !strings.Contains(iconURL, "%s") {
 		o.Err("error!\n")
 		o.Println(o.DarkRed(cfilename + " does not contain an icon search url containing %s under a [default] section. Example:"))
 		o.Println(o.LightGreen("[default]"))
-		o.Println(o.LightGreen("icon_url = http://some.iconrepository.com/q=%s.png\n"))
+		o.Println(o.LightGreen("icon_url = http://example.iconrepository.com/q=%s.png\n"))
 		os.Exit(1)
 	}
 
 	// Found an url in the configuration file, use that instead of the default search url
-	return icon_url
+	return iconURL
 }
 
 // findIconURL searches the given iconarchive-compatible URL for a keyword and returns an URL to the PNG image.
@@ -130,8 +133,10 @@ func findIconURL(searchURL, keyword string, nmatch int) (URL string) {
 	return
 }
 
-// Download icon from the search url in iconSearchURL, or from iconarchive.
+// WriteIconFile will search for and download an icon, using the icon search
+// URL given in the configuration file, or from iconarchive.com.
 // Only supports downloading png icons.
+// May exit the program if there are fundamental problems.
 func WriteIconFile(name string, o *term.TextOutput, force bool) error {
 	var (
 		downloadURL   string

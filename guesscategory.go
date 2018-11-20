@@ -71,7 +71,9 @@ var (
 	}
 )
 
-// Given a short description, try to guess which category it belongs to
+// GuessCategory will try to guess which category an application belongs to,
+// given a short package description.
+// If not guess is made, just "Application" will be returned.
 func GuessCategory(pkgdesc string) string {
 	var keywordList []string
 	for key := 0; key < last_kw; key++ {
