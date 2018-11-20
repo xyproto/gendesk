@@ -1,7 +1,7 @@
 Desktop File Generator
 ======================
 
-[![Build Status](https://travis-ci.org/xyproto/gendesk.svg?branch=master)](https://travis-ci.org/xyproto/gendesk)
+[![Build Status](https://travis-ci.org/xyproto/gendesk.svg?branch=master)](https://travis-ci.org/xyproto/gendesk) [![Report Card](https://img.shields.io/badge/go_report-A+-brightgreen.svg?style=flat)](http://goreportcard.com/report/xyproto/gendesk)
 
 Generates .desktop files and downloads .png icons based on command line arguments.
 
@@ -13,8 +13,15 @@ TODO
 ----
 * Move kw/category mappings into a separate configuration file.
 
-Changes from 0.6.5 to 0.7
--------------------------
+Changes from 0.7.0 to 1.0.0
+---------------------------
+* Add `--icon` flag, ref #7.
+* Update to the desktop-entry-spec 1.2 format (remove `Encoding` and specify `Version`), ref #8.
+* Several minor changes, as suggested by the `golint` utility.
+* Tested with Go 1.11.
+
+Changes from 0.6.5 to 0.7.0
+---------------------------
 * Updated vendored dependencies.
 * Added support for [goreleaser](https://github.com/goreleaser/goreleaser).
 * Improved handling of icons, if an icon is missing.
@@ -24,7 +31,7 @@ Changes from 0.6.4 to 0.6.5
 ---------------------------
 * Ignore the `-svn` suffix in package names (same as for `-git`, thanks @mstraube).
 * Use `text/template` for generating the `.desktop` file contents.
-* Minor changes to the command line output / documentation.
+* Minor changes to the command line output/documentation.
 * Some refactoring.
 * Tested with Go 1.9.
 
@@ -34,55 +41,64 @@ Changes from 0.6.3 to 0.6.4
 
 Changes from 0.6.2 to 0.6.3
 ---------------------------
-* Will ignore the "-git" suffix if it is part of a package name.
+* Will now ignore the `-git` suffix if it is part of a package name.
 
 Changes from 0.6.1 to 0.6.2
 ---------------------------
 * Added the possibility of having a configuration file for specifying a different URL for searching for missing icons.
-* Removed the --iconurl parameter.
+* Remove the `--iconurl` flag.
 * Refactored out some code to an external package.
 
 Changes from 0.6 to 0.6.1
 -------------------------
-* Support for StartupNotify=true/false
-* Both --mimetype and --mimetypes are allowed
+* Support for `StartupNotify=true`/`false`
+* Both `--mimetype` and `--mimetypes` are allowed
 * Guesses more categories than before
+
 
 Changes from 0.5.5 to 0.6
 -------------------------
 * Added an option for generating .desktop files for launching window managers
 
+
 Changes from 0.5.4 to 0.5.5
 ---------------------------
-* Bug fix when generating .desktop files from PKGBUILD files
+* Bug fix when generating .desktop files from PKGBUILD files.
+
 
 Changes from 0.5.3 to 0.5.4
 ---------------------------
-* Added a -f flag for overwriting files (will not overwrite without it)
+* Added a `-f` flag for overwriting files (will not overwrite without it).
 * Some refactoring
+
 
 Changes from 0.5.2 to 0.5.3
 ---------------------------
-* Added a --terminal flag for specifying if the application should be run in a terminal
-* Some refactoring
+* Added a `--terminal` flag for specifying if the application should be run in a terminal.
+* Some refactoring.
+
 
 Changes from 0.5.1 to 0.5.2
 ---------------------------
-* Support for additional environment variables
+* Support for additional environment variables.
+
 
 Changes from 0.5.0 to 0.5.1
 ---------------------------
-* Support for $pkgname and $pkgdesc
-* Updated the man page
-* Will try to download icons specified with --iconurl
+* Support for `$pkgname` and `$pkgdesc`.
+* Updated the man page.
+* Will try to download icons specified with `--iconurl`.
+
 
 Changes from 0.4.4 to 0.5.0
 ---------------------------
-* Command line options, no need to specify a PKGBUILD
+* Command line options, no need to specify a PKGBUILD.
+
 
 Changes from 0.4.3 to 0.4.4
 ---------------------------
 * Changed the URL for searching for icons from Fedora to Open Icon Library
+
 
 Changes from 0.4.2 to 0.4.3
 ---------------------------
@@ -141,6 +157,6 @@ Changes from 0.2 to 0.3
 General information
 -------------------
 
-* License: MIT
-* Author: Alexander Rødseth
-
+* Version: 1.0.0
+* Author: Alexander F. Rødseth &lt;xyproto@archlinux.org&gt;
+* License: GPL2

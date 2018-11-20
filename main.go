@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	versionString = "Desktop File Generator v.0.7"
+	versionString = "Desktop File Generator 1.0.0"
 )
 
 // WMStarter contains the information needed to generate
