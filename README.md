@@ -13,6 +13,11 @@ TODO
 ----
 * Move kw/category mappings into a separate configuration file.
 
+Changes from 1.0.0 to 1.0.1
+---------------------------
+* Fix a typo in the `--help` output.
+* Update the release script.
+
 Changes from 0.7.0 to 1.0.0
 ---------------------------
 * Add `--icon` flag, ref #7.

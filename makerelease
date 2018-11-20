@@ -1,6 +1,6 @@
 #!/bin/sh
 name=gendesk
-version=$(grep version main.go | head -1 | cut -d\" -f2 | cut -d. -f2-)
+version=$(grep version main.go | head -1 | sed 's/\"//g' | tr ' ' '\n' | tail -1)
 mkdir "$name-$version"
 cp -r $name.1 *.go LICENSE vendor "$name-$version/"
 gzip "$name-$version/$name.1"

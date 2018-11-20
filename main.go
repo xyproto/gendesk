@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	versionString = "Desktop File Generator 1.0.0"
+	versionString = "Desktop File Generator 1.0.1"
 )
 
 // WMStarter contains the information needed to generate
@@ -201,7 +201,7 @@ func main() {
 		fmt.Println("    * Just providing --pkgname is enough to generate a .desktop file.")
 		fmt.Println("    * Providing a PKGBUILD filename instead of flags is a possibility.")
 		fmt.Println("    * \"$startdir/PKGBUILD\" is the default PKGBUILD filename.")
-		fmt.Println("    * _exec in the PKGBUILD can be used to specifiy a different executable for the")
+		fmt.Println("    * _exec in the PKGBUILD can be used to specify a different executable for the")
 		fmt.Println("      .desktop file. Example: _exec=('appname-gui')")
 		fmt.Println("    * Split PKGBUILD packages are supported.")
 		fmt.Println("    * If a .png, .svg or .xpm icon is not found as a file or in the PKGBUILD,")
