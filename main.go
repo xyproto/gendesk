@@ -40,7 +40,7 @@ var (
 	wmTemplate, _ = template.New("WMStarter").Parse("[Desktop Entry]\nType=XSession\nExec={{.Exec}}\nTryExec={{.Exec}}\nName={{.Name}}\n")
 
 	// Template for a .desktop file for starting an application
-	appTemplate, _ = template.New("AppStarter").Parse("[Desktop Entry]\nEncoding=UTF-8\nType=Application\nName={{.Name}}\n{{if .GenericName}}GenericName={{.GenericName}}\n{{end}}Comment={{.Comment}}\nExec={{.Exec}}\nIcon={{.Icon}}\nTerminal={{if .UseTerminal}}true{{else}}false{{end}}\nStartupNotify={{if .StartupNotify}}true{{else}}false{{end}}\nCategories={{.CategoryList}};\n{{if .MimeTypesList}}MimeType={{.MimeTypesList}};\n{{end}}")
+	appTemplate, _ = template.New("AppStarter").Parse("[Desktop Entry]\nVersion=1.2\nType=Application\nName={{.Name}}\n{{if .GenericName}}GenericName={{.GenericName}}\n{{end}}Comment={{.Comment}}\nExec={{.Exec}}\nIcon={{.Icon}}\nTerminal={{if .UseTerminal}}true{{else}}false{{end}}\nStartupNotify={{if .StartupNotify}}true{{else}}false{{end}}\nCategories={{.CategoryList}};\n{{if .MimeTypesList}}MimeType={{.MimeTypesList}};\n{{end}}")
 )
 
 // Generate the contents for the .desktop file (for executing a window manager)
