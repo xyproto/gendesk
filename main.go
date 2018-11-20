@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	version_string = "Desktop File Generator v.0.7"
+	versionString = "Desktop File Generator v.0.7"
 )
 
 // WMStarter contains the information needed to generate
@@ -149,48 +149,48 @@ func WriteDefaultIconFile(pkgname string, o *term.TextOutput) error {
 
 func main() {
 	var filename string
-	version_help := "Show application name and version"
-	nodownload_help := "Don't download anything"
-	nocolor_help := "Don't use colors"
-	quiet_help := "Don't output anything on stdout"
-	force_help := "Overwrite .desktop files with the same name"
-	windowmanager_help := "Generate a .desktop file for launching a window manager"
-	pkgname_help := "The name of the package"
-	pkgdesc_help := "Description of the package"
-	name_help := "Name of the shortcut"
-	genericname_help := "Type of application"
-	comment_help := "Shortcut comment"
-	exec_help := "Path to executable"
-	terminal_help := "Run the application in a terminal (default is false)"
-	categories_help := "Categories, see other .desktop files for examples"
-	mimetypes_help := "Mime types, see other .desktop files for examples"
-	startupnotify_help := "Notifcation when the application starts (default is false)"
-	custom_help := "Custom line to append at the end of the .desktop file"
-	icon_help := "Specify a filename that will be used for the icon"
+	versionHelp := "Show application name and version"
+	nodownloadHelp := "Don't download anything"
+	nocolorHelp := "Don't use colors"
+	quietHelp := "Don't output anything on stdout"
+	forceHelp := "Overwrite .desktop files with the same name"
+	windowmanagerHelp := "Generate a .desktop file for launching a window manager"
+	pkgnameHelp := "The name of the package"
+	pkgdescHelp := "Description of the package"
+	nameHelp := "Name of the shortcut"
+	genericnameHelp := "Type of application"
+	commentHelp := "Shortcut comment"
+	execHelp := "Path to executable"
+	terminalHelp := "Run the application in a terminal (default is false)"
+	categoriesHelp := "Categories, see other .desktop files for examples"
+	mimetypesHelp := "Mime types, see other .desktop files for examples"
+	startupnotifyHelp := "Notifcation when the application starts (default is false)"
+	customHelp := "Custom line to append at the end of the .desktop file"
+	iconHelp := "Specify a filename that will be used for the icon"
 
 	flag.Usage = func() {
-		fmt.Println("\n" + version_string)
+		fmt.Println("\n" + versionString)
 		fmt.Println("Generate .desktop files.")
 		fmt.Println("\nSyntax: gendesk [flags]")
 		fmt.Println("\nPossible flags:")
-		fmt.Println("    --version                    " + version_help)
-		fmt.Println("    -n                           " + nodownload_help)
-		fmt.Println("    --nocolor                    " + nocolor_help)
-		fmt.Println("    -q                           " + quiet_help)
-		fmt.Println("    -f                           " + force_help)
-		fmt.Println("    -wm                          " + windowmanager_help)
-		fmt.Println("    --pkgname=PKGNAME            " + pkgname_help)
-		fmt.Println("    --pkgdesc=PKGDESC            " + pkgdesc_help)
-		fmt.Println("    --name=NAME                  " + name_help)
-		fmt.Println("    --genericname=GENERICNAME    " + genericname_help)
-		fmt.Println("    --comment=COMMENT            " + comment_help)
-		fmt.Println("    --exec=EXEC                  " + exec_help)
-		fmt.Println("    --terminal=[true|false]      " + terminal_help)
-		fmt.Println("    --categories=CATEGORIES      " + categories_help)
-		fmt.Println("    --mimetypes=MIMETYPES        " + mimetypes_help)
-		fmt.Println("    --startupnotify=[true|false] " + startupnotify_help)
-		fmt.Println("    --icon=FILENAME              " + icon_help)
-		fmt.Println("    --custom=CUSTOM              " + custom_help)
+		fmt.Println("    --version                    " + versionHelp)
+		fmt.Println("    -n                           " + nodownloadHelp)
+		fmt.Println("    --nocolor                    " + nocolorHelp)
+		fmt.Println("    -q                           " + quietHelp)
+		fmt.Println("    -f                           " + forceHelp)
+		fmt.Println("    -wm                          " + windowmanagerHelp)
+		fmt.Println("    --pkgname=PKGNAME            " + pkgnameHelp)
+		fmt.Println("    --pkgdesc=PKGDESC            " + pkgdescHelp)
+		fmt.Println("    --name=NAME                  " + nameHelp)
+		fmt.Println("    --genericname=GENERICNAME    " + genericnameHelp)
+		fmt.Println("    --comment=COMMENT            " + commentHelp)
+		fmt.Println("    --exec=EXEC                  " + execHelp)
+		fmt.Println("    --terminal=[true|false]      " + terminalHelp)
+		fmt.Println("    --categories=CATEGORIES      " + categoriesHelp)
+		fmt.Println("    --mimetypes=MIMETYPES        " + mimetypesHelp)
+		fmt.Println("    --startupnotify=[true|false] " + startupnotifyHelp)
+		fmt.Println("    --icon=FILENAME              " + iconHelp)
+		fmt.Println("    --custom=CUSTOM              " + customHelp)
 		fmt.Println("    --help                       This text")
 		fmt.Println("\nNote:")
 		fmt.Println("    * Just providing --pkgname is enough to generate a .desktop file.")
@@ -211,24 +211,24 @@ func main() {
 		fmt.Println()
 	}
 
-	version := flag.Bool("version", false, version_help)
-	nodownload := flag.Bool("n", false, nodownload_help)
-	nocolor := flag.Bool("nocolor", false, nocolor_help)
-	quiet := flag.Bool("q", false, quiet_help)
-	force := flag.Bool("f", false, force_help)
-	windowmanager := flag.Bool("wm", false, windowmanager_help)
-	givenPkgname := flag.String("pkgname", "", pkgname_help)
-	givenPkgdesc := flag.String("pkgdesc", "", pkgdesc_help)
-	name := flag.String("name", "", name_help)
-	genericname := flag.String("genericname", "", genericname_help)
-	comment := flag.String("comment", "", comment_help)
-	exec := flag.String("exec", "", exec_help)
-	terminal := flag.Bool("terminal", false, terminal_help)
-	categories := flag.String("categories", "", categories_help)
-	mimetypes := flag.String("mimetypes", "", mimetypes_help)
-	mimetype := flag.String("mimetype", "", mimetypes_help)
-	custom := flag.String("custom", "", custom_help)
-	startupnotify := flag.Bool("startupnotify", false, startupnotify_help)
+	version := flag.Bool("version", false, versionHelp)
+	nodownload := flag.Bool("n", false, nodownloadHelp)
+	nocolor := flag.Bool("nocolor", false, nocolorHelp)
+	quiet := flag.Bool("q", false, quietHelp)
+	force := flag.Bool("f", false, forceHelp)
+	windowmanager := flag.Bool("wm", false, windowmanagerHelp)
+	givenPkgname := flag.String("pkgname", "", pkgnameHelp)
+	givenPkgdesc := flag.String("pkgdesc", "", pkgdescHelp)
+	name := flag.String("name", "", nameHelp)
+	genericname := flag.String("genericname", "", genericnameHelp)
+	comment := flag.String("comment", "", commentHelp)
+	exec := flag.String("exec", "", execHelp)
+	terminal := flag.Bool("terminal", false, terminalHelp)
+	categories := flag.String("categories", "", categoriesHelp)
+	mimetypes := flag.String("mimetypes", "", mimetypesHelp)
+	mimetype := flag.String("mimetype", "", mimetypesHelp)
+	custom := flag.String("custom", "", customHelp)
+	startupnotify := flag.Bool("startupnotify", false, startupnotifyHelp)
 
 	flag.Parse()
 	args := flag.Args()
@@ -237,7 +237,7 @@ func main() {
 	o := term.NewTextOutput(!*nocolor, !*quiet)
 
 	if *version {
-		o.Println(version_string)
+		o.Println(versionString)
 		os.Exit(0)
 	}
 
