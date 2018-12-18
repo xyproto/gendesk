@@ -164,4 +164,4 @@ General information
 
 * Version: 1.0.0
 * Author: Alexander F. Rødseth &lt;xyproto@archlinux.org&gt;
-* License: GPL2
+* License: MIT
