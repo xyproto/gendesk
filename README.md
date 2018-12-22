@@ -13,6 +13,10 @@ TODO
 ----
 * Move kw/category mappings into a separate configuration file.
 
+Changes from 1.0.1 to 1.0.2
+---------------------------
+* Set version to 1.0 instead of 1.2 when generating `.desktop` files, to support a wider range of distributions.
+
 Changes from 1.0.0 to 1.0.1
 ---------------------------
 * Fix a typo in the `--help` output.
@@ -162,6 +166,6 @@ Changes from 0.2 to 0.3
 General information
 -------------------
 
-* Version: 1.0.0
+* Version: 1.0.2
 * Author: Alexander F. Rødseth &lt;xyproto@archlinux.org&gt;
 * License: MIT
