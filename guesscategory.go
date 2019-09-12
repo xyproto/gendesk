@@ -44,7 +44,7 @@ var (
 		logicgame:     []string{"puzzle"},
 		boardgame:     []string{"board", "chess", "goban", "chessboard", "checkers"},
 		// "emulator" and "player" aren't always for games, but those cases will be
-		// picked up by one of the other categories first
+		// picked up by one of the other categories first, as orderd by the constants above
 		game:        []string{"game", "rts", "mmorpg", "emulator", "player"},
 		programming: []string{"code", "ide", "programming", "develop", "compile", "interpret", "valgrind"},
 		system:      []string{"sensor", "bus", "calibration", "usb", "file"},
