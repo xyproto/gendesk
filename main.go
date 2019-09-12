@@ -288,37 +288,7 @@ func main() {
 	categoriesMap := make(map[string]string)
 	customMap := make(map[string]string)
 
-	if filename == "" {
-		// Fill in the dictionaries using the arguments
-		pkgnames = []string{pkgname}
-		if pkgdesc != "" {
-			pkgdescMap[pkgname] = pkgdesc
-		}
-		if *exec != "" {
-			execMap[pkgname] = *exec
-		}
-		if *name != "" {
-			nameMap[pkgname] = *name
-		}
-		if *genericname != "" {
-			genericNameMap[pkgname] = *genericname
-		}
-		if *mimetype != "" {
-			mimeTypesMap[pkgname] = *mimetype
-		}
-		if *mimetypes != "" {
-			mimeTypesMap[pkgname] = *mimetypes
-		}
-		if *comment != "" {
-			commentMap[pkgname] = *comment
-		}
-		if *categories != "" {
-			categoriesMap[pkgname] = *categories
-		}
-		if *custom != "" {
-			customMap[pkgname] = *custom
-		}
-	} else {
+	if filename != "" {
 		// Check if the PKGBUILD filename is found
 		if _, err := os.Stat(filename); err != nil {
 			if filename != defaultPKGBUILD {
@@ -334,6 +304,37 @@ func main() {
 		// TODO: Use a struct per pkgname instead
 		parsePKGBUILD(o, filename, &iconurl, &pkgname, &pkgnames, &pkgdescMap, &execMap, &nameMap, &genericNameMap, &mimeTypesMap, &commentMap, &categoriesMap, &customMap)
 	}
+
+	// Fill in the dictionaries using the given arguments. This overrides values from the PKGBUILD.
+	pkgnames = []string{pkgname}
+	if pkgdesc != "" {
+		pkgdescMap[pkgname] = pkgdesc
+	}
+	if *exec != "" {
+		execMap[pkgname] = *exec
+	}
+	if *name != "" {
+		nameMap[pkgname] = *name
+	}
+	if *genericname != "" {
+		genericNameMap[pkgname] = *genericname
+	}
+	if *mimetype != "" {
+		mimeTypesMap[pkgname] = *mimetype
+	}
+	if *mimetypes != "" {
+		mimeTypesMap[pkgname] = *mimetypes
+	}
+	if *comment != "" {
+		commentMap[pkgname] = *comment
+	}
+	if *categories != "" {
+		categoriesMap[pkgname] = *categories
+	}
+	if *custom != "" {
+		customMap[pkgname] = *custom
+	}
+
 
 	// Write .desktop and .png icon for each package
 	for _, pkgname := range pkgnames {
