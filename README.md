@@ -11,7 +11,7 @@ Pull requests are welcome.
 
 Changes from 1.0.2 to 1.0.3
 ---------------------------
-* Flags overrides the values from a given PKGBUILD file, ref #12.
+* Let flags overrides the values from a given PKGBUILD file.
 * Switch from [goconf](https://github.com/akrennmair/goconf) to [goconfig](https://github.com/unknwon/goconfig).
 * Switch from [term](https://github.com/xyproto/term) to [textoutput](https://github.com/xyproto/textoutput).
 * Requires Go 1.10 or later.
