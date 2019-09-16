@@ -16,8 +16,8 @@ TODO
 Changes from 1.0.2 to 1.0.3
 ---------------------------
 * Flags overrides the values from a given PKGBUILD file, ref #12.
-* Switch from `akrennmair/gconf` to `unknwon/goconf`.
-* Switch from `xyproto/term` to `xyproto/textoutput`.
+* Switch from [goconf](https://github.com/akrennmair/goconf) to [goconfig](https://github.com/unknwon/goconfig).
+* Switch from [term](https://github.com/xyproto/term) to [textoutput](https://github.com/xyproto/textoutput).
 
 Changes from 1.0.1 to 1.0.2
 ---------------------------
