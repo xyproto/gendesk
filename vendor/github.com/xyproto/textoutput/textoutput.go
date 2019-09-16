@@ -154,3 +154,13 @@ func (o *TextOutput) White(s string) string {
 	}
 	return s
 }
+
+// Given a line with words and several color strings, color the words
+// in the order of the colors. The last color will color the rest of the
+// words.
+func (o *TextOutput) Words(line string, colors ...string) string {
+	if o.color {
+		return vt100.Words(line, colors...)
+	}
+	return line
+}
