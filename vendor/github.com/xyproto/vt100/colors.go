@@ -47,8 +47,8 @@ var (
 	White        = NewAttributeColor("Bright", "White")
 
 	// Aliases
-	Pink        = LightMagenta
-	Gray        = LightGray
+	Pink = LightMagenta
+	Gray = LightGray
 
 	// Dark background colors (+ light gray)
 	BackgroundBlack     = NewAttributeColor("40")
@@ -61,8 +61,8 @@ var (
 	BackgroundLightGray = NewAttributeColor("47")
 
 	// Aliases
-	BackgroundWhite  = BackgroundLightGray
-	BackgroundGray   = BackgroundLightGray
+	BackgroundWhite = BackgroundLightGray
+	BackgroundGray  = BackgroundLightGray
 
 	// Default colors (usually gray)
 	Default           = NewAttributeColor("39")
