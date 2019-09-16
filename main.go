@@ -225,7 +225,6 @@ Note:
 
 func main() {
 	flag.Usage = usage
-	flag.Parse()
 
 	var (
 		version       = flag.Bool("version", false, versionHelp)
@@ -248,16 +247,18 @@ func main() {
 		custom        = flag.String("custom", "", customHelp)
 		startupnotify = flag.Bool("startupnotify", false, startupnotifyHelp)
 
-		args = flag.Args()
-
-		pkgname = *givenPkgname
-		pkgdesc = *givenPkgdesc
-
 		manualIconurl string
 		filename      string
 		pkgnames      []string
 		iconurl       string
+	)
 
+	flag.Parse()
+
+	var (
+		args    = flag.Args()
+		pkgname = *givenPkgname
+		pkgdesc = *givenPkgdesc
 		// New text output struct.
 		// The first bool is if color should be enabled or disabled.
 		// The second bool is if any output should be enabled at all.
