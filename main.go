@@ -14,6 +14,27 @@ import (
 
 const (
 	versionString = "Desktop File Generator 1.0.3"
+
+	versionHelp       = "Show application name and version"
+	nodownloadHelp    = "Don't download anything"
+	nocolorHelp       = "Don't use colors"
+	quietHelp         = "Don't output anything on stdout"
+	forceHelp         = "Overwrite .desktop files with the same name"
+	windowmanagerHelp = "Generate a .desktop file for launching a window manager"
+	pkgnameHelp       = "The name of the package"
+	pkgdescHelp       = "Description of the package"
+	nameHelp          = "Name of the shortcut"
+	genericnameHelp   = "Type of application"
+	commentHelp       = "Shortcut comment"
+	execHelp          = "Path to executable"
+	terminalHelp      = "Run the application in a terminal (default is false)"
+	categoriesHelp    = "Categories, see other .desktop files for examples"
+	mimetypesHelp     = "Mime types, see other .desktop files for examples"
+	startupnotifyHelp = "Notifcation when the application starts (default is false)"
+	customHelp        = "Custom line to append at the end of the .desktop file"
+	iconHelp          = "Specify a filename that will be used for the icon"
+
+	defaultPKGBUILD = "../PKGBUILD"
 )
 
 // WMStarter contains the information needed to generate
@@ -152,106 +173,102 @@ func WriteDefaultIconFile(pkgname string, o *TextOutput) error {
 	return nil
 }
 
-func main() {
-	var filename string
-	versionHelp := "Show application name and version"
-	nodownloadHelp := "Don't download anything"
-	nocolorHelp := "Don't use colors"
-	quietHelp := "Don't output anything on stdout"
-	forceHelp := "Overwrite .desktop files with the same name"
-	windowmanagerHelp := "Generate a .desktop file for launching a window manager"
-	pkgnameHelp := "The name of the package"
-	pkgdescHelp := "Description of the package"
-	nameHelp := "Name of the shortcut"
-	genericnameHelp := "Type of application"
-	commentHelp := "Shortcut comment"
-	execHelp := "Path to executable"
-	terminalHelp := "Run the application in a terminal (default is false)"
-	categoriesHelp := "Categories, see other .desktop files for examples"
-	mimetypesHelp := "Mime types, see other .desktop files for examples"
-	startupnotifyHelp := "Notifcation when the application starts (default is false)"
-	customHelp := "Custom line to append at the end of the .desktop file"
-	iconHelp := "Specify a filename that will be used for the icon"
-
-	flag.Usage = func() {
-		fmt.Println("\n" + versionString)
-		fmt.Println("Generate .desktop files.")
-		fmt.Println("\nSyntax: gendesk [flags]")
-		fmt.Println("\nPossible flags:")
-		fmt.Println("    --version                    " + versionHelp)
-		fmt.Println("    -n                           " + nodownloadHelp)
-		fmt.Println("    --nocolor                    " + nocolorHelp)
-		fmt.Println("    -q                           " + quietHelp)
-		fmt.Println("    -f                           " + forceHelp)
-		fmt.Println("    -wm                          " + windowmanagerHelp)
-		fmt.Println("    --pkgname=PKGNAME            " + pkgnameHelp)
-		fmt.Println("    --pkgdesc=PKGDESC            " + pkgdescHelp)
-		fmt.Println("    --name=NAME                  " + nameHelp)
-		fmt.Println("    --genericname=GENERICNAME    " + genericnameHelp)
-		fmt.Println("    --comment=COMMENT            " + commentHelp)
-		fmt.Println("    --exec=EXEC                  " + execHelp)
-		fmt.Println("    --icon=FILENAME              " + iconHelp)
-		fmt.Println("    --terminal=[true|false]      " + terminalHelp)
-		fmt.Println("    --categories=CATEGORIES      " + categoriesHelp)
-		fmt.Println("    --mimetypes=MIMETYPES        " + mimetypesHelp)
-		fmt.Println("    --startupnotify=[true|false] " + startupnotifyHelp)
-		fmt.Println("    --custom=CUSTOM              " + customHelp)
-		fmt.Println("    --help                       This text")
-		fmt.Println("\nNote:")
-		fmt.Println("    * Just providing --pkgname is enough to generate a .desktop file.")
-		fmt.Println("    * Providing a PKGBUILD filename instead of flags is a possibility.")
-		fmt.Println("    * \"$startdir/PKGBUILD\" is the default PKGBUILD filename.")
-		fmt.Println("    * _exec in the PKGBUILD can be used to specify a different executable for the")
-		fmt.Println("      .desktop file. Example: _exec=('appname-gui')")
-		fmt.Println("    * Split PKGBUILD packages are supported.")
-		fmt.Println("    * If a .png, .svg or .xpm icon is not found as a file or in the PKGBUILD,")
-		fmt.Println("      an icon will be downloaded from either the location specified in the")
-		shortname := strings.Split(defaultIconSearchURL, "/")
-		firstpart := strings.Join(shortname[:3], "/")
-		fmt.Println("      configuration or from: " + firstpart)
-		fmt.Println("      (This may or may not result in the icon you wished for).")
-		fmt.Println("    * Categories are guessed based on keywords in the")
-		fmt.Println("      package description, unless provided.")
-		fmt.Println("    * Icons are assumed to be found in \"/usr/share/pixmaps/\" once installed.")
-		fmt.Println()
+func usage() {
+	shortname := strings.Split(defaultIconSearchURL, "/")
+	firstpart := "INVALID ICON SEARCH URL"
+	if len(shortname) >= 3 {
+		firstpart = strings.Join(shortname[:3], "/")
 	}
+	fmt.Println(`
+` + versionString + `
+Generate .desktop files.
 
-	version := flag.Bool("version", false, versionHelp)
-	nodownload := flag.Bool("n", false, nodownloadHelp)
-	nocolor := flag.Bool("nocolor", false, nocolorHelp)
-	quiet := flag.Bool("q", false, quietHelp)
-	force := flag.Bool("f", false, forceHelp)
-	windowmanager := flag.Bool("wm", false, windowmanagerHelp)
-	givenPkgname := flag.String("pkgname", "", pkgnameHelp)
-	givenPkgdesc := flag.String("pkgdesc", "", pkgdescHelp)
-	name := flag.String("name", "", nameHelp)
-	genericname := flag.String("genericname", "", genericnameHelp)
-	comment := flag.String("comment", "", commentHelp)
-	exec := flag.String("exec", "", execHelp)
-	icon := flag.String("icon", "", iconHelp)
-	terminal := flag.Bool("terminal", false, terminalHelp)
-	categories := flag.String("categories", "", categoriesHelp)
-	mimetypes := flag.String("mimetypes", "", mimetypesHelp)
-	mimetype := flag.String("mimetype", "", mimetypesHelp)
-	custom := flag.String("custom", "", customHelp)
-	startupnotify := flag.Bool("startupnotify", false, startupnotifyHelp)
+Syntax: gendesk [flags]
 
+Possible flags:
+    --version                    ` + versionHelp + `
+    -n                           ` + nodownloadHelp + `
+    --nocolor                    ` + nocolorHelp + `
+    -q                           ` + quietHelp + `
+    -f                           ` + forceHelp + `
+    -wm                          ` + windowmanagerHelp + `
+    --pkgname=PKGNAME            ` + pkgnameHelp + `
+    --pkgdesc=PKGDESC            ` + pkgdescHelp + `
+    --name=NAME                  ` + nameHelp + `
+    --genericname=GENERICNAME    ` + genericnameHelp + `
+    --comment=COMMENT            ` + commentHelp + `
+    --exec=EXEC                  ` + execHelp + `
+    --icon=FILENAME              ` + iconHelp + `
+    --terminal=[true|false]      ` + terminalHelp + `
+    --categories=CATEGORIES      ` + categoriesHelp + `
+    --mimetypes=MIMETYPES        ` + mimetypesHelp + `
+    --startupnotify=[true|false] ` + startupnotifyHelp + `
+    --custom=CUSTOM              ` + customHelp + `
+    --help                       This text
+
+Note:
+    * Just providing --pkgname is enough to generate a .desktop file.
+    * Providing a PKGBUILD filename instead of flags is a possibility.
+    * "$startdir/PKGBUILD" is the default PKGBUILD filename.
+    * _exec in the PKGBUILD can be used to specify a different executable for the
+      .desktop file. Example: _exec=('appname-gui')
+    * Split PKGBUILD packages are supported.
+    * If a .png, .svg or .xpm icon is not found as a file or in the PKGBUILD,
+      an icon will be downloaded from either the location specified in the
+      configuration or from: ` + firstpart + `
+      (This may or may not result in the icon you wished for).
+    * Categories are guessed based on keywords in the
+      package description, unless provided.
+    * Icons are assumed to be found in "/usr/share/pixmaps/" once installed.
+`)
+}
+
+func main() {
+	flag.Usage = usage
 	flag.Parse()
-	args := flag.Args()
 
-	// New text output. Color? Enabled?
-	o := NewTextOutput(!*nocolor, !*quiet)
+	var (
+		version       = flag.Bool("version", false, versionHelp)
+		nodownload    = flag.Bool("n", false, nodownloadHelp)
+		nocolor       = flag.Bool("nocolor", false, nocolorHelp)
+		quiet         = flag.Bool("q", false, quietHelp)
+		force         = flag.Bool("f", false, forceHelp)
+		windowmanager = flag.Bool("wm", false, windowmanagerHelp)
+		givenPkgname  = flag.String("pkgname", "", pkgnameHelp)
+		givenPkgdesc  = flag.String("pkgdesc", "", pkgdescHelp)
+		name          = flag.String("name", "", nameHelp)
+		genericname   = flag.String("genericname", "", genericnameHelp)
+		comment       = flag.String("comment", "", commentHelp)
+		exec          = flag.String("exec", "", execHelp)
+		icon          = flag.String("icon", "", iconHelp)
+		terminal      = flag.Bool("terminal", false, terminalHelp)
+		categories    = flag.String("categories", "", categoriesHelp)
+		mimetypes     = flag.String("mimetypes", "", mimetypesHelp)
+		mimetype      = flag.String("mimetype", "", mimetypesHelp)
+		custom        = flag.String("custom", "", customHelp)
+		startupnotify = flag.Bool("startupnotify", false, startupnotifyHelp)
 
+		args = flag.Args()
+
+		pkgname = *givenPkgname
+		pkgdesc = *givenPkgdesc
+
+		manualIconurl string
+		filename      string
+		pkgnames      []string
+		iconurl       string
+
+		// New text output struct.
+		// The first bool is if color should be enabled or disabled.
+		// The second bool is if any output should be enabled at all.
+		o = NewTextOutput(!*nocolor, !*quiet)
+	)
+
+	// Output the version number and quit if --version is given
 	if *version {
 		o.Println(versionString)
 		os.Exit(0)
 	}
-
-	pkgname := *givenPkgname
-	pkgdesc := *givenPkgdesc
-	manualIconurl := ""
-
-	const defaultPKGBUILD = "../PKGBUILD"
 
 	// TODO: Write in a cleaner way, possibly by refactoring into a function. Write a test first.
 	if pkgname == "" {
@@ -274,9 +291,6 @@ func main() {
 
 	// Environment variables
 	dataFromEnvironment(&pkgdesc, exec, name, genericname, mimetypes, comment, categories, custom)
-
-	var pkgnames []string
-	var iconurl string
 
 	// Several fields are stored per pkgname
 	pkgdescMap := make(map[string]string)
