@@ -30,8 +30,8 @@ var (
 	keywordmap = map[int][]string{
 		model3d:       {"rendering", "modeling", "modelling", "modeler", "render", "raytracing"},
 		multimedia:    {"non-linear", "audio", "sound", "graphics", "demo"},
-		graphics:      {"draw", "pixelart"},
-		network:       {"network", "p2p", "browser"},
+		graphics:      {"draw", "pixelart", "animated"},
+		network:       {"network", "p2p", "browser", "remote"},
 		email:         {"gmail"},
 		audiovideo:    {"synth", "synthesizer", "ffmpeg"},
 		office:        {"ebook", "e-book", "spreadsheet", "calculator", "processor", "documents"},
