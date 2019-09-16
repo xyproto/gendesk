@@ -9,10 +9,6 @@ See `gendesk --help` or the man page for more info.
 
 Pull requests are welcome.
 
-TODO
-----
-- [ ] Move kw/category mappings into a separate configuration file.
-
 Changes from 1.0.2 to 1.0.3
 ---------------------------
 * Flags overrides the values from a given PKGBUILD file, ref #12.
@@ -71,33 +67,27 @@ Changes from 0.6 to 0.6.1
 * Both `--mimetype` and `--mimetypes` are allowed
 * Guesses more categories than before
 
-
 Changes from 0.5.5 to 0.6
 -------------------------
 * Added an option for generating .desktop files for launching window managers
 
-
 Changes from 0.5.4 to 0.5.5
 ---------------------------
 * Bug fix when generating .desktop files from PKGBUILD files.
-
 
 Changes from 0.5.3 to 0.5.4
 ---------------------------
 * Added a `-f` flag for overwriting files (will not overwrite without it).
 * Some refactoring
 
-
 Changes from 0.5.2 to 0.5.3
 ---------------------------
 * Added a `--terminal` flag for specifying if the application should be run in a terminal.
 * Some refactoring.
 
-
 Changes from 0.5.1 to 0.5.2
 ---------------------------
 * Support for additional environment variables.
-
 
 Changes from 0.5.0 to 0.5.1
 ---------------------------
@@ -105,22 +95,18 @@ Changes from 0.5.0 to 0.5.1
 * Updated the man page.
 * Will try to download icons specified with `--iconurl`.
 
-
 Changes from 0.4.4 to 0.5.0
 ---------------------------
 * Command line options, no need to specify a PKGBUILD.
-
 
 Changes from 0.4.3 to 0.4.4
 ---------------------------
 * Changed the URL for searching for icons from Fedora to Open Icon Library
 
-
 Changes from 0.4.2 to 0.4.3
 ---------------------------
 * Fixed minor bug where puzzle games were not placed in the right category
 * Added \_categories=()
-
 
 Changes from 0.4.1 to 0.4.2
 ---------------------------
@@ -130,11 +116,9 @@ Changes from 0.4.1 to 0.4.2
 * Added category "Office" for kw "e-book" and "ebook"
 * Doesn't use ".png" by default when specifying an icon
 
-
 Changes from 0.4 to 0.4.1
 -------------------------
 * Fixed a bug where \_name=() and \_comment=() didn't work as they should
-
 
 Changes from 0.3 to 0.4
 -----------------------
@@ -149,7 +133,6 @@ Changes from 0.3 to 0.4
 * Glob for existing .svg icons too
 * Shorter lines
 * Moved functions and settings related to terminal output to a separate file
-
 
 Changes from 0.2 to 0.3
 -----------------------
@@ -169,6 +152,9 @@ Changes from 0.2 to 0.3
 * kw "roguelike" is now "Application;Game;AdventureGame;"
 * kw "git" is now category Development;RevisionControl
 
+TODO
+----
+- [ ] Move kw/category mappings into a separate configuration file.
 
 General information
 -------------------
