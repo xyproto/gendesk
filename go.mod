@@ -1,9 +1,11 @@
-module github.com/xyproto/gendesk
+module gendesk
+
+go 1.12
 
 require (
-	github.com/akrennmair/goconf v0.0.0-20120129010547-c6367f3454b8
-	github.com/mattn/go-runewidth v0.0.4 // indirect
-	github.com/xyproto/term v0.0.0-20181102095811-abbba14d6880
+	github.com/smartystreets/goconvey v0.0.0-20190731233626-505e41936337 // indirect
+	github.com/unknwon/goconfig v0.0.0-20190425194916-3dba17dd7b9e
+	github.com/xyproto/textoutput v1.0.0
 	github.com/yhat/scrape v0.0.0-20161128144610-24b7890b0945
-	golang.org/x/net v0.0.0-20181220203305-927f97764cc3
+	golang.org/x/net v0.0.0-20190912160710-24e19bdeb0f2
 )

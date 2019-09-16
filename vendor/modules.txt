@@ -1,13 +1,16 @@
-# github.com/akrennmair/goconf v0.0.0-20120129010547-c6367f3454b8
-github.com/akrennmair/goconf
-# github.com/mattn/go-runewidth v0.0.4
-github.com/mattn/go-runewidth
-# github.com/nsf/termbox-go v0.0.0-20181027232701-60ab7e3d12ed
-github.com/nsf/termbox-go
-# github.com/xyproto/term v0.0.0-20181102095811-abbba14d6880
-github.com/xyproto/term
+# github.com/pkg/term v0.0.0-20190109203006-aa71e9d9e942
+github.com/pkg/term
+github.com/pkg/term/termios
+# github.com/unknwon/goconfig v0.0.0-20190425194916-3dba17dd7b9e
+github.com/unknwon/goconfig
+# github.com/xyproto/textoutput v1.0.0
+github.com/xyproto/textoutput
+# github.com/xyproto/vt100 v1.0.1
+github.com/xyproto/vt100
 # github.com/yhat/scrape v0.0.0-20161128144610-24b7890b0945
 github.com/yhat/scrape
-# golang.org/x/net v0.0.0-20181220203305-927f97764cc3
+# golang.org/x/net v0.0.0-20190912160710-24e19bdeb0f2
 golang.org/x/net/html
 golang.org/x/net/html/atom
+# golang.org/x/sys v0.0.0-20190913121621-c3b328c6e5a7
+golang.org/x/sys/unix
