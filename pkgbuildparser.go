@@ -48,8 +48,7 @@ func parsePKGBUILD(o *textoutput.TextOutput, filename string, iconurl, pkgname *
 	if err != nil {
 		o.ErrExit("Could not read " + filename)
 	}
-	filetext := string(filedata)
-	for _, line := range strings.Split(filetext, "\n") {
+	for _, line := range strings.Split(string(filedata), "\n") {
 		switch {
 		case strings.HasPrefix(line, "pkgname"):
 			*pkgname = betweenQuotesOrAfterEquals(line)
@@ -60,81 +59,57 @@ func parsePKGBUILD(o *textoutput.TextOutput, filename string, iconurl, pkgname *
 			}
 		case strings.HasPrefix(line, "package_"):
 			*pkgname = between(line, "_", "(")
-		case strings.HasPrefix(line, "pkgdesc"):
+		case strings.HasPrefix(line, "pkgdesc") && *pkgname != "":
 			// Description for the package
-			pkgdesc := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
-			if *pkgname != "" {
-				(*pkgdescMap)[*pkgname] = pkgdesc
-			}
-		case strings.HasPrefix(line, "_exec"):
+			(*pkgdescMap)[*pkgname] = betweenQuotesOrAfterEquals(line)
+		case strings.HasPrefix(line, "_exec") && *pkgname != "":
 			// Custom executable for the .desktop file per (split) package
-			exec := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
-			if *pkgname != "" {
-				(*execMap)[*pkgname] = exec
-			}
-		case strings.HasPrefix(line, "_name"):
+			(*execMap)[*pkgname] = betweenQuotesOrAfterEquals(line)
+		case strings.HasPrefix(line, "_name") && *pkgname != "":
 			// Custom Name for the .desktop file per (split) package
-			name := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
-			if *pkgname != "" {
-				(*nameMap)[*pkgname] = name
-			}
-		case strings.HasPrefix(line, "_genericname"):
+			(*nameMap)[*pkgname] = betweenQuotesOrAfterEquals(line)
+		case strings.HasPrefix(line, "_genericname") && *pkgname != "":
 			// Custom GenericName for the .desktop file per (split) package
 			genericName := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
-			if (*pkgname != "") && (genericName != "") {
+			if genericName != "" {
 				(*genericNameMap)[*pkgname] = genericName
 			}
-		case strings.HasPrefix(line, "_mimetype"):
+		case strings.HasPrefix(line, "_mimetype") && *pkgname != "":
 			// Custom MimeType for the .desktop file per (split) package
-			mimeType := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
-			if *pkgname != "" {
-				(*mimeTypesMap)[*pkgname] = mimeType
-			}
-		case strings.HasPrefix(line, "_comment"):
+			(*mimeTypesMap)[*pkgname] = betweenQuotesOrAfterEquals(line)
+		case strings.HasPrefix(line, "_comment") && *pkgname != "":
 			// Custom Comment for the .desktop file per (split) package
-			comment := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
-			if *pkgname != "" {
-				(*commentMap)[*pkgname] = comment
-			}
-		case strings.HasPrefix(line, "_custom"):
+			(*commentMap)[*pkgname] = betweenQuotesOrAfterEquals(line)
+		case strings.HasPrefix(line, "_custom") && *pkgname != "":
 			// Custom string to be added to the end
 			// of the .desktop file in question
-			custom := betweenQuotesOrAfterEquals(line)
 			// Use the last found pkgname as the key
-			if *pkgname != "" {
-				(*customMap)[*pkgname] = custom
-			}
-		case strings.HasPrefix(line, "_categories"):
-			categories := betweenQuotesOrAfterEquals(line)
+			(*customMap)[*pkgname] = betweenQuotesOrAfterEquals(line)
+		case strings.HasPrefix(line, "_categories") && *pkgname != "":
 			// Use the last found pkgname as the key
-			if *pkgname != "" {
-				(*categoriesMap)[*pkgname] = categories
-			}
-		case (strings.Contains(line, "http://") || strings.Contains(line, "https://")) && strings.Contains(line, ".png"):
+			(*categoriesMap)[*pkgname] = betweenQuotesOrAfterEquals(line)
+		case ((strings.Contains(line, "http://") || strings.Contains(line, "https://")) && strings.Contains(line, ".png")) && *iconurl == "":
 			// Only supports detecting png icon filenames when represented as just the filename or an URL starting with http/https.
-			if *iconurl == "" {
-				*iconurl = "h" + between(line, "h", "g") + "g"
-				if strings.Contains(*iconurl, "$pkgname") {
-					*iconurl = strings.Replace(*iconurl,
-						"$pkgname", *pkgname, -1)
-				}
-				if strings.Contains(*iconurl, "${pkgname}") {
-					*iconurl = strings.Replace(*iconurl,
-						"${pkgname}", *pkgname, -1)
-				}
-				if strings.Contains(*iconurl, "$") {
-					// If there are more $variables, don't bother (for now)
-					// TODO: replace all defined $variables...
-					*iconurl = ""
-				}
+			*iconurl = "h" + between(line, "h", "g") + "g"
+			if strings.Contains(*iconurl, "$pkgname") {
+				*iconurl = strings.Replace(*iconurl,
+					"$pkgname", *pkgname, -1)
+			} else if strings.Contains(*iconurl, "${pkgname}") {
+				*iconurl = strings.Replace(*iconurl,
+					"${pkgname}", *pkgname, -1)
+			} else if strings.Contains(*iconurl, "$") {
+				// If there are more $variables, don't bother (for now)
+				// TODO: replace all defined $variables...
+				*iconurl = ""
 			}
 		}
+
 		// Strip the "-git", "-svn" or "-hg" suffix, if present
 		if strings.HasSuffix(*pkgname, "-git") || strings.HasSuffix(*pkgname, "-svn") {
 			*pkgname = (*pkgname)[:len(*pkgname)-4]
