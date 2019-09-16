@@ -1,7 +1,7 @@
 Desktop File Generator
 ======================
 
-[![Build Status](https://travis-ci.org/xyproto/gendesk.svg?branch=master)](https://travis-ci.org/xyproto/gendesk) [![Report Card](https://img.shields.io/badge/go_report-A+-brightgreen.svg?style=flat)](http://goreportcard.com/report/xyproto/gendesk)
+[![Build Status](https://travis-ci.org/xyproto/gendesk.svg?branch=master)](https://travis-ci.org/xyproto/gendesk) [![Go Report Card](https://goreportcard.com/badge/github.com/xyproto/gendesk)](https://goreportcard.com/report/github.com/xyproto/gendesk)
 
 Generates .desktop files and downloads .png icons based on command line arguments.
 
@@ -11,7 +11,13 @@ Pull requests are welcome.
 
 TODO
 ----
-* Move kw/category mappings into a separate configuration file.
+- [ ] Move kw/category mappings into a separate configuration file.
+
+Changes from 1.0.2 to 1.0.3
+---------------------------
+* Flags overrides the values from a given PKGBUILD file, ref #12.
+* Switch from `akrennmair/gconf` to `unknwon/goconf`.
+* Switch from `xyproto/term` to `xyproto/textoutput`.
 
 Changes from 1.0.1 to 1.0.2
 ---------------------------
