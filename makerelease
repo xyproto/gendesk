@@ -7,7 +7,7 @@ goreleaser --skip-publish --rm-dist
 
 # source tarball
 mkdir "$name-$version"
-cp -r $name.1 *.go LICENSE vendor "$name-$version/"
+cp -r $name.1 *.go go.mod go.sum LICENSE vendor "$name-$version/"
 gzip "$name-$version/$name.1"
 tar Jcf "dist/$name-$version.tar.xz" "$name-$version/"
 rm -r "$name-$version"
