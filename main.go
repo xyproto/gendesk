@@ -312,7 +312,8 @@ func main() {
 				os.Exit(1)
 			}
 			// Could not find the default filename, complain about missing arguments
-			fmt.Println(o.LightBlue("Provide a package name with --pkgname, or a valid PKGBUILD file. Use --help for more info."))
+			fmt.Println(o.Words("Provide a package name with --pkgname, or a valid PKGBUILD file. Use --help for more info.",
+				"blue", "blue", "blue", "blue", "blue", "white", "blue", "blue", "blue", "green", "blue", "blue", "white", "blue"))
 			os.Exit(1)
 		}
 		// TODO: Use a struct per pkgname instead
