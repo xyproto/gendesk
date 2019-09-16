@@ -310,11 +310,10 @@ func main() {
 				// Not the default filename, complain that the file is missing
 				o.Err("Could not find " + filename + ", provide a --pkgname or a valid PKGBUILD file")
 				os.Exit(1)
-			} else {
-				// Could not find the default filename, complain about missing arguments
-				fmt.Println(o.LightBlue("Provide a package name with --pkgname, or a valid PKGBUILD file. Use --help for more info."))
-				os.Exit(1)
 			}
+			// Could not find the default filename, complain about missing arguments
+			fmt.Println(o.LightBlue("Provide a package name with --pkgname, or a valid PKGBUILD file. Use --help for more info."))
+			os.Exit(1)
 		}
 		// TODO: Use a struct per pkgname instead
 		parsePKGBUILD(o, filename, &iconurl, &pkgname, &pkgnames, &pkgdescMap, &execMap, &nameMap, &genericNameMap, &mimeTypesMap, &commentMap, &categoriesMap, &customMap)
@@ -322,33 +321,23 @@ func main() {
 
 	// Fill in the dictionaries using the given arguments. This overrides values from the PKGBUILD.
 	pkgnames = []string{pkgname}
-	if pkgdesc != "" {
-		pkgdescMap[pkgname] = pkgdesc
+
+	// Set a value if the value is not an empty string
+	setv := func(m *map[string]string, value string) {
+		if value != "" {
+			(*m)[pkgname] = value
+		}
 	}
-	if *exec != "" {
-		execMap[pkgname] = *exec
-	}
-	if *name != "" {
-		nameMap[pkgname] = *name
-	}
-	if *genericname != "" {
-		genericNameMap[pkgname] = *genericname
-	}
-	if *mimetype != "" {
-		mimeTypesMap[pkgname] = *mimetype
-	}
-	if *mimetypes != "" {
-		mimeTypesMap[pkgname] = *mimetypes
-	}
-	if *comment != "" {
-		commentMap[pkgname] = *comment
-	}
-	if *categories != "" {
-		categoriesMap[pkgname] = *categories
-	}
-	if *custom != "" {
-		customMap[pkgname] = *custom
-	}
+
+	setv(&pkgdescMap, pkgdesc)
+	setv(&execMap, *exec)
+	setv(&nameMap, *name)
+	setv(&genericNameMap, *genericname)
+	setv(&mimeTypesMap, *mimetype)
+	setv(&mimeTypesMap, *mimetypes)
+	setv(&commentMap, *comment)
+	setv(&categoriesMap, *categories)
+	setv(&customMap, *custom)
 
 	// Write .desktop and .png icon for each package
 	for _, pkgname := range pkgnames {
