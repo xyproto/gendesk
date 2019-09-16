@@ -10,10 +10,8 @@ github.com/smartystreets/goconvey v0.0.0-20190731233626-505e41936337 h1:WN9BUFbd
 github.com/smartystreets/goconvey v0.0.0-20190731233626-505e41936337/go.mod h1:syvi0/a8iFYH4r/RixwvyeAJjdLS9QV7WQ/tjFTllLA=
 github.com/unknwon/goconfig v0.0.0-20190425194916-3dba17dd7b9e h1:WIu9z0oMGXDY19FEawfE3gNMXbJ3n2KDRvTHBnkxjnM=
 github.com/unknwon/goconfig v0.0.0-20190425194916-3dba17dd7b9e/go.mod h1:qu2ZQ/wcC/if2u32263HTVC39PeOQRSmidQk3DuDFQ8=
-github.com/xyproto/textoutput v1.0.0 h1:YG5m1vkcv0cd89bP+rfzD59RGZ4KyxwCc5x/bmQwmF8=
-github.com/xyproto/textoutput v1.0.0/go.mod h1:Arh4XJcup5+zsVyGEllSrrOPWgThClATmEkC1HFSwvg=
-github.com/xyproto/textoutput v1.2.0 h1:aRwqg9EyrHzcBbwDy8oNrygIJ+t5tLKhB3JYe6T8qZY=
-github.com/xyproto/textoutput v1.2.0/go.mod h1:tExUy4wiE6t397HWgDLvNgs6NhrdltBIZGP+AHV4kB8=
+github.com/xyproto/textoutput v1.2.1 h1:PTuDFPVXu5LmYKDyZqu+1okYvb+79cj5mF55IET5KYk=
+github.com/xyproto/textoutput v1.2.1/go.mod h1:tExUy4wiE6t397HWgDLvNgs6NhrdltBIZGP+AHV4kB8=
 github.com/xyproto/vt100 v1.0.1 h1:Pzz3muUW/XVX/sjSAwaUhyydFSrC0NWXgCqyXx4Ne60=
 github.com/xyproto/vt100 v1.0.1/go.mod h1:w3/QDDJMEllFWidelL6SAPydmtYPPvqdVyAw9i616F4=
 github.com/yhat/scrape v0.0.0-20161128144610-24b7890b0945 h1:6Ju8pZBYFTN9FaV/JvNBiIHcsgEmP4z4laciqjfjY8E=

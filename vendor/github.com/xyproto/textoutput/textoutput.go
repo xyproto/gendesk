@@ -7,14 +7,12 @@ import (
 	"os"
 )
 
-const VersionString = "textoutput 1.0.0"
-
 type TextOutput struct {
 	color   bool
 	enabled bool
 }
 
-func New(color, enabled bool) *TextOutput {
+func NewTextOutput(color, enabled bool) *TextOutput {
 	return &TextOutput{color, enabled}
 }
 
@@ -103,7 +101,7 @@ func (o *TextOutput) DarkCyan(s string) string {
 
 func (o *TextOutput) DarkGray(s string) string {
 	if o.color {
-		return vt100.Gray.Get(s)
+		return vt100.DarkGray.Get(s)
 	}
 	return s
 }
