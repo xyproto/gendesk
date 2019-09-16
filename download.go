@@ -5,8 +5,8 @@ import (
 	"crypto/md5"
 	"errors"
 	"fmt"
-	"github.com/akrennmair/goconf"
-	"github.com/xyproto/term"
+	"github.com/unknwon/goconfig"
+	"github.com/xyproto/textoutput"
 	"github.com/yhat/scrape"
 	"golang.org/x/net/html"
 	"io/ioutil"
@@ -23,7 +23,7 @@ const (
 // MustDownloadFile takes an URL to a filename and attempts to download it to the given filename
 // If force is true, any existing file may be overwritten.
 // May exit the program if there are fundamental problems.
-func MustDownloadFile(url, filename string, o *term.TextOutput, force bool) {
+func MustDownloadFile(url, filename string, o *textoutput.TextOutput, force bool) {
 	var client http.Client
 	resp, err := client.Get(url)
 	if err != nil {
@@ -46,25 +46,28 @@ func MustDownloadFile(url, filename string, o *term.TextOutput, force bool) {
 	}
 }
 
+// Expand ~ to $HOME, or return the given string
+func userexpand(path string) string {
+	u, err := user.Current()
+	if err != nil {
+		return path
+	}
+	return strings.Replace(path, "~", u.HomeDir, -1)
+}
+
 // GetIconSearchURL reads configuration from ~/.gendeskrc, ~/.config/gendesk or /etc/gendeskrc
 // in order to retrieve an URL containing "%s" that can be used for searching for icons by name.
 // May exit the program if there are fundamental problems.
-func GetIconSearchURL(o *term.TextOutput) string {
-	usr, err := user.Current()
-	if err != nil {
-		return defaultIconSearchURL
-	}
-	homedir := usr.HomeDir
-
+func GetIconSearchURL(o *textoutput.TextOutput) string {
 	// Read the configuration file from various locations,
 	cfilename := "~/.config/gendesk"
-	cfile, err := conf.ReadConfigFile(strings.Replace(cfilename, "~", homedir, -1))
+	cfile, err := goconfig.LoadConfigFile(userexpand(cfilename))
 	if err != nil {
 		cfilename = "~/.gendeskrc"
-		cfile, err = conf.ReadConfigFile(strings.Replace(cfilename, "~", homedir, -1))
+		cfile, err = goconfig.LoadConfigFile(userexpand(cfilename))
 		if err != nil {
 			cfilename = "/etc/gendeskrc"
-			conf.ReadConfigFile(cfilename)
+			cfile, err = goconfig.LoadConfigFile(cfilename)
 			if err != nil {
 				return defaultIconSearchURL
 			}
@@ -72,7 +75,7 @@ func GetIconSearchURL(o *term.TextOutput) string {
 	}
 
 	// Found a configuration file, find the url under the [default] section with the key iconSearchURL
-	iconURL, err := cfile.GetString("default", "icon_url")
+	iconURL, err := cfile.GetValue("default", "icon_url")
 	if err != nil {
 		o.Err("error!\n")
 		o.Println(o.DarkRed(cfilename + " does not contain icon_url under under a [default] section. Example:"))
@@ -137,7 +140,7 @@ func findIconURL(searchURL, keyword string, nmatch int) (URL string) {
 // URL given in the configuration file, or from iconarchive.com.
 // Only supports downloading png icons.
 // May exit the program if there are fundamental problems.
-func WriteIconFile(name string, o *term.TextOutput, force bool) error {
+func WriteIconFile(name string, o *textoutput.TextOutput, force bool) error {
 	var (
 		downloadURL   string
 		client        http.Client
