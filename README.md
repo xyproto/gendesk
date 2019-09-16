@@ -9,6 +9,12 @@ See `gendesk --help` or the man page for more info.
 
 Pull requests are welcome.
 
+Changes from 1.0.3 to 1.0.4
+---------------------------
+* Include go.mod and go.sum in the release package.
+* Minor changes to the output message when no arguments are given.
+* Update dependencies.
+
 Changes from 1.0.2 to 1.0.3
 ---------------------------
 * Let flags overrides the values from a given PKGBUILD file.
