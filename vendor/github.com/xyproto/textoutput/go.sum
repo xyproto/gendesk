@@ -1,8 +1,8 @@
 github.com/pkg/term v0.0.0-20190109203006-aa71e9d9e942 h1:A7GG7zcGjl3jqAqGPmcNjd/D9hzL95SuoOQAaFNdLU0=
 github.com/pkg/term v0.0.0-20190109203006-aa71e9d9e942/go.mod h1:eCbImbZ95eXtAUIbLAuAVnBnwf83mjf6QIVH8SHYwqQ=
-github.com/xyproto/vt100 v1.1.0 h1:MDqQzyX97s2xv3fz82vaOr55w6oHRJI7l+2nVUrn6Ck=
-github.com/xyproto/vt100 v1.1.0/go.mod h1:w3/QDDJMEllFWidelL6SAPydmtYPPvqdVyAw9i616F4=
+github.com/xyproto/vt100 v1.2.0 h1:g8Dc0fBhzD1a4G8Toq+hvTJX9DfLAFjY6DX+S+UyQIM=
+github.com/xyproto/vt100 v1.2.0/go.mod h1:w3/QDDJMEllFWidelL6SAPydmtYPPvqdVyAw9i616F4=
 golang.org/x/sys v0.0.0-20190913121621-c3b328c6e5a7 h1:wYqz/tQaWUgGKyx+B/rssSE6wkIKdY5Ee6ryOmzarIg=
 golang.org/x/sys v0.0.0-20190913121621-c3b328c6e5a7/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
-golang.org/x/sys v0.0.0-20190916165910-8a69140bde95 h1:fssfdyfIxP8slcYeB1BnYuvJgq8Q6Q9aQwNBN2IDY/E=
-golang.org/x/sys v0.0.0-20190916165910-8a69140bde95/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
+golang.org/x/sys v0.0.0-20190916202348-b4ddaad3f8a3 h1:7TYNF4UdlohbFwpNH04CoPMp1cHUZgO1Ebq5r2hIjfo=
+golang.org/x/sys v0.0.0-20190916202348-b4ddaad3f8a3/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=

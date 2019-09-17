@@ -48,7 +48,7 @@ var (
 
 	// Aliases
 	Pink = LightMagenta
-	Gray = LightGray
+	Gray = DarkGray
 
 	// Dark background colors (+ light gray)
 	BackgroundBlack     = NewAttributeColor("40")
