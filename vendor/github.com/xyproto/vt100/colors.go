@@ -1,6 +1,7 @@
 package vt100
 
 import (
+	"bytes"
 	"fmt"
 	"image/color"
 	"os"
@@ -120,8 +121,8 @@ var (
 	}
 
 	LightColorMap = map[string]AttributeColor{
-		"black":        DarkGray,
-		"Black":        DarkGray,
+		"black":        Black,
+		"Black":        Black,
 		"red":          LightRed,
 		"Red":          LightRed,
 		"green":        LightGreen,
@@ -282,7 +283,7 @@ func b2s(b byte) string {
 func (ac AttributeColor) String() string {
 	attributeString := strings.Join(mapBS(ac, b2s), ";")
 	// Replace '{attr1};...;{attrn}' with the generated attribute string and return
-	return get(specVT100, "Set Attribute Mode", map[string]string{"{attr1};...;{attrn}": attributeString}, false)
+	return get(specVT100, "Set Attribute Mode", map[string]string{"{attr1};...;{attrn}": attributeString})
 }
 
 // Get the full string needed for outputting colored texti, with the text and stopping the color attribute
@@ -369,4 +370,9 @@ func (ac AttributeColor) Ints() []int {
 func TrueColor(fg color.Color, text string) string {
 	c := color.NRGBAModel.Convert(fg).(color.NRGBA)
 	return fmt.Sprintf("\x1b[38;2;%d;%d;%dm%s\x1b[0m", c.R, c.G, c.B, text)
+}
+
+// Equal checks if two colors have the same attributes, in the same order.
+func (ac AttributeColor) Equal(other AttributeColor) bool {
+	return bytes.Equal(ac, other)
 }

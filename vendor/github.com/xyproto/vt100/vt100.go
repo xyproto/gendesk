@@ -254,14 +254,11 @@ func flatten(m map[string]string) string {
 
 // Given a terminal specification, a command and a map to replace strings with,
 // return the terminal codes. If dummy is true <ESC> is returned instead of \033.
-func get(specVT100, command string, replacemap map[string]string, dummy bool) string {
+func get(specVT100, command string, replacemap map[string]string) string {
 	if command == "" {
 		return ""
 	}
 	combined := "get:" + command + flatten(replacemap)
-	if dummy {
-		combined += "D"
-	}
 	memoMut.RLock()
 	if val, ok := memo[combined]; ok {
 		memoMut.RUnlock()
@@ -275,13 +272,6 @@ func get(specVT100, command string, replacemap map[string]string, dummy bool) st
 			for k, v := range replacemap {
 				termCommand = strings.Replace(termCommand, k, v, 1)
 			}
-			if dummy {
-				// Return the terminal command, with "<ESC>" instead of the actual ESC character
-				memoMut.Lock()
-				memo[combined] = termCommand
-				memoMut.Unlock()
-				return termCommand
-			}
 			// Return the terminal command
 			termCommand = strings.Replace(termCommand, "<ESC>", "\033", -1)
 			memoMut.Lock()
@@ -294,25 +284,23 @@ func get(specVT100, command string, replacemap map[string]string, dummy bool) st
 }
 
 // Return the terminal command, given a map to replace the values mentioned in the spec.
-// If "dummy" is true, the terminal command will be printed instead of executed.
 func Get(command string, replacemap map[string]string) string {
-	return get(specVT100, command, replacemap, false)
+	return get(specVT100, command, replacemap)
 }
 
 // Do the terminal command, given a map to replace the values mentioned in the spec.
-// If "dummy" is true, the terminal command will be printed instead of executed.
 func Set(command string, replacemap map[string]string) {
-	fmt.Print(get(specVT100, command, replacemap, false))
+	fmt.Print(get(specVT100, command, replacemap))
 }
 
 // Do the given command, with no parameters
 func Do(command string) {
-	fmt.Print(get(specVT100, command, map[string]string{}, false))
+	fmt.Print(get(specVT100, command, map[string]string{}))
 }
 
 // Get the terminal command for setting a given color number
 func ColorNum(colorNum int) string {
-	return get(specVT100, "Set Attribute Mode", map[string]string{"{attr1};...;{attrn}": strconv.Itoa(colorNum)}, false)
+	return get(specVT100, "Set Attribute Mode", map[string]string{"{attr1};...;{attrn}": strconv.Itoa(colorNum)})
 }
 
 // Execute the terminal command for setting a given color number
@@ -376,7 +364,7 @@ func SetAttribute(name string) {
 
 // Get the terminal command for setting no colors or other display attributes
 func NoColor() string {
-	return get(specVT100, "Set Attribute Mode", map[string]string{"{attr1};...;{attrn}": "0"}, false)
+	return get(specVT100, "Set Attribute Mode", map[string]string{"{attr1};...;{attrn}": "0"})
 }
 
 // Execute the terminal command for setting no colors or other display attributes
@@ -405,7 +393,7 @@ func AttributeAndColor(attr, name string) string {
 		trimmed := strings.TrimSpace(line)
 		if strings.HasSuffix(trimmed, name) {
 			numString := strings.TrimSpace(trimmed[:len(trimmed)-len(name)])
-			termCommand := get(specVT100, "Set Attribute Mode", map[string]string{"{attr1};...;{attrn}": attribute + numString}, false)
+			termCommand := get(specVT100, "Set Attribute Mode", map[string]string{"{attr1};...;{attrn}": attribute + numString})
 			memoMut.Lock()
 			memo[combined] = termCommand
 			memoMut.Unlock()

@@ -227,8 +227,7 @@ func (c *Canvas) Plot(x, y uint, s rune) {
 	c.mut.Unlock()
 }
 
-// Plot a bright color
-func (c *Canvas) PlotC(x, y uint, fg string, s rune) {
+func (c *Canvas) PlotColor(x, y uint, fg AttributeColor, s rune) {
 	if x < 0 || y < 0 {
 		return
 	}
@@ -239,53 +238,7 @@ func (c *Canvas) PlotC(x, y uint, fg string, s rune) {
 	c.mut.Lock()
 	chars := (*c).chars
 	chars[index].s = s
-	attr, ok := LightColorMap[fg]
-	if ok {
-		chars[index].fg = attr
-	} else {
-		// Pink, if the given color name is not found
-		chars[index].fg = Pink
-	}
-	chars[index].drawn = false
-	c.mut.Unlock()
-}
-
-// Plot a dark color
-func (c *Canvas) PlotDC(x, y uint, fg string, s rune) {
-	if x < 0 || y < 0 {
-		return
-	}
-	if x >= c.w || y >= c.h {
-		return
-	}
-	index := y*c.w + x
-	c.mut.Lock()
-	chars := (*c).chars
-	chars[index].s = s
-	attr, ok := DarkColorMap[fg]
-	if ok {
-		chars[index].fg = attr
-	} else {
-		// Pink, if the given color name is not found
-		chars[index].fg = Pink
-	}
-	chars[index].drawn = false
-	c.mut.Unlock()
-}
-
-// Plot a foreground color and a rune
-func (c *Canvas) PlotAC(x, y uint, ac AttributeColor, s rune) {
-	if x < 0 || y < 0 {
-		return
-	}
-	if x >= c.w || y >= c.h {
-		return
-	}
-	index := y*c.w + x
-	c.mut.Lock()
-	chars := (*c).chars
-	chars[index].s = s
-	chars[index].fg = ac
+	chars[index].fg = fg
 	chars[index].drawn = false
 	c.mut.Unlock()
 }

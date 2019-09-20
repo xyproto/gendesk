@@ -3,14 +3,14 @@ github.com/pkg/term
 github.com/pkg/term/termios
 # github.com/unknwon/goconfig v0.0.0-20190425194916-3dba17dd7b9e
 github.com/unknwon/goconfig
-# github.com/xyproto/textoutput v1.4.0
+# github.com/xyproto/textoutput v1.7.0
 github.com/xyproto/textoutput
-# github.com/xyproto/vt100 v1.2.0
+# github.com/xyproto/vt100 v1.4.0
 github.com/xyproto/vt100
 # github.com/yhat/scrape v0.0.0-20161128144610-24b7890b0945
 github.com/yhat/scrape
-# golang.org/x/net v0.0.0-20190916140828-c8589233b77d
+# golang.org/x/net v0.0.0-20190918130420-a8b05e9114ab
 golang.org/x/net/html
 golang.org/x/net/html/atom
-# golang.org/x/sys v0.0.0-20190916202348-b4ddaad3f8a3
+# golang.org/x/sys v0.0.0-20190919044723-0c1ff786ef13
 golang.org/x/sys/unix
