@@ -5,10 +5,12 @@
 * Supports colors and attributes.
 * Developed for Linux. May work on other systems, but there are no guarantees.
 * Can detect the terminal size.
-* Can get key-presses, including arrow keys.
-* Has a Canvas struct, for drawing only the updated characters to the terminal.
+* Can get key-presses, including arrow keys (252, 253, 254, 255).
+* Has a Canvas struct, for drawing only the updated lines to the terminal.
 * Uses the spec directly, but memoizes the commands sent to the terminal, for speed.
-* Everything is ready if someone wants to use this to build a utility similar to `dialog` or `whiptail`.
+* Could be used for building a better `dialog` or `whiptail` utility.
+
+Note that [go-terminput](https://github.com/tj/go-terminput) is probably a better choice for handling keyboard input, and that they current keyboard-related functions will be modified to use go-terminput in the future (but the signatures will stay the same).
 
 ### Images
 
@@ -30,12 +32,20 @@ A physical VT100 terminal. Photo by [Jason Scott](https://www.flickr.com/photos/
 
 ### The `vt100` Go Module
 
+Requires Go 1.10 or later.
+
+### Features and limitations
+
+* Can detect letters, arrow keys and space. F12 and similar keys are not supported (they are supported by vt220 but not vt100).
+* Resizing the terminal when using the Canvas struct may cause artifacts, for a brief moment.
+* Holding down a key may trigger key repetition which may speed up the main loop.
+
 ### Simple use
 
 Output "hi" in blue:
 
 ```go
-fmt.Println(vt100.BrightColor("hi", "Blue"))
+vt100.Blue.Output("hi")
 ```
 
 Erase the current line:
@@ -56,14 +66,14 @@ The full overview of possible commands are at the top of `vt100.go`.
 
 See `cmd/move` for a more advanced example, where a character can be moved around with the arrow keys.
 
-### Features and limitations
+### A small editor using `vt100`
 
-* Can detect letters, arrow keys and space. F12 and similar keys are not supported (they are supported by vt220 but not vt100).
-* Resizing the terminal when using the Canvas struct may cause artifacts, for a brief moment.
-* Holding down a key may trigger key repetition which may speed up the main loop.
+The `o` editor that uses `vt100` can be used for editing Go or C++ code, or for creating ASCII graphics. Quick installation:
+
+    go get -u github.com/xyproto/o
 
 ### General info
 
-* Version: 1.4.0
+* Version: 1.8.1
 * Licence: MIT
 * Author: Alexander F. Rødseth &lt;xyproto@archlinux.org&gt;

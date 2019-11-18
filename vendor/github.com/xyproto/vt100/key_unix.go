@@ -3,12 +3,15 @@
 package vt100
 
 import (
-	"github.com/pkg/term"
+	"strconv"
 	"time"
+	"unicode"
+
+	"github.com/pkg/term"
 )
 
 var (
-	defaultTimeout = 10 * time.Millisecond
+	defaultTimeout = 2 * time.Millisecond
 	lastKey        int
 )
 
@@ -94,6 +97,45 @@ func asciiAndKeyCode(tty *TTY) (ascii, keyCode int, err error) {
 	} else if numRead == 1 {
 		ascii = int(bytes[0])
 	} else {
+		// TWo characters read??
+	}
+	return
+}
+
+// Don't use the "JavaScript key codes" for the arrow keys
+func asciiAndKeyCodeNoJavascript(tty *TTY) (ascii, keyCode int, err error) {
+	bytes := make([]byte, 3)
+	var numRead int
+	tty.RawMode()
+	tty.NoBlock()
+	tty.SetTimeout(tty.timeout)
+	numRead, err = tty.t.Read(bytes)
+	tty.Restore()
+	tty.t.Flush()
+	if err != nil {
+		return
+	}
+	if numRead == 3 && bytes[0] == 27 && bytes[1] == 91 {
+		// Three-character control sequence, beginning with "ESC-[".
+
+		// Since there are no ASCII codes for arrow keys, we use
+		// the last 4 values of a byte
+		if bytes[2] == 65 {
+			// Up
+			keyCode = 253
+		} else if bytes[2] == 66 {
+			// Down
+			keyCode = 255
+		} else if bytes[2] == 67 {
+			// Right
+			keyCode = 254
+		} else if bytes[2] == 68 {
+			// Left
+			keyCode = 252
+		}
+	} else if numRead == 1 {
+		ascii = int(bytes[0])
+	} else {
 		// Two characters read??
 	}
 	return
@@ -144,7 +186,7 @@ func KeyCodeOnce() int {
 
 // Return the keyCode or ascii, but ignore repeated keys
 func (tty *TTY) Key() int {
-	ascii, keyCode, err := asciiAndKeyCode(tty)
+	ascii, keyCode, err := asciiAndKeyCodeNoJavascript(tty)
 	if err != nil {
 		lastKey = 0
 		return 0
@@ -191,4 +233,90 @@ func WaitForKey() {
 			return
 		}
 	}
+}
+
+// String will block and then return a string
+// Arrow keys are returned as ←, →, ↑ or ↓
+// returns an empty string if the pressed key could not be interpreted
+func (tty *TTY) String() string {
+	bytes := make([]byte, 3)
+	tty.RawMode()
+	//tty.NoBlock()
+	tty.SetTimeout(0)
+	numRead, err := tty.t.Read(bytes)
+	if err != nil {
+		return ""
+	}
+	tty.Restore()
+	tty.t.Flush()
+	if numRead == 3 && bytes[0] == 27 && bytes[1] == 91 {
+		// Three-character control sequence, beginning with "ESC-[".
+
+		// Since there are no ASCII codes for arrow keys, we use
+		// the last 4 values of a byte
+		if bytes[2] == 65 {
+			// Up
+			return "↑"
+		} else if bytes[2] == 66 {
+			// Down
+			return "↓"
+		} else if bytes[2] == 67 {
+			// Right
+			return "→"
+		} else if bytes[2] == 68 {
+			// Left
+			return "←"
+		}
+	} else if numRead == 1 {
+		r := rune(bytes[0])
+		if unicode.IsPrint(r) {
+			return string(r)
+		}
+		return "c:" + strconv.Itoa(int(r))
+	} else {
+		// Two or more bytes, a unicode character (or mashing several keys)
+		return string([]rune(string(bytes))[0])
+	}
+	return ""
+}
+
+// Rune will block and then return a rune.
+// Arrow keys are returned as ←, →, ↑ or ↓
+// returns a rune(0) if the pressed key could not be interpreted
+func (tty *TTY) Rune() rune {
+	bytes := make([]byte, 3)
+	tty.RawMode()
+	//tty.NoBlock()
+	tty.SetTimeout(0)
+	numRead, err := tty.t.Read(bytes)
+	if err != nil {
+		return rune(0)
+	}
+	tty.Restore()
+	tty.t.Flush()
+	if numRead == 3 && bytes[0] == 27 && bytes[1] == 91 {
+		// Three-character control sequence, beginning with "ESC-[".
+
+		// Since there are no ASCII codes for arrow keys, we use
+		// the last 4 values of a byte
+		if bytes[2] == 65 {
+			// Up
+			return '↑'
+		} else if bytes[2] == 66 {
+			// Down
+			return '↓'
+		} else if bytes[2] == 67 {
+			// Right
+			return '→'
+		} else if bytes[2] == 68 {
+			// Left
+			return '←'
+		}
+	} else if numRead == 1 {
+		return rune(bytes[0])
+	} else {
+		// Two or more bytes, a unicode character (or mashing several keys)
+		return []rune(string(bytes))[0]
+	}
+	return rune(0)
 }
