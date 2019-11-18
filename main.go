@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
-	"github.com/xyproto/textoutput"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 	"text/template"
+
+	"github.com/xyproto/textoutput"
 )
 
 const (
@@ -312,8 +313,12 @@ func main() {
 				os.Exit(1)
 			}
 			// Could not find the default filename, complain about missing arguments
-			fmt.Println(o.Words("Provide a package name with --pkgname, or a valid PKGBUILD file. Use --help for more info.",
-				"blue", "blue", "blue", "blue", "blue", "white", "blue", "blue", "blue", "green", "blue", "blue", "white", "blue"))
+			if os.Getenv("NO_COLOR") != "" {
+				fmt.Println("Provide a package name with --pkgname, or a valid PKGBUILD file. Use --help for more info.")
+			} else {
+				fmt.Println(o.Words("Provide a package name with --pkgname, or a valid PKGBUILD file. Use --help for more info.",
+					"blue", "blue", "blue", "blue", "blue", "white", "blue", "blue", "blue", "green", "blue", "blue", "white", "blue"))
+			}
 			os.Exit(1)
 		}
 		// TODO: Use a struct per pkgname instead
