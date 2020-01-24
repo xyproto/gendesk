@@ -53,7 +53,7 @@ func betweenQuotes(orig string) string {
 func betweenQuotesOrAfterEquals(orig string) string {
 	s := betweenQuotes(orig)
 	// Check for exactly one "="
-	if (s == "") && (strings.Count(orig, "=") == 1) {
+	if s == "" && strings.Count(orig, "=") == 1 {
 		s = strings.TrimSpace(strings.Split(orig, "=")[1])
 	}
 	return s
@@ -62,10 +62,12 @@ func betweenQuotesOrAfterEquals(orig string) string {
 // Does a keyword exist in the string?
 // Disregards several common special characters (like -, _ and .)
 func has(s string, kw string) bool {
-	lowercase := strings.ToLower(s)
-	// Remove the most common special characters
-	massaged := strings.Trim(lowercase, "-_.,!?()[]{}\\/:;+@")
-	words := strings.Split(massaged, " ")
+	var (
+		lowercase = strings.ToLower(s)
+		// Remove the most common special characters
+		massaged = strings.Trim(lowercase, "-_.,!?()[]{}\\/:;+@")
+		words    = strings.Split(massaged, " ")
+	)
 	for _, word := range words {
 		if word == kw {
 			return true

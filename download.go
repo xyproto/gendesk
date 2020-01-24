@@ -20,6 +20,12 @@ const (
 	defaultIconSearchURL = "http://www.iconarchive.com/search?q=%s&res=48&page=1&sort=popularity"
 )
 
+var (
+	errNoDownloadURL = errors.New("no icon download URL")
+	errNoIconFound   = errors.New("no icon found")
+	errNotPNG        = errors.New("no PNG icon found")
+)
+
 // MustDownloadFile takes an URL to a filename and attempts to download it to the given filename
 // If force is true, any existing file may be overwritten.
 // May exit the program if there are fundamental problems.
@@ -156,7 +162,7 @@ func WriteIconFile(name string, o *textoutput.TextOutput, force bool) error {
 	}
 
 	if downloadURL == "" {
-		return errors.New("No icon download URL")
+		return errNoDownloadURL
 	}
 
 	resp, err := client.Get(downloadURL)
@@ -167,29 +173,29 @@ func WriteIconFile(name string, o *textoutput.TextOutput, force bool) error {
 	defer resp.Body.Close()
 	b, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		o.ErrExit("Could not dump body")
+		o.ErrExit("could not dump body")
 	}
 
 	// If the icon is the "No icon found" icon (known hash), return with an error
 	h := md5.New()
 	h.Write(b)
 	if fmt.Sprintf("%x", h.Sum(nil)) == "12928aa3233965175ea30f5acae593bf" {
-		return errors.New("No icon found")
+		return errNoIconFound
 	}
 
 	PNGheader := []byte{0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A}
 	if !bytes.HasPrefix(b, PNGheader) {
-		return errors.New("No PNG icon found")
+		return errNotPNG
 	}
 
 	// Check if the file exists (and that force is not enabled)
 	if _, err := os.Stat(filename); err == nil && (!force) {
-		o.ErrExit("no! " + filename + " already exists. Use -f to overwrite.")
+		o.ErrExit(filename + " already exists, use -f to overwrite")
 	}
 
 	err = ioutil.WriteFile(filename, b, 0644)
 	if err != nil {
-		o.ErrExit("Could not write icon to " + filename + "!")
+		o.ErrExit("Could not write icon to: " + filename)
 	}
 	return nil
 }
