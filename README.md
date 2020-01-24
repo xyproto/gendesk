@@ -11,8 +11,8 @@ Pull requests are welcome.
 
 Changes from 1.0.4 to 1.0.5
 ---------------------------
-* Update dependencies.
 * If the first argument is not a file that exists, use it as the package name.
+* Update dependencies.
 
 Changes from 1.0.3 to 1.0.4
 ---------------------------
@@ -169,6 +169,6 @@ TODO
 
 General information
 -------------------
-* Version: 1.0.4
+* Version: 1.0.5
 * Author: Alexander F. Rødseth &lt;xyproto@archlinux.org&gt;
 * License: MIT
