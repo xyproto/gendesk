@@ -79,21 +79,3 @@ func TestHas(t *testing.T) {
 		t.Fail()
 	}
 }
-
-func Example_min() {
-	fmt.Println(min(0, 0))
-	fmt.Println(min(0, 1))
-	fmt.Println(min(1, 1))
-	fmt.Println(min(-1, 0))
-	fmt.Println(min(0, -1))
-	fmt.Println(min(1, -1))
-	fmt.Println(min(9999, 0))
-	// output:
-	// 0
-	// 0
-	// 1
-	// -1
-	// -1
-	// -1
-	// 0
-}
