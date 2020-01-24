@@ -41,22 +41,15 @@ const (
 // WMStarter contains the information needed to generate
 // a .desktop file for a Window Manager
 type WMStarter struct {
-	Name string
-	Exec string
+	Name, Exec string
 }
 
 // AppStarter contains the information needed to generate
 // a .desktop file for an application
 type AppStarter struct {
-	Name          string
-	GenericName   string
-	Comment       string
-	Exec          string
-	Icon          string
-	UseTerminal   bool
-	StartupNotify bool
-	CategoryList  string
-	MimeTypesList string
+	Name, GenericName, Comment, Exec, Icon string
+	UseTerminal, StartupNotify             bool
+	CategoryList, MimeTypesList            string
 }
 
 var (
@@ -106,7 +99,6 @@ func writeWindowManagerDesktopFile(pkgname, name, exec, custom string, force boo
 		o.Println(pkgname + ".desktop already exists. Use -f as the first argument to gendesk to overwrite.")
 		os.Exit(1)
 	}
-
 	ioutil.WriteFile(pkgname+".desktop", buf.Bytes(), 0644)
 }
 
@@ -208,11 +200,11 @@ Possible flags:
     --help                       This text
 
 Note:
-    * Just providing --pkgname is enough to generate a .desktop file.
+    * Just providing a package name is enough to generate a .desktop file.
     * Providing a PKGBUILD filename instead of flags is a possibility.
     * "$startdir/PKGBUILD" is the default PKGBUILD filename.
-    * _exec in the PKGBUILD can be used to specify a different executable for the
-      .desktop file. Example: _exec=('appname-gui')
+    * _exec in the PKGBUILD can be used to specify a different executable for
+	  the .desktop file. Example: _exec=('appname-gui')
     * Split PKGBUILD packages are supported.
     * If a .png, .svg or .xpm icon is not found as a file or in the PKGBUILD,
       an icon will be downloaded from either the location specified in the
@@ -280,12 +272,12 @@ func main() {
 					filename = defaultPKGBUILD
 				} else {
 					// If SRCDEST is set, use that
-					filename = os.Getenv("SRCDEST") + "/PKGBUILD"
+					filename = filepath.Join(os.Getenv("SRCDEST"), "PKGBUILD")
 				}
 			} else {
 				pkgname = os.Getenv("pkgname")
 			}
-		} else if len(args) > 0 {
+		} else {
 			// args are non-flag arguments
 			filename = args[0]
 		}
@@ -305,24 +297,15 @@ func main() {
 	customMap := make(map[string]string)
 
 	if filename != "" {
-		// Check if the PKGBUILD filename is found
+		// Check if the given filename is found
 		if _, err := os.Stat(filename); err != nil {
-			if filename != defaultPKGBUILD {
-				// Not the default filename, complain that the file is missing
-				o.Err("Could not find " + filename + ", provide a --pkgname or a valid PKGBUILD file")
-				os.Exit(1)
-			}
-			// Could not find the default filename, complain about missing arguments
-			if os.Getenv("NO_COLOR") != "" {
-				fmt.Println("Provide a package name with --pkgname, or a valid PKGBUILD file. Use --help for more info.")
-			} else {
-				fmt.Println(o.Words("Provide a package name with --pkgname, or a valid PKGBUILD file. Use --help for more info.",
-					"blue", "blue", "blue", "blue", "blue", "white", "blue", "blue", "blue", "green", "blue", "blue", "white", "blue"))
-			}
-			os.Exit(1)
+			// If --pkgname is not given and the file does not exist,
+			// use it as the pkgname
+			pkgname, filename = filename, ""
+		} else {
+			// TODO: Use a struct per pkgname instead
+			parsePKGBUILD(o, filename, &iconurl, &pkgname, &pkgnames, &pkgdescMap, &execMap, &nameMap, &genericNameMap, &mimeTypesMap, &commentMap, &categoriesMap, &customMap)
 		}
-		// TODO: Use a struct per pkgname instead
-		parsePKGBUILD(o, filename, &iconurl, &pkgname, &pkgnames, &pkgdescMap, &execMap, &nameMap, &genericNameMap, &mimeTypesMap, &commentMap, &categoriesMap, &customMap)
 	}
 
 	// Fill in the dictionaries using the given arguments. This overrides values from the PKGBUILD.
