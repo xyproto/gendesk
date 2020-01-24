@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	versionString = "Desktop File Generator 1.0.4"
+	versionString = "Desktop File Generator 1.0.5"
 
 	versionHelp       = "Show application name and version"
 	nodownloadHelp    = "Don't download anything"
