@@ -1,13 +1,18 @@
 Desktop File Generator
 ======================
 
-[![Build Status](https://travis-ci.org/xyproto/gendesk.svg?branch=master)](https://travis-ci.org/xyproto/gendesk) [![Go Report Card](https://goreportcard.com/badge/github.com/xyproto/gendesk)](https://goreportcard.com/report/github.com/xyproto/gendesk)
+[![Build Status](https://travis-ci.com/xyproto/gendesk.svg?branch=master)](https://travis-ci.com/xyproto/gendesk) [![Go Report Card](https://goreportcard.com/badge/github.com/xyproto/gendesk)](https://goreportcard.com/report/github.com/xyproto/gendesk)
 
 Generates .desktop files and downloads .png icons based on command line arguments.
 
 See `gendesk --help` or the man page for more info.
 
 Pull requests are welcome.
+
+Changes from 1.0.4 to 1.0.5
+---------------------------
+* Update dependencies.
+* If the first argument is not a file that exists, use it as the package name.
 
 Changes from 1.0.3 to 1.0.4
 ---------------------------
@@ -164,7 +169,6 @@ TODO
 
 General information
 -------------------
-
-* Version: 1.0.3
+* Version: 1.0.4
 * Author: Alexander F. Rødseth &lt;xyproto@archlinux.org&gt;
 * License: MIT
