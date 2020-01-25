@@ -9,6 +9,8 @@ See `gendesk --help` or the man page for more info.
 
 Pull requests are welcome.
 
+[![Packaging status](https://repology.org/badge/vertical-allrepos/gendesk.svg)](https://repology.org/project/gendesk/versions)
+
 Changes from 1.0.4 to 1.0.5
 ---------------------------
 * If the first argument is not a file that exists, use it as the package name.
