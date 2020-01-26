@@ -335,8 +335,10 @@ func main() {
 			continue
 		}
 		// Strip the "-git", "-svn" or "-hg" suffix, if present
-		if strings.HasSuffix(pkgname, "-git") || strings.HasSuffix(pkgname, "-svn") || strings.HasSuffix(pkgname, "-hg") {
+		if strings.HasSuffix(pkgname, "-git") || strings.HasSuffix(pkgname, "-svn") {
 			pkgname = pkgname[:len(pkgname)-4]
+		} else if strings.HasSuffix(pkgname, "-hg") {
+			pkgname = pkgname[:len(pkgname)-3]
 		}
 		// TODO: Find a better way for all the if checks below
 		pkgdesc, found := pkgdescMap[pkgname]
