@@ -31,7 +31,7 @@ const (
 	terminalHelp      = "Run the application in a terminal (default is false)"
 	categoriesHelp    = "Categories, see other .desktop files for examples"
 	mimetypesHelp     = "Mime types, see other .desktop files for examples"
-	startupnotifyHelp = "Notifcation when the application starts (default is false)"
+	startupnotifyHelp = "Notification when the application starts (default is false)"
 	customHelp        = "Custom line to append at the end of the .desktop file"
 	iconHelp          = "Specify a filename that will be used for the icon"
 
@@ -96,7 +96,7 @@ func writeWindowManagerDesktopFile(pkgname, name, exec, custom string, force boo
 	// Check if the file exists (and that force is not enabled)
 	if _, err := os.Stat(pkgname + ".desktop"); err == nil && (!force) {
 		o.Err("no")
-		o.Println(pkgname + ".desktop already exists. Use -f as the first argument to gendesk to overwrite.")
+		o.Println(pkgname + ".desktop already exists. Use -f as the first argument to overwrite it.")
 		os.Exit(1)
 	}
 	ioutil.WriteFile(pkgname+".desktop", buf.Bytes(), 0644)
@@ -134,7 +134,7 @@ func writeDesktopFile(pkgname, name, comment, exec, icon, categories, genericNam
 	// Check if the file exists (and that force is not enabled)
 	if _, err := os.Stat(pkgname + ".desktop"); err == nil && (!force) {
 		o.Err("no")
-		o.Println(pkgname + ".desktop already exists. Use -f as the first argument to gendesk to overwrite.")
+		o.Println(pkgname + ".desktop already exists. Use -f as the first argument to overwrite it.")
 		os.Exit(1)
 	}
 

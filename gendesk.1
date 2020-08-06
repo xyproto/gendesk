@@ -2,7 +2,7 @@
 .\"
 .TH "gendesk" 1 "24 Jan 2020" "" ""
 .SH NAME
-gendesk \- generate .desktop files based on commandline arguments (or a PKGBUILD file)
+gendesk \- generate .desktop files based on command-line arguments (or a PKGBUILD file)
 .SH SYNOPSIS
 .B gendesk
 [flags or PKGBUILD file]
@@ -33,7 +33,7 @@ Supported environment variables:
 .sp
 .SH "EXAMPLES"
 .B gendesk
-  Exits with errorcode 1 if ../PKGBUILD is not found and pkgname is not given and $pkgname is not defined. Will try to use both $pkgname and $pkgdesc.
+  Exits with error code 1 if ../PKGBUILD is not found and pkgname is not given and $pkgname is not defined. Will try to use both $pkgname and $pkgdesc.
 .sp
 .B gendesk PKGBUILD
   Looks for a PKGBUILD in the current directory and generates a .desktop file.
@@ -70,7 +70,7 @@ quiet; don't output text
 force; overwrite files if needed
 .TP
 .B \-wm
-generate a small desktop file for launching a windowmanager instead
+generate a small desktop file for launching a window manager instead
 .TP
 .B \-\-pkgname
 use this package name for the application (ie. emacs)
@@ -100,10 +100,10 @@ specify categories (ie. Utility;TextEditor;)
 specify if the application should be run in a terminal (default is false)
 .TP
 .B \-\-mimetypes
-specify mimetypes
+specify mime-types
 .TP
 .B \-\-startupnotify
-specifiy if a desktop notification should occur when the application starts (default is false)
+specify if a desktop notification should occur when the application starts (default is false)
 .TP
 .B \-\-custom
 specify an extra line (or several lines) to append at the end
