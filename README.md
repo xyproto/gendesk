@@ -3,13 +3,21 @@ Desktop File Generator
 
 [![Build Status](https://travis-ci.com/xyproto/gendesk.svg?branch=master)](https://travis-ci.com/xyproto/gendesk) [![Go Report Card](https://goreportcard.com/badge/github.com/xyproto/gendesk)](https://goreportcard.com/report/github.com/xyproto/gendesk)
 
-Generates .desktop files and downloads .png icons based on command line arguments.
+Generates `.desktop` files and downloads `.png` icons based on command line arguments.
 
 See `gendesk --help` or the man page for more info.
 
 Pull requests are welcome.
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/gendesk.svg)](https://repology.org/project/gendesk/versions)
+
+Changes from 1.0.5 to 1.0.6
+---------------------------
+
+* Fix the `-hg` suffix (PR #13, thanks Michael Straube).
+* Fix an issue with the package description (issue #14, thanks Simon Dierl).
+* Minor changes.
+* Update dependencies.
 
 Changes from 1.0.4 to 1.0.5
 ---------------------------
