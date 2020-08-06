@@ -284,10 +284,6 @@ func main() {
 		}
 	}
 
-	if pkgname == "" {
-		pkgname = filepath.Base(filename)
-	}
-
 	// Environment variables
 	dataFromEnvironment(&pkgdesc, exec, name, genericname, mimetypes, comment, categories, custom)
 
@@ -311,8 +307,8 @@ func main() {
 	if filename != "" {
 		// Check if the given filename is found
 		if !exists(filename) {
-			// If --pkgname is not given and the file does not exist, use it as the pkgname
-			pkgname, filename = filename, ""
+			// If --pkgname is not given and the file does not exist, use the base naem as the pkgname
+			pkgname, filename = filepath.Base(filename), ""
 		} else {
 			// TODO: Use a struct per pkgname instead
 			parsePKGBUILD(o, filename, &iconurl, &pkgname, &pkgnames, &pkgdescMap, &execMap, &nameMap, &genericNameMap, &mimeTypesMap, &commentMap, &categoriesMap, &customMap)
