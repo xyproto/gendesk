@@ -13,9 +13,8 @@ Pull requests are welcome.
 
 Changes from 1.0.5 to 1.0.6
 ---------------------------
-
-* Fix the `-hg` suffix (PR #13, thanks Michael Straube).
-* Fix an issue with the package description (issue #14, thanks Simon Dierl).
+* Fix the `-hg` suffix (thanks Michael Straube).
+* Fix an issue with the package description (thanks Simon Dierl).
 * Minor changes.
 * Update dependencies.
 
@@ -179,6 +178,6 @@ TODO
 
 General information
 -------------------
-* Version: 1.0.5
+* Version: 1.0.6
 * Author: Alexander F. Rødseth &lt;xyproto@archlinux.org&gt;
 * License: MIT
