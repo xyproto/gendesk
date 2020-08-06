@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"strings"
 )
 
@@ -74,4 +75,10 @@ func has(s string, kw string) bool {
 		}
 	}
 	return false
+}
+
+// exists checks if the given path exists
+func exists(path string) bool {
+	_, err := os.Stat(path)
+	return err == nil
 }
