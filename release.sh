@@ -4,7 +4,7 @@
 #
 
 # Download the default icon
-curl -s -O 'http://roboticoverlords.org/images/default.png'
+curl -s -O 'https://roboticoverlords.org/images/default.png'
 
 # Generate a changelog from the entries in the readme
 awk '/Change/{flag=1}/General information/{flag=0}flag' README.md > CHANGELOG.md
