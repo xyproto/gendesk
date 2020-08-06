@@ -252,6 +252,7 @@ func main() {
 		args    = flag.Args()
 		pkgname = *givenPkgname
 		pkgdesc = *givenPkgdesc
+
 		// New text output struct.
 		// The first bool is if color should be enabled or disabled.
 		// The second bool is if any output should be enabled at all.
@@ -283,6 +284,10 @@ func main() {
 		}
 	}
 
+	if pkgname == "" {
+		pkgname = filepath.Base(filename)
+	}
+
 	// Environment variables
 	dataFromEnvironment(&pkgdesc, exec, name, genericname, mimetypes, comment, categories, custom)
 
@@ -305,7 +310,7 @@ func main() {
 
 	if filename != "" {
 		// Check if the given filename is found
-		if _, err := os.Stat(filename); err != nil {
+		if !exists(filename) {
 			// If --pkgname is not given and the file does not exist, use it as the pkgname
 			pkgname, filename = filename, ""
 		} else {
