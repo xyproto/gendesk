@@ -296,11 +296,17 @@ func main() {
 	categoriesMap := make(map[string]string)
 	customMap := make(map[string]string)
 
+	// Strip the "-git", "-svn" or "-hg" suffix, if present
+	if strings.HasSuffix(pkgname, "-git") || strings.HasSuffix(pkgname, "-svn") {
+		pkgname = pkgname[:len(pkgname)-4]
+	} else if strings.HasSuffix(pkgname, "-hg") {
+		pkgname = pkgname[:len(pkgname)-3]
+	}
+
 	if filename != "" {
 		// Check if the given filename is found
 		if _, err := os.Stat(filename); err != nil {
-			// If --pkgname is not given and the file does not exist,
-			// use it as the pkgname
+			// If --pkgname is not given and the file does not exist, use it as the pkgname
 			pkgname, filename = filename, ""
 		} else {
 			// TODO: Use a struct per pkgname instead
@@ -334,12 +340,7 @@ func main() {
 			// Don't bother if it's a -nox or -cli package
 			continue
 		}
-		// Strip the "-git", "-svn" or "-hg" suffix, if present
-		if strings.HasSuffix(pkgname, "-git") || strings.HasSuffix(pkgname, "-svn") {
-			pkgname = pkgname[:len(pkgname)-4]
-		} else if strings.HasSuffix(pkgname, "-hg") {
-			pkgname = pkgname[:len(pkgname)-3]
-		}
+
 		// TODO: Find a better way for all the if checks below
 		pkgdesc, found := pkgdescMap[pkgname]
 		if !found {
