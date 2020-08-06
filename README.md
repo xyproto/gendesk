@@ -13,7 +13,7 @@ Pull requests are welcome.
 
 Changes from 1.0.5 to 1.0.6
 ---------------------------
-* Fix the `-hg` suffix (thanks Michael Straube).
+* Fix an issue with the `-hg` suffix (thanks Michael Straube).
 * Fix an issue with the package description (thanks Simon Dierl).
 * Minor changes.
 * Update dependencies.
