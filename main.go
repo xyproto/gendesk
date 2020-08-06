@@ -407,7 +407,7 @@ func main() {
 		pngFilenames, _ := filepath.Glob("*.png")
 		svgFilenames, _ := filepath.Glob("*.svg")
 		xpmFilenames, _ := filepath.Glob("*.xpm")
-		if (0 == (len(pngFilenames) + len(svgFilenames) + len(xpmFilenames))) && !*nodownload {
+		if (len(pngFilenames)+len(svgFilenames)+len(xpmFilenames) == 0) && !*nodownload {
 			if len(pkgname) < 1 {
 				o.Err("No pkgname, can't download icon")
 			}
