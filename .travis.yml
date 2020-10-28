@@ -1,13 +1,14 @@
 language: go
 
 go:
-    - "1.10"
-    - "1.11"
-    - "1.12"
-    - "1.13"
-    - "1.14"
-    - tip
+  - "1.10"
+  - "1.11"
+  - "1.12"
+  - "1.13"
+  - "1.14"
+  - "1.15"
+  - tip
 
 # https://goreleaser.com/#continuous_integration
 after_success:
-    - test "$TRAVIS_OS_NAME" = "linux" -a -n "$TRAVIS_TAG" && curl -sL https://git.io/goreleaser | bash
+  - test "$TRAVIS_OS_NAME" = "linux" -a -n "$TRAVIS_TAG" && curl -sL https://git.io/goreleaser | bash
