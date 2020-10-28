@@ -438,8 +438,8 @@ func (c *ConfigFile) GetSection(section string) (map[string]string, error) {
 	}
 
 	// Remove pre-defined key.
-	secMap := c.data[section]
-	delete(c.data[section], " ")
+	secMap := deepCopy(c.data[section])
+	delete(secMap, " ")
 
 	// Section exists.
 	return secMap, nil
