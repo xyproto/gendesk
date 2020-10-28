@@ -28,8 +28,8 @@ const (
 
 var (
 	keywordmap = map[int][]string{
-		model3d:       {"rendering", "modeling", "modelling", "modeler", "render", "raytracing"},
-		multimedia:    {"non-linear", "audio", "sound", "graphics", "demo"},
+		model3d:       {"rendering", "modeling", "modelling", "modeler", "render", "raytracing", "CAD"},
+		multimedia:    {"non-linear", "audio", "sound", "graphics", "demo", "music"},
 		graphics:      {"draw", "pixelart", "animated"},
 		network:       {"network", "p2p", "browser", "remote"},
 		email:         {"gmail"},
@@ -42,7 +42,7 @@ var (
 		actiongame:    {"shooter", "fps"},
 		adventuregame: {"roguelike", "rpg"},
 		logicgame:     {"puzzle"},
-		boardgame:     {"board", "chess", "goban", "chessboard", "checkers"},
+		boardgame:     {"board", "chess", "goban", "chessboard", "checkers", "reversi", "go"},
 		// "emulator" and "player" aren't always for games, but those cases will be
 		// picked up by one of the other categories first, as orderd by the constants above
 		game:        {"game", "rts", "mmorpg", "emulator", "player"},
