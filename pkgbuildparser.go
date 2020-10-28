@@ -110,8 +110,8 @@ func parsePKGBUILD(o *textoutput.TextOutput, filename string, iconurl, pkgname *
 			}
 		}
 
-		// Strip the "-git", "-svn" or "-hg" suffix, if present
-		if strings.HasSuffix(*pkgname, "-git") || strings.HasSuffix(*pkgname, "-svn") {
+		// Strip the "-git", "-svn", "-bin" or "-hg" suffix, if present
+		if strings.HasSuffix(*pkgname, "-git") || strings.HasSuffix(*pkgname, "-svn") || strings.HasSuffix(*pkgname, "-bin") {
 			*pkgname = (*pkgname)[:len(*pkgname)-4]
 		} else if strings.HasSuffix(*pkgname, "-hg") {
 			*pkgname = (*pkgname)[:len(*pkgname)-3]

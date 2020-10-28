@@ -298,7 +298,7 @@ func main() {
 	customMap := make(map[string]string)
 
 	// Strip the "-git", "-svn" or "-hg" suffix, if present
-	if strings.HasSuffix(pkgname, "-git") || strings.HasSuffix(pkgname, "-svn") {
+	if strings.HasSuffix(pkgname, "-git") || strings.HasSuffix(pkgname, "-svn") || strings.HasSuffix(pkgname, "-bin") {
 		pkgname = pkgname[:len(pkgname)-4]
 	} else if strings.HasSuffix(pkgname, "-hg") {
 		pkgname = pkgname[:len(pkgname)-3]
