@@ -6,8 +6,8 @@ jobs:
   test:
     strategy:
       matrix:
-        go-version: [1.11.x, 1.12.x, 1.13.x, 1.14.x, 1.15.x]
-        os: [fedora-latest, debian-latest, ubuntu-latest]
+        go-version: [1.12.x, 1.13.x, 1.14.x, 1.15.x]
+        os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Install Go
