@@ -1,7 +1,7 @@
 Desktop File Generator
 ======================
 
-[![Build Status](https://travis-ci.com/xyproto/gendesk.svg?branch=master)](https://travis-ci.com/xyproto/gendesk) [![Go Report Card](https://goreportcard.com/badge/github.com/xyproto/gendesk)](https://goreportcard.com/report/github.com/xyproto/gendesk)
+![Build](https://github.com/xyproto/gendesk/workflows/Build/badge.svg) [![Go Report Card](https://goreportcard.com/badge/github.com/xyproto/gendesk)](https://goreportcard.com/report/github.com/xyproto/gendesk)
 
 Generates `.desktop` files and downloads `.png` icons based on command line arguments.
 
