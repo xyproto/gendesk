@@ -11,6 +11,10 @@ Pull requests are welcome.
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/gendesk.svg)](https://repology.org/project/gendesk/versions)
 
+Changes from 1.0.7 to 1.0.8
+---------------------------
+* Update dependencies.
+
 Changes from 1.0.6 to 1.0.7
 ---------------------------
 * Update documentation.
@@ -187,6 +191,6 @@ TODO
 
 General information
 -------------------
-* Version: 1.0.7
+* Version: 1.0.8
 * Author: Alexander F. Rødseth &lt;xyproto@archlinux.org&gt;
 * License: MIT
