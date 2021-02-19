@@ -204,7 +204,7 @@ Note:
     * Providing a PKGBUILD filename instead of flags is a possibility.
     * "$startdir/PKGBUILD" is the default PKGBUILD filename.
     * _exec in the PKGBUILD can be used to specify a different executable for
-	  the .desktop file. Example: _exec=('appname-gui')
+      the .desktop file. Example: _exec=('appname-gui')
     * Split PKGBUILD packages are supported.
     * If a .png, .svg or .xpm icon is not found as a file or in the PKGBUILD,
       an icon will be downloaded from either the location specified in the
