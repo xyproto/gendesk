@@ -11,6 +11,15 @@ Pull requests are welcome.
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/gendesk.svg)](https://repology.org/project/gendesk/versions)
 
+Changes from 1.0.6 to 1.0.7
+---------------------------
+* Update documentation.
+* Also strip the `-bin` suffix.
+* Update CI configuration.
+* Minor improvement to the `--help` output.
+* Add additional categories.
+* Update dependencies.
+
 Changes from 1.0.5 to 1.0.6
 ---------------------------
 * Fix an issue with the `-hg` suffix (thanks Michael Straube).
@@ -178,6 +187,6 @@ TODO
 
 General information
 -------------------
-* Version: 1.0.6
+* Version: 1.0.7
 * Author: Alexander F. Rødseth &lt;xyproto@archlinux.org&gt;
 * License: MIT
