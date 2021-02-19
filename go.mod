@@ -11,6 +11,6 @@ require (
 	github.com/xyproto/textoutput v1.12.2
 	github.com/xyproto/vt100 v1.8.6 // indirect
 	github.com/yhat/scrape v0.0.0-20161128144610-24b7890b0945
-	golang.org/x/net v0.0.0-20201224014010-6772e930b67b
-	golang.org/x/sys v0.0.0-20210113181707-4bcb84eeeb78 // indirect
+	golang.org/x/net v0.0.0-20210119194325-5f4716e94777
+	golang.org/x/sys v0.0.0-20210218155724-8ebf48af031b // indirect
 )
