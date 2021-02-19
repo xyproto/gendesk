@@ -5,7 +5,7 @@ go 1.10
 require (
 	github.com/mattn/go-colorable v0.1.8 // indirect
 	github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d // indirect
-	github.com/pkg/term v1.1.0 // indirect
+	github.com/pkg/term v1.2.0-beta.2 // indirect
 	github.com/smartystreets/goconvey v0.0.0-20190731233626-505e41936337 // indirect
 	github.com/unknwon/goconfig v0.0.0-20200908083735-df7de6a44db8
 	github.com/xyproto/textoutput v1.12.2
