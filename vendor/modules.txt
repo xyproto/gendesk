@@ -11,7 +11,7 @@ github.com/pkg/term/termios
 github.com/unknwon/goconfig
 # github.com/xyproto/env v1.1.0
 github.com/xyproto/env
-# github.com/xyproto/textoutput v1.12.8
+# github.com/xyproto/textoutput v1.12.9
 github.com/xyproto/textoutput
 # github.com/xyproto/vt100 v1.9.2
 github.com/xyproto/vt100

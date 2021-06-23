@@ -78,7 +78,7 @@ func (o *TextOutput) Println(msg ...interface{}) {
 }
 
 // Write a message to the given io.Writer if output is enabled
-func (o *TextOutput) Println(w io.Writer, msg ...interface{}) {
+func (o *TextOutput) Fprintln(w io.Writer, msg ...interface{}) {
 	if o.enabled {
 		fmt.Fprintln(w, o.InterfaceTags(msg...))
 	}
