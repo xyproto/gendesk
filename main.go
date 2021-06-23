@@ -355,8 +355,6 @@ func main() {
 		if !found {
 			// Fall back on the package name
 			execCommand = pkgname
-			// Register that the default was used
-			noExecSpecified = true
 		}
 		name, found := nameMap[pkgname]
 		if !found {
