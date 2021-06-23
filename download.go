@@ -5,15 +5,16 @@ import (
 	"crypto/md5"
 	"errors"
 	"fmt"
-	"github.com/unknwon/goconfig"
-	"github.com/xyproto/textoutput"
-	"github.com/yhat/scrape"
-	"golang.org/x/net/html"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"os/user"
 	"strings"
+
+	"github.com/unknwon/goconfig"
+	"github.com/xyproto/textoutput"
+	"github.com/yhat/scrape"
+	"golang.org/x/net/html"
 )
 
 const (
@@ -84,17 +85,17 @@ func GetIconSearchURL(o *textoutput.TextOutput) string {
 	iconURL, err := cfile.GetValue("default", "icon_url")
 	if err != nil {
 		o.Err("error!\n")
-		o.Println(o.DarkRed(cfilename + " does not contain icon_url under under a [default] section. Example:"))
-		o.Println(o.LightGreen("[default]"))
-		o.Println(o.LightGreen("icon_url = http://example.iconrepository.com/q=%s.png\n"))
+		o.Fprintln(os.Stderr, o.DarkRed(cfilename+" does not contain icon_url under under a [default] section. Example:"))
+		o.Fprintln(os.Stderr, o.LightGreen("[default]"))
+		o.Fprintln(os.Stderr, o.LightGreen("icon_url = http://example.iconrepository.com/q=%s.png\n"))
 		os.Exit(1)
 	}
 
 	if !strings.Contains(iconURL, "%s") {
 		o.Err("error!\n")
-		o.Println(o.DarkRed(cfilename + " does not contain an icon search url containing %s under a [default] section. Example:"))
-		o.Println(o.LightGreen("[default]"))
-		o.Println(o.LightGreen("icon_url = http://example.iconrepository.com/q=%s.png\n"))
+		o.Fprintln(os.Stderr, o.DarkRed(cfilename+" does not contain an icon search url containing %s under a [default] section. Example:"))
+		o.Fprintln(os.Stderr, o.LightGreen("[default]"))
+		o.Fprintln(os.Stderr, o.LightGreen("icon_url = http://example.iconrepository.com/q=%s.png\n"))
 		os.Exit(1)
 	}
 

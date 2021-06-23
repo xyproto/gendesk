@@ -98,7 +98,7 @@ func writeWindowManagerDesktopFile(pkgname, name, execCommand, custom string, fo
 	// Check if the file exists (and that force is not enabled)
 	if _, err := os.Stat(pkgname + ".desktop"); err == nil && (!force) {
 		o.Err("no")
-		o.Println(pkgname + ".desktop already exists. Use -f as the first argument to overwrite it.")
+		o.Fprintln(os.Stderr, pkgname+".desktop already exists. Use -f as the first argument to overwrite it.")
 		os.Exit(1)
 	}
 	ioutil.WriteFile(pkgname+".desktop", buf.Bytes(), 0644)
@@ -135,7 +135,7 @@ func writeDesktopFile(pkgname, name, comment, execCommand, icon, path, categorie
 	// Check if the file exists (and that force is not enabled)
 	if _, err := os.Stat(pkgname + ".desktop"); err == nil && (!force) {
 		o.Err("no")
-		o.Println(pkgname + ".desktop already exists. Use -f as the first argument to overwrite it.")
+		o.Fprintln(os.Stderr, pkgname+".desktop already exists. Use -f as the first argument to overwrite it.")
 		os.Exit(1)
 	}
 
@@ -265,7 +265,7 @@ func main() {
 	// Output the version number and quit if --version is given
 	if *version {
 		o.Println(versionString)
-		os.Exit(0)
+		return
 	}
 
 	// TODO: Write in a cleaner way, possibly by refactoring into a function. Write a test first.
