@@ -32,7 +32,7 @@ var (
 		multimedia:    {"non-linear", "audio", "sound", "graphics", "demo", "music"},
 		graphics:      {"draw", "pixelart", "animated"},
 		network:       {"network", "p2p", "browser", "remote"},
-		email:         {"gmail"},
+		email:         {"gmail", "email", "e-mail", "mail"},
 		audiovideo:    {"synth", "synthesizer", "ffmpeg"},
 		office:        {"ebook", "e-book", "spreadsheet", "calculator", "processor", "documents"},
 		editor:        {"editor"},
