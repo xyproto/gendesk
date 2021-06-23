@@ -64,7 +64,7 @@ func parsePKGBUILD(o *textoutput.TextOutput, filename string, iconurl, pkgname *
 	if err != nil {
 		o.ErrExit("Could not read " + filename)
 	}
-	var vars map[string]string // variables found along the way
+	vars := make(map[string]string) // variables found along the way
 	for _, line := range strings.Split(string(filedata), "\n") {
 		switch {
 		case strings.HasPrefix(line, "pkgname"):
