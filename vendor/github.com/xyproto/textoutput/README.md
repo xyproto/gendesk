@@ -27,6 +27,6 @@ func main() {
 
 ## General info
 
-* Version: 1.12.7
+* Version: 1.12.8
 * License: MIT
 * Author &lt;xyproto@archlinux.org&gt;
