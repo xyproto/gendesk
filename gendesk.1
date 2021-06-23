@@ -1,6 +1,6 @@
 .\"             -*-Nroff-*-
 .\"
-.TH "gendesk" 1 "19 Feb 2021" "" ""
+.TH "gendesk" 1 "23 Jun 2021" "" ""
 .SH NAME
 gendesk \- generate .desktop files based on command-line arguments (or a PKGBUILD file)
 .SH SYNOPSIS
@@ -47,7 +47,7 @@ Supported environment variables:
 A package name must be given, either by specifying a PKGBUILD file, using
 \-\-pkgname or by defining a $pkgname environment variable.
 .sp
-Note that the "-git", "-svn", "-bin" or "-hg" suffix in package names will be ignored, if present.
+Note that a "-bin", "-git", "-hg" or "-svn" suffix in a package name will be ignored, if present.
 .PP
 .SH OPTIONS
 .TP
@@ -89,6 +89,9 @@ use this comment for the desktop shortcut (ie. Use this to edit files)
 .TP
 .B \-\-exec
 specify an alternative executable, (ie. /usr/bin/emacs)
+.TP
+.B \-\-path
+specify a starting path for the program, (ie. /usr/share/kotlin)
 .TP
 .B \-\-icon
 specify an icon filename (defaults to the pkgname)
