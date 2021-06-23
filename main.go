@@ -326,6 +326,8 @@ func main() {
 		}
 	}
 
+	noExecSpecified := *execCommand == ""
+
 	setv(&pkgdescMap, pkgdesc)
 	setv(&execMap, *execCommand)
 	setv(&nameMap, *name)
@@ -353,6 +355,8 @@ func main() {
 		if !found {
 			// Fall back on the package name
 			execCommand = pkgname
+			// Register that the default was used
+			noExecSpecified = true
 		}
 		name, found := nameMap[pkgname]
 		if !found {
@@ -382,6 +386,11 @@ func main() {
 		categories, found := categoriesMap[pkgname]
 		if !found {
 			categories = GuessCategory(pkgdesc)
+		}
+
+		// Email category, add "%u" to exec, if an exec command has not been specified
+		if strings.HasSuffix(categories, ";Email") && noExecSpecified && !strings.HasSuffix(execCommand, "%u") {
+			execCommand += " %u"
 		}
 
 		// TODO: Refactor into a function
