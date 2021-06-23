@@ -33,7 +33,7 @@ var (
 		graphics:      {"draw", "pixelart", "animated"},
 		network:       {"network", "p2p", "browser", "remote"},
 		email:         {"gmail", "email", "e-mail", "mail"},
-		audiovideo:    {"synth", "synthesizer", "ffmpeg"},
+		audiovideo:    {"synth", "synthesizer", "ffmpeg", "guitar"},
 		office:        {"ebook", "e-book", "spreadsheet", "calculator", "processor", "documents"},
 		editor:        {"editor"},
 		science:       {"gps", "inspecting", "molecular", "mathematics"},
