@@ -308,8 +308,10 @@ func main() {
 	if filename != "" {
 		// Check if the given filename is found
 		if !exists(filename) {
-			// If --pkgname is not given and the file does not exist, use the base naem as the pkgname
-			pkgname, filename = filepath.Base(filename), ""
+			// If --pkgname is not given and the file does not exist, use the base name as the pkgname
+			pkgname = filepath.Base(filename)
+			// Clear the filename variable, since the file was not found
+			filename = ""
 		} else {
 			// TODO: Use a struct per pkgname instead
 			parsePKGBUILD(o, filename, &iconurl, &pkgname, &pkgnames, &pkgdescMap, &execMap, &nameMap, &genericNameMap, &mimeTypesMap, &commentMap, &categoriesMap, &customMap)
@@ -386,7 +388,7 @@ func main() {
 			categories = GuessCategory(pkgdesc)
 		}
 
-		// Email category, add "%u" to exec, if an exec command has not been specified
+		// For the "Email" category: add "%u" to exec, if no exec command has been specified
 		if strings.HasSuffix(categories, ";Email") && noExecSpecified && !strings.HasSuffix(execCommand, "%u") {
 			execCommand += " %u"
 		}

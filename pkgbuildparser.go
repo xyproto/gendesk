@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/xyproto/textoutput"
 	"io/ioutil"
-	"os"
 	"strings"
+
+	"github.com/xyproto/env"
+	"github.com/xyproto/textoutput"
 )
 
 // Return a list of pkgnames for split packages
@@ -22,10 +23,11 @@ func pkgList(splitpkgname string) []string {
 	return []string{splitpkgname}
 }
 
-// Retrieve value from environment if the given value is empty
+// fromEnvIfEmpty will retrieve a value from the environment,
+// but only if the given value is empty
 func fromEnvIfEmpty(field *string, envVarName string) {
 	if *field == "" {
-		*field = os.Getenv(envVarName)
+		*field = env.Str(envVarName)
 	}
 }
 
