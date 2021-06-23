@@ -7,7 +7,8 @@ import (
 	"sync"
 )
 
-// From http://www.termsys.demon.co.uk/vtansi.htm. Not the full spec, but a good subset:
+// From http://www.termsys.demon.co.uk/vtansi.htm. Not the full spec, but a good subset.
+// Update: Not even a good subset. Some of the codes are wrong!
 const specVT100 = `
 
 ANSI/VT100 Terminal Control Escape Sequences
@@ -56,11 +57,11 @@ Reset Device		<ESC>c
 
     Reset all terminal settings to default.
 
-Enable Line Wrap	<ESC>[7h
+Enable Line Wrap	<ESC>[?7h
 
     Text wraps to next line if longer than the length of the display area.
 
-Disable Line Wrap	<ESC>[7l
+Disable Line Wrap	<ESC>[?7l
 
     Disables line wrapping.
 
@@ -488,4 +489,21 @@ func Close() {
 
 func EchoOff() {
 	fmt.Print("\033[12h")
+}
+
+func SetLineWrap(enable bool) {
+	if enable {
+		Do("Enable Line Wrap")
+	} else {
+		Do("Disable Line Wrap")
+	}
+}
+
+func ShowCursor(enable bool) {
+	// Thanks https://rosettacode.org/wiki/Terminal_control/Hiding_the_cursor#Escape_code
+	if enable {
+		fmt.Print("\033[?25h")
+	} else {
+		fmt.Print("\033[?25l")
+	}
 }
