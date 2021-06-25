@@ -14,10 +14,11 @@ func min(a, b int) int {
 
 // Capitalize a string or return the same if it is too short
 func capitalize(s string) string {
+	lenS := len(s)
 	switch {
-	case len(s) >= 2:
+	case lenS >= 2:
 		return strings.ToTitle(s[0:1]) + s[1:]
-	case len(s) == 1:
+	case lenS == 1:
 		return strings.ToUpper(string(s[0]))
 	default:
 		return s
@@ -25,7 +26,7 @@ func capitalize(s string) string {
 }
 
 // Return what's between two strings, "a" and "b", in another string
-func between(orig string, a string, b string) string {
+func between(orig, a, b string) string {
 	if strings.Contains(orig, a) && strings.Contains(orig, b) {
 		posa := strings.Index(orig, a) + len(a)
 		posb := strings.LastIndex(orig, b)
@@ -62,14 +63,11 @@ func betweenQuotesOrAfterEquals(orig string) string {
 
 // Does a keyword exist in the string?
 // Disregards several common special characters (like -, _ and .)
-func has(s string, kw string) bool {
-	var (
-		lowercase = strings.ToLower(s)
-		// Remove the most common special characters
-		massaged = strings.Trim(lowercase, "-_.,!?()[]{}\\/:;+@")
-		words    = strings.Split(massaged, " ")
-	)
-	for _, word := range words {
+func has(s, kw string) bool {
+	// Convert to lowercase and remove the most common special characters
+	words := strings.Trim(strings.ToLower(s), "-_.,!?()[]{}\\/:;+@")
+	wordSlice := strings.Split(words, " ")
+	for _, word := range wordSlice {
 		if word == kw {
 			return true
 		}
