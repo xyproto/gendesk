@@ -389,7 +389,8 @@ func main() {
 		}
 
 		// For the "Email" category: add "%u" to exec, if no exec command has been specified
-		if strings.HasSuffix(categories, ";Email") && noExecSpecified && !strings.HasSuffix(execCommand, "%u") {
+		if strings.Contains(categories, "Email") && noExecSpecified && !strings.HasSuffix(execCommand, "%u") {
+			// %u is added to be able to open mailto: links with e-mail applications
 			execCommand += " %u"
 		}
 
