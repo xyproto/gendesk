@@ -4,8 +4,22 @@ import (
 	"io/ioutil"
 	"strings"
 
-	"github.com/xyproto/env"
 	"github.com/xyproto/textoutput"
+)
+
+const (
+	PKGNAME         = "pkgname"
+	PKGDESC         = "pkgdesc"
+	EXEC            = "_exec"
+	NAME            = "_name"
+	GENERICNAME     = "_genericname"
+	MIMETYPES       = "_mimetypes"
+	MIMETYPES_ALIAS = "_mimetype"
+	COMMENT         = "_comment"
+	CATEGORIES      = "_categories"
+	CUSTOM          = "_custom"
+	ICON            = "_icon"
+	PATH            = "_path"
 )
 
 // Return a list of pkgnames for split packages
@@ -23,132 +37,95 @@ func pkgList(splitpkgname string) []string {
 	return []string{splitpkgname}
 }
 
-// fromEnvIfEmpty will retrieve a value from the environment,
-// but only if the given value is empty
-func fromEnvIfEmpty(field *string, envVarName string) {
-	if *field == "" {
-		*field = env.Str(envVarName)
-	}
-}
-
-func dataFromEnvironment(pkgdesc, execCommand, name, genericname, mimetypes, comment, categories, custom *string) {
-	// Environment variables
-	fromEnvIfEmpty(pkgdesc, "pkgdesc")
-	fromEnvIfEmpty(execCommand, "_exec")
-	fromEnvIfEmpty(name, "_name")
-	fromEnvIfEmpty(genericname, "_genericname")
-	fromEnvIfEmpty(mimetypes, "_mimetypes")
-	fromEnvIfEmpty(mimetypes, "_mimetype")
-	fromEnvIfEmpty(comment, "_comment")
-	fromEnvIfEmpty(categories, "_categories")
-	fromEnvIfEmpty(custom, "_custom")
-}
-
-// resolve will expand variables within the given string,
-// using the supplied map as a source of keys and values.
-// Advanced bash variable expensions like ${x:1:2} or ${x%.*} are not handled.
-func resolve(vars map[string]string, s *string) {
-	// simple variable expansion
-	for k, v := range vars {
-		if strings.Contains(*s, "$"+k) {
-			*s = strings.Replace(*s, "$"+k, v, -1)
-		} else if strings.Contains(*s, "${"+k+"}") {
-			*s = strings.Replace(*s, "${"+k+"}", v, -1)
-		}
-	}
-}
-
-func parsePKGBUILD(o *textoutput.TextOutput, filename string, iconurl, pkgname *string, pkgnames *[]string, pkgdescMap, execMap, nameMap, genericNameMap, mimeTypesMap, commentMap, categoriesMap, customMap *map[string]string) {
+// ParsePKGBUILD will attempt to parse a PKGBUILD file (bash shell script).
+// Advanced variable expansion is not supported, yet.
+// A map of all found variable values (with their values expanded, once) is returned at the end.
+// The given maps are filled with values.
+func (vars *Variables) ParsePKGBUILD(o *textoutput.TextOutput, filename string, iconurl, pkgname *string, pkgnames *[]string, pkgdescMap, execMap, nameMap, genericNameMap, mimeTypesMap, commentMap, categoriesMap, customMap *map[string]string) {
 	// Fill in the dictionaries using a PKGBUILD
 	filedata, err := ioutil.ReadFile(filename)
 	if err != nil {
 		o.ErrExit("Could not read " + filename)
 	}
-	vars := make(map[string]string) // variables found along the way
 	for _, line := range strings.Split(string(filedata), "\n") {
 		switch {
-		case strings.HasPrefix(line, "pkgname"):
-			*pkgname = betweenQuotesOrAfterEquals(line)
+		case strings.HasPrefix(line, PKGNAME):
+			*pkgname = vars.Expand(betweenQuotesOrAfterEquals(line))
 			*pkgnames = pkgList(*pkgname)
 			// Select the first pkgname in the array as the "current" pkgname
 			if len(*pkgnames) > 0 {
 				*pkgname = (*pkgnames)[0]
 			}
-			resolve(vars, pkgname)
-			vars["pkgname"] = *pkgname
+			(*vars)[PKGNAME] = *pkgname
 		case strings.HasPrefix(line, "package_"):
-			*pkgname = between(line, "_", "(")
-			resolve(vars, pkgname)
-			vars["pkgname"] = *pkgname
-		case strings.HasPrefix(line, "pkgdesc") && *pkgname != "":
+			*pkgname = vars.Expand(between(line, "_", "("))
+			(*vars)[PKGNAME] = *pkgname
+		case strings.HasPrefix(line, PKGDESC) && *pkgname != "":
 			// Description for the package
 			// Use the last found pkgname as the key
-			s := betweenQuotesOrAfterEquals(line)
-			resolve(vars, &s)
+			s := vars.Expand(betweenQuotesOrAfterEquals(line))
 			(*pkgdescMap)[*pkgname] = s
-			vars["pkgdesc"] = s
-		case strings.HasPrefix(line, "_exec") && *pkgname != "":
+			(*vars)[PKGDESC] = s
+		case strings.HasPrefix(line, EXEC) && *pkgname != "":
 			// Custom executable for the .desktop file per (split) package
 			// Use the last found pkgname as the key
-			s := betweenQuotesOrAfterEquals(line)
-			resolve(vars, &s)
-
+			s := vars.Expand(betweenQuotesOrAfterEquals(line))
 			(*execMap)[*pkgname] = s
-			vars["_exec"] = s
-		case strings.HasPrefix(line, "_name") && *pkgname != "":
+			(*vars)[EXEC] = s
+		case strings.HasPrefix(line, NAME) && *pkgname != "":
 			// Custom Name for the .desktop file per (split) package
 			// Use the last found pkgname as the key
-			s := betweenQuotesOrAfterEquals(line)
-			resolve(vars, &s)
+			s := vars.Expand(betweenQuotesOrAfterEquals(line))
 			(*nameMap)[*pkgname] = s
-			vars["_name"] = s
-		case strings.HasPrefix(line, "_genericname") && *pkgname != "":
+			(*vars)[NAME] = s
+		case strings.HasPrefix(line, GENERICNAME) && *pkgname != "":
 			// Custom GenericName for the .desktop file per (split) package
-			genericName := betweenQuotesOrAfterEquals(line)
+			genericName := vars.Expand(betweenQuotesOrAfterEquals(line))
 			// Use the last found pkgname as the key
 			if genericName != "" {
-				resolve(vars, &genericName)
 				(*genericNameMap)[*pkgname] = genericName
-				vars["_genericname"] = genericName
+				(*vars)[GENERICNAME] = genericName
 			}
-		case strings.HasPrefix(line, "_mimetype") && *pkgname != "":
+		case strings.HasPrefix(line, MIMETYPES_ALIAS) && *pkgname != "":
 			// Custom MimeType for the .desktop file per (split) package
 			// Use the last found pkgname as the key
-			s := betweenQuotesOrAfterEquals(line)
-			resolve(vars, &s)
+			s := vars.Expand(betweenQuotesOrAfterEquals(line))
 			(*mimeTypesMap)[*pkgname] = s
-			vars["_mimetype"] = s
-		case strings.HasPrefix(line, "_comment") && *pkgname != "":
+			(*vars)[MIMETYPES_ALIAS] = s
+		case strings.HasPrefix(line, MIMETYPES) && *pkgname != "":
+			// Custom MimeType for the .desktop file per (split) package
+			// Use the last found pkgname as the key
+			s := vars.Expand(betweenQuotesOrAfterEquals(line))
+			(*mimeTypesMap)[*pkgname] = s
+			(*vars)[MIMETYPES] = s
+		case strings.HasPrefix(line, COMMENT) && *pkgname != "":
 			// Custom Comment for the .desktop file per (split) package
 			// Use the last found pkgname as the key
-			s := betweenQuotesOrAfterEquals(line)
-			resolve(vars, &s)
+			s := vars.Expand(betweenQuotesOrAfterEquals(line))
 			(*commentMap)[*pkgname] = s
-			vars["_comment"] = s
-		case strings.HasPrefix(line, "_custom") && *pkgname != "":
+			(*vars)[COMMENT] = s
+		case strings.HasPrefix(line, CUSTOM) && *pkgname != "":
 			// Custom string to be added to the end
 			// of the .desktop file in question
 			// Use the last found pkgname as the key
-			s := betweenQuotesOrAfterEquals(line)
-			resolve(vars, &s)
+			s := vars.Expand(betweenQuotesOrAfterEquals(line))
 			(*customMap)[*pkgname] = s
-			vars["_custom"] = s
-		case strings.HasPrefix(line, "_categories") && *pkgname != "":
+			(*vars)[CUSTOM] = s
+		case strings.HasPrefix(line, CATEGORIES) && *pkgname != "":
 			// Use the last found pkgname as the key
-			s := betweenQuotesOrAfterEquals(line)
-			resolve(vars, &s)
+			s := vars.Expand(betweenQuotesOrAfterEquals(line))
 			(*categoriesMap)[*pkgname] = s
-			vars["_categories"] = s
+			(*vars)[CATEGORIES] = s
 		case ((strings.Contains(line, "http://") || strings.Contains(line, "https://")) && strings.Contains(line, ".png")) && *iconurl == "":
 			// Only supports detecting png icon filenames when represented as just the filename or an URL starting with http/https.
-			*iconurl = "h" + between(line, "h", "g") + "g"
-			resolve(vars, iconurl)
-			vars["_icon"] = *iconurl
+			*iconurl = vars.Expand("h" + between(line, "h", "g") + "g")
+			(*vars)[ICON] = *iconurl
 		}
 
 		// Strip the "-bin", "-git", "-hg" or "-svn" suffix, if present
 		for _, suf := range []string{"bin", "git", "hg", "svn"} {
 			*pkgname = strings.TrimSuffix(*pkgname, "-"+suf)
+			(*vars)[PKGNAME] = *pkgname
 		}
 	}
 }
