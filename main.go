@@ -266,7 +266,7 @@ func main() {
 
 	// *** Gather variables, first from the environment, then from any PKGBUILD files and then from any given flags ***
 
-	keys := append(Keys(), "SRCDEST") // the package related keys + "SRCDEST"
+	keys := append(DetailsTags(), "SRCDEST") // the package related keys + "SRCDEST"
 	vars := NewVars(keys)
 
 	fmt.Println("All variables from the environment:")

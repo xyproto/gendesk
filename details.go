@@ -25,8 +25,8 @@ type Details struct {
 	categories  string `_categories`
 }
 
-// Keys returns the tags of the Detauls struct
-func Keys() []string {
+// DetailsTags returns all the tags belonging to the Details struct
+func DetailsTags() []string {
 	var d Details
 	v := reflect.ValueOf(d)
 	numKeys := v.NumField()
