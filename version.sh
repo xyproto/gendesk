@@ -25,3 +25,5 @@ sed -i "s/[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+/$VERSION/g" gendesk.1
 
 # Update the version in this script
 sed -i "s/[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+/$VERSION/g" "$0"
+
+echo 'Also update the changelog in README.md'

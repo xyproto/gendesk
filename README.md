@@ -11,6 +11,17 @@ Pull requests are welcome.
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/gendesk.svg)](https://repology.org/project/gendesk/versions)
 
+Changes from 1.0.8 to 1.0.9
+---------------------------
+* Update documentation.
+* Expand variables, ref #16.
+* Add a `--path` flag for setting the starting directory, ref #17.
+* Add keywords for detecting the `AudioVideo` category, and for detecting e-mail related applications.
+* Only set `noExecSpecififed` if the flag was not given.
+* If `--exec` is not specified for e-mail related applications, add ` %u` to the `Exec` field.
+* Consider the `Email;Network;Office;` categories, ref #19.
+* Update dependencies.
+
 Changes from 1.0.7 to 1.0.8
 ---------------------------
 * Update dependencies.
@@ -191,6 +202,6 @@ TODO
 
 General information
 -------------------
-* Version: 1.0.8
+* Version: 1.0.9
 * Author: Alexander F. Rødseth &lt;xyproto@archlinux.org&gt;
 * License: MIT
