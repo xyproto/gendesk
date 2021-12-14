@@ -64,6 +64,7 @@ type ConfigFile struct {
 	sectionComments map[string]string            // Sections comments.
 	keyComments     map[string]map[string]string // Keys comments.
 	BlockMode       bool                         // Indicates whether use lock or not.
+	prettyFormat    bool                         // Write spaces around "=" to look better.
 }
 
 // newConfigFile creates an empty configuration representation.
@@ -75,6 +76,7 @@ func newConfigFile(fileNames []string) *ConfigFile {
 	c.sectionComments = make(map[string]string)
 	c.keyComments = make(map[string]map[string]string)
 	c.BlockMode = true
+	c.prettyFormat = true
 	return c
 }
 
@@ -174,7 +176,7 @@ func (c *ConfigFile) GetValue(section, key string) (string, error) {
 	// Check if section exists
 	if _, ok := c.data[section]; !ok {
 		// Section does not exist.
-		return "", getError{ERR_SECTION_NOT_FOUND, section}
+		return "", GetError{ERR_SECTION_NOT_FOUND, section}
 	}
 
 	// Section exists.
@@ -187,7 +189,7 @@ func (c *ConfigFile) GetValue(section, key string) (string, error) {
 		}
 
 		// Return empty value.
-		return "", getError{ERR_KEY_NOT_FOUND, key}
+		return "", GetError{ERR_KEY_NOT_FOUND, key}
 	}
 
 	// Key exists.
@@ -434,7 +436,7 @@ func (c *ConfigFile) GetSection(section string) (map[string]string, error) {
 	// Check if section exists.
 	if _, ok := c.data[section]; !ok {
 		// Section does not exist.
-		return nil, getError{ERR_SECTION_NOT_FOUND, section}
+		return nil, GetError{ERR_SECTION_NOT_FOUND, section}
 	}
 
 	// Remove pre-defined key.
@@ -537,14 +539,19 @@ func (c *ConfigFile) GetKeyComments(section, key string) (comments string) {
 	return ""
 }
 
-// getError occurs when get value in configuration file with invalid parameter.
-type getError struct {
+// SetPrettyFormat set the prettyFormat to decide whether write spaces around "=".
+func (c *ConfigFile) SetPrettyFormat(pretty bool) {
+	c.prettyFormat = pretty
+}
+
+// GetError occurs when get value in configuration file with invalid parameter.
+type GetError struct {
 	Reason ParseError
 	Name   string
 }
 
 // Error implements Error interface.
-func (err getError) Error() string {
+func (err GetError) Error() string {
 	switch err.Reason {
 	case ERR_SECTION_NOT_FOUND:
 		return fmt.Sprintf("section '%s' not found", err.Name)

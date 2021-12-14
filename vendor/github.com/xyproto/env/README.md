@@ -1,8 +1,8 @@
-# Env [![Build Status](https://travis-ci.com/xyproto/env.svg?branch=main)](https://travis-ci.com/xyproto/env) [![GoDoc](https://godoc.org/github.com/xyproto/env?status.svg)](http://godoc.org/github.com/xyproto/env) [![Go Report Card](https://goreportcard.com/badge/github.com/xyproto/env)](https://goreportcard.com/report/github.com/xyproto/env)
+# Env ![Build](https://github.com/xyproto/env/workflows/Build/badge.svg) [![GoDoc](https://godoc.org/github.com/xyproto/env?status.svg)](http://godoc.org/github.com/xyproto/env) [![Go Report Card](https://goreportcard.com/badge/github.com/xyproto/env)](https://goreportcard.com/report/github.com/xyproto/env)
 
-Get the benefit of supplying default values when fetching environment variables.
+Makes fetching and interpreting environment variables easy and safe.
 
-Also interpret many types of string values that could mean `true` or `false`.
+Being able to provide default values when retrieving environment variables often makes program logic shorter and more readable.
 
 ## Functions
 
@@ -37,8 +37,67 @@ Only the first optional value is used, if the environment variable value is empt
 
 `Has` return true if the given environment variable name is non-empty.
 
+### func Int64
+
+Same as Int, but takes a default int64 value and returns an int64.
+
+### func Float64
+
+Same as Int, but takes a default float64 value and returns a float64.
+
+### DurationSeconds
+
+Takes a default int64 value, for the number of seconds, interprets the environment variable as the number of seconds and returns a `time.Duration`.
+
+### Contains
+
+Checks if the given environment variable contains the given string.
+
+### Is
+
+Checks if the given environment variable is the given value, with leading and trailing spaces trimmed before comparing both values.
+
+### HomeDir
+
+Returns the home directory of the current user, or `/tmp` if it is not available. `/home/$LOGNAME` or `/home/$USER` are returned if `$HOME` is not set.
+
+### ExpandUser
+
+Replaces `~` or `$HOME` at the start of a string with the home directory of the current user.
+
+### File
+
+Does the same as the `Str` function, but replaces a leading `~` or `$HOME` with the home directory of the current user.
+
+### Dir
+
+Does the same as the `Str` function, but replaces a leading `~` or `$HOME` with the home directory of the current user.
+
+### Path
+
+Returns the current `$PATH` as a slice of strings.
+
+## Example
+
+```go
+package main
+
+import (
+    "fmt"
+    "github.com/xyproto/env"
+)
+
+func main() {
+    fmt.Println(env.DurationSeconds("REQUEST_TIMEOUT", 1800))
+}
+```
+
+Running the above problem like this: `REQUEST_TIMEOUT=1200 ./main`, outputs:
+
+    20m0s
+
 ## General info
 
-* Version: 1.1.0
+* Version: 1.7.0
 * License: MIT
 * Author: Alexander F. Rødseth &lt;xyproto@archlinux.org&gt;

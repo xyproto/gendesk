@@ -1,3 +1,6 @@
+//go:build !windows
+// +build !windows
+
 package vt100
 
 import (
