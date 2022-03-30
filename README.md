@@ -200,6 +200,12 @@ TODO
 ----
 - [ ] Move kw/category mappings into a separate configuration file.
 
+
+Troubleshooting
+---------------
+
+* If you get something like `GLIC_3.32 not found` on Linux, try the `gendesk-1.x.x-linux_static` release.
+
 General information
 -------------------
 * Version: 1.0.9
