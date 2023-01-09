@@ -11,31 +11,32 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/xyproto/env"
 	"github.com/xyproto/vt100"
 )
 
 // CharAttribute is a rune and a color attribute
 type CharAttribute struct {
-	R rune
 	A vt100.AttributeColor
+	R rune
 }
 
 // TextOutput keeps state about verbosity and if colors are enabled
 type TextOutput struct {
-	color   bool
-	enabled bool
-	// Tag replacement structs, for performance
 	lightReplacer *strings.Replacer
 	darkReplacer  *strings.Replacer
+	color         bool
+	enabled       bool
 }
+
+// Respect the NO_COLOR environment variable
+var EnvNoColor = env.Bool("NO_COLOR")
 
 // New creates a new TextOutput struct, which is
 // enabled by default and with colors turned on.
 // If the NO_COLOR environment variable is set, colors are disabled.
 func New() *TextOutput {
-	// Respect the NO_COLOR environment variable
-	color := len(os.Getenv("NO_COLOR")) == 0
-	o := &TextOutput{color, true, nil, nil}
+	o := &TextOutput{nil, nil, !EnvNoColor, true}
 	o.initializeTagReplacers()
 	return o
 }
@@ -45,11 +46,10 @@ func New() *TextOutput {
 // output can be enabled (verbose) or disabled (silent).
 // If NO_COLOR is set, colors are disabled, regardless.
 func NewTextOutput(color, enabled bool) *TextOutput {
-	// Respect the NO_COLOR environment variable
-	if os.Getenv("NO_COLOR") != "" {
+	if EnvNoColor {
 		color = false
 	}
-	o := &TextOutput{color, enabled, nil, nil}
+	o := &TextOutput{nil, nil, color, enabled}
 	o.initializeTagReplacers()
 	return o
 }
@@ -462,7 +462,7 @@ func (o *TextOutput) Extract(s string) []CharAttribute {
 				escaped = false
 			}
 		} else {
-			cc = append(cc, CharAttribute{r, currentColor})
+			cc = append(cc, CharAttribute{currentColor, r})
 		}
 	}
 	// if escaped is true here, there is something wrong

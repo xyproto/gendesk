@@ -1,6 +1,6 @@
-# github.com/mattn/go-colorable v0.1.12
+# github.com/mattn/go-colorable v0.1.13
 github.com/mattn/go-colorable
-# github.com/mattn/go-isatty v0.0.14
+# github.com/mattn/go-isatty v0.0.17
 github.com/mattn/go-isatty
 # github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d
 github.com/mgutz/ansi
@@ -9,17 +9,16 @@ github.com/pkg/term
 github.com/pkg/term/termios
 # github.com/unknwon/goconfig v1.0.0
 github.com/unknwon/goconfig
-# github.com/xyproto/env v1.7.0
+# github.com/xyproto/env v1.8.0
 github.com/xyproto/env
-# github.com/xyproto/textoutput v1.12.10
+# github.com/xyproto/textoutput v1.14.1
 github.com/xyproto/textoutput
-# github.com/xyproto/vt100 v1.9.12
+# github.com/xyproto/vt100 v1.11.3
 github.com/xyproto/vt100
 # github.com/yhat/scrape v0.0.0-20161128144610-24b7890b0945
 github.com/yhat/scrape
-# golang.org/x/net v0.0.0-20220325170049-de3da57026de
+# golang.org/x/net v0.5.0
 golang.org/x/net/html
 golang.org/x/net/html/atom
-# golang.org/x/sys v0.0.0-20220330033206-e17cdc41300f
-golang.org/x/sys/internal/unsafeheader
+# golang.org/x/sys v0.4.0
 golang.org/x/sys/unix

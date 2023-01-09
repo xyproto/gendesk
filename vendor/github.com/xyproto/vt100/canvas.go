@@ -7,7 +7,6 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	"unicode"
 )
 
 type ColorRune struct {
@@ -21,14 +20,14 @@ type ColorRune struct {
 type Char ColorRune
 
 type Canvas struct {
-	w             uint
-	h             uint
+	mut           *sync.RWMutex
 	chars         []ColorRune
 	oldchars      []ColorRune
-	mut           *sync.RWMutex
+	w             uint
+	h             uint
 	cursorVisible bool
 	lineWrap      bool
-	runewise      bool // Should each rune be drawn by moving to (x,y) first?
+	runewise      bool
 }
 
 func NewCanvas() *Canvas {
@@ -274,36 +273,56 @@ func (c *Canvas) Draw() {
 	// and it will appear like the first line(s) are lost!
 
 	c.mut.RLock()
+
+	if len((*c).chars) == 0 {
+		c.mut.RUnlock()
+		return
+	}
+
 	firstRun := len(c.oldchars) == 0
 	skipAll := !firstRun // true by default, except for the first run
-	size := uint(c.w * c.h)
 
-	for index := uint(0); index < (size - 1); index++ {
-		cr = (*c).chars[index]
-		if !firstRun {
+	if firstRun {
+		for index := uint(0); index < (c.w*c.h - 1); index++ {
+			cr = (*c).chars[index]
+			// Only output a color code if it's different from the last character, or it's the first one
+			if (index == 0) || !lastfg.Equal(cr.fg) || !lastbg.Equal(cr.bg) {
+				// Write to the string builder
+				sb.WriteString(cr.fg.Combine(cr.bg).String())
+			}
+			// Write the character
+			if cr.r != 0 {
+				sb.WriteRune(cr.r)
+			} else {
+				sb.WriteRune(' ')
+			}
+			lastfg = cr.fg
+			lastbg = cr.bg
+		}
+	} else {
+		for index := uint(0); index < (c.w*c.h - 1); index++ {
+			cr = (*c).chars[index]
 			oldcr = (*c).oldchars[index]
 			if cr.fg.Equal(lastfg) && cr.fg.Equal(oldcr.fg) && cr.bg.Equal(lastbg) && cr.bg.Equal(oldcr.bg) && cr.r == oldcr.r {
 				// One is not skippable, can not skip all
 				skipAll = false
 			}
+			// Only output a color code if it's different from the last character, or it's the first one
+			if (index == 0) || !lastfg.Equal(cr.fg) || !lastbg.Equal(cr.bg) {
+				// Write to the string builder
+				sb.WriteString(cr.fg.Combine(cr.bg).String())
+			}
+			// Write the character
+			if cr.r != 0 {
+				sb.WriteRune(cr.r)
+			} else {
+				sb.WriteRune(' ')
+			}
+			lastfg = cr.fg
+			lastbg = cr.bg
 		}
-
-		// Only output a color code if it's different from the last character, or it's the first one
-		if (index == 0) || !lastfg.Equal(cr.fg) || !lastbg.Equal(cr.bg) {
-			// Write to the string builder
-			sb.WriteString(cr.fg.Combine(cr.bg).String())
-		}
-
-		// Write the character
-		if unicode.IsPrint(cr.r) {
-			sb.WriteRune(cr.r)
-		} else {
-			sb.WriteRune(' ')
-		}
-
-		lastfg = cr.fg
-		lastbg = cr.bg
 	}
+
 	c.mut.RUnlock()
 
 	// The screenfull so far is correct (sb.String())
@@ -462,6 +481,27 @@ func (c *Canvas) WriteRuneB(x, y uint, fg, bgb AttributeColor, r rune) {
 	chars[index].fg = fg
 	chars[index].bg = bgb
 	chars[index].drawn = false
+	c.mut.Unlock()
+}
+
+// WriteRunesB will write several colored runes to the canvas
+// This is the same as WriteRuneB, but bg.Background() has already been called on
+// the background attribute.
+// The x and y must be within range (x < c.w and y < c.h). x + count must be within range too.
+func (c *Canvas) WriteRunesB(x, y uint, fg, bgb AttributeColor, r rune, count uint) {
+	startIndex := y*c.w + x
+	afterLastIndex := startIndex + count
+
+	c.mut.Lock()
+	chars := (*c).chars
+
+	for i := startIndex; i < afterLastIndex; i++ {
+		chars[i].r = r
+		chars[i].fg = fg
+		chars[i].bg = bgb
+		chars[i].drawn = false
+	}
+
 	c.mut.Unlock()
 }
 

@@ -2,6 +2,7 @@ package vt100
 
 import (
 	"fmt"
+	"math/big"
 	"strconv"
 	"strings"
 	"sync"
@@ -506,4 +507,45 @@ func ShowCursor(enable bool) {
 	} else {
 		fmt.Print("\033[?25l")
 	}
+}
+
+// GetBackgroundColor prints a code to the terminal emulator,
+// reads the results and tries to interpret it as the RGB background color.
+// Returns three float64 values, and possibly an error value.
+func GetBackgroundColor(tty *TTY) (float64, float64, float64, error) {
+	// First try the escape code used by ie. alacritty
+	if err := tty.WriteString("\033]11;?\a"); err != nil {
+		return 0, 0, 0, err
+	}
+	result, err := tty.ReadString()
+	if err != nil {
+		return 0, 0, 0, err
+	}
+	if !strings.Contains(result, "rgb:") {
+		// Then try the escape code used by ie. gnome-terminal
+		if err := tty.WriteString("\033]10;?\a\033]11;?\a"); err != nil {
+			return 0, 0, 0, err
+		}
+		result, err = tty.ReadString()
+		if err != nil {
+			return 0, 0, 0, err
+		}
+	}
+	if pos := strings.Index(result, "rgb:"); pos != -1 {
+		rgb := result[pos+4:]
+		if strings.Count(rgb, "/") == 2 {
+			parts := strings.SplitN(rgb, "/", 3)
+			if len(parts) == 3 {
+				r := new(big.Int)
+				r.SetString(parts[0], 16)
+				g := new(big.Int)
+				g.SetString(parts[1], 16)
+				b := new(big.Int)
+				b.SetString(parts[2], 16)
+				return float64(r.Int64() / 65535.0), float64(g.Int64() / 65535.0), float64(b.Int64() / 65535.0), nil
+			}
+		}
+	}
+
+	return 0, 0, 0, fmt.Errorf("could not read rgb value from terminal emulator, got: %q", result)
 }
