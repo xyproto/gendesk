@@ -204,10 +204,10 @@ TODO
 Troubleshooting
 ---------------
 
-* If you get something like `GLIC_3.32 not found` on Linux, try the `gendesk-1.x.x-linux_static` release.
+* If you get something like `GLIBC_3.32 not found` on Linux, try the `gendesk-1.x.x-linux_static` release.
 
 General information
 -------------------
 * Version: 1.0.9
 * Author: Alexander F. Rødseth &lt;xyproto@archlinux.org&gt;
-* License: MIT
+* License: BSD-3
