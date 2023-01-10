@@ -38,7 +38,7 @@ func between(orig, a, b string) string {
 	return ""
 }
 
-// Return the contents between "" or '' (or an empty string)
+// Return the contents between double or single quotes (or an empty string)
 func betweenQuotes(orig string) string {
 	var s string
 	for _, quote := range []string{"\"", "'"} {
