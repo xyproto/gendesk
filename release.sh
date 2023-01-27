@@ -4,7 +4,7 @@
 #
 
 # Download the default icon
-curl -s -O 'https://roboticoverlords.org/images/default.png'
+curl -s -o gendesk.png 'https://roboticoverlords.org/images/default.png'
 
 # Generate a changelog from the entries in the readme
 awk '/Change/{flag=1}/General information/{flag=0}flag' README.md > CHANGELOG.md
@@ -16,7 +16,7 @@ echo "$name $version"
 
 # Create a source tarball
 mkdir "$name-$version"
-cp -r $name.1 *.go go.mod go.sum LICENSE README.md CHANGELOG.md default.png vendor "$name-$version/"
+cp -r $name.1 *.go go.mod go.sum LICENSE README.md CHANGELOG.md gendesk.png vendor "$name-$version/"
 gzip "$name-$version/$name.1"
 mkdir -p dist
 tar Jcf "dist/$name-$version.tar.xz" "$name-$version/"
@@ -46,7 +46,7 @@ for p in linux linux_arm64 rpi linux_static; do
   cp $name.1 "$name-$version-$p/"
   gzip "$name-$version-$p/$name.1"
   cp $name.$p "$name-$version-$p/$name"
-  cp LICENSE README.md CHANGELOG.md default.png "$name-$version-$p/"
+  cp LICENSE README.md CHANGELOG.md gendesk.png "$name-$version-$p/"
   mkdir -p dist
   tar Jcf "dist/$name-$version-$p.tar.xz" "$name-$version-$p/"
   rm -r "$name-$version-$p"
@@ -60,7 +60,7 @@ for p in macos freebsd netbsd; do
   cp $name.1 "$name-$version-$p/"
   gzip "$name-$version-$p/$name.1"
   cp $name.$p "$name-$version-$p/$name"
-  cp LICENSE README.md CHANGELOG.md default.png "$name-$version-$p/"
+  cp LICENSE README.md CHANGELOG.md gendesk.png "$name-$version-$p/"
   mkdir -p dist
   tar zcf "dist/$name-$version-$p.tar.gz" "$name-$version-$p/"
   rm -r "$name-$version-$p"

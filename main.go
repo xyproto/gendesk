@@ -152,9 +152,9 @@ func keywordsInDescription(pkgdesc string, keywords []string) bool {
 	return false
 }
 
-// WriteDefaultIconFile copies /usr/share/pixmaps/default.png to pkgname + ".png"
+// WriteDefaultIconFile copies /usr/share/pixmaps/gendesk.png to pkgname + ".png"
 func WriteDefaultIconFile(pkgname string, o *textoutput.TextOutput) error {
-	defaultIconFilename := "/usr/share/pixmaps/default.png"
+	defaultIconFilename := "/usr/share/pixmaps/gendesk.png"
 	b, err := ioutil.ReadFile(defaultIconFilename)
 	if err != nil {
 		o.Err("could not read " + defaultIconFilename + "!")
