@@ -139,7 +139,7 @@ func parsePKGBUILD(o *textoutput.TextOutput, filename string, iconurl, pkgname *
 			resolve(vars, &s)
 			(*categoriesMap)[*pkgname] = s
 			vars["_categories"] = s
-		case ((strings.Contains(line, "http://") || strings.Contains(line, "https://")) && strings.Contains(line, ".png")) && *iconurl == "":
+		case ((strings.Contains(line, "http://") || strings.Contains(line, "https://")) && (strings.Contains(line, ".png") || strings.Contains(line, ".svg"))) && *iconurl == "":
 			// Only supports detecting png icon filenames when represented as just the filename or an URL starting with http/https.
 			*iconurl = betweenInclusive(line, "h", "g")
 			resolve(vars, iconurl)
