@@ -114,6 +114,10 @@ func writeDesktopFile(pkgname, name, comment, execCommand, icon, path, categorie
 		categoryList = strings.Split(categories, ";")
 	}
 
+	if err := ValidCategoryWords(categoryList); err != nil {
+		o.Println(err)
+	}
+
 	// mimeTypeList is an empty []string, or...
 	if len(mimeTypes) != 0 {
 		mimeTypeList = strings.Split(mimeTypes, ";")

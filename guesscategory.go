@@ -1,11 +1,29 @@
 package main
 
+import (
+	"errors"
+	"strings"
+)
+
 // TODO: Use an external file to read the mappings from (possibly JSON)
 
 const (
 	// Decides the order of the keyword/category checks
 	// (try to order from the more specific/specialized categories to the more general)
-	model3d = iota
+	texttools = iota
+	graphics2d
+	scanning
+	utility
+	settings
+	hardwaresettings
+	audio
+	video
+	education
+	math
+	cs
+	compression
+	filetools
+	model3d
 	multimedia
 	graphics
 	network
@@ -50,26 +68,57 @@ var (
 		system:      {"sensor", "bus", "calibration", "usb", "file"},
 	}
 	categorymap = map[int]string{
-		model3d:       "Application;Graphics;3DGraphics",
-		multimedia:    "Application;Multimedia",
-		graphics:      "Application;Graphics",
-		network:       "Application;Network",
-		email:         "Application;Network;Email",
-		audiovideo:    "Application;AudioVideo",
-		office:        "Application;Office",
-		editor:        "Application;Development;TextEditor",
-		science:       "Application;Science",
-		vcs:           "Application;Development;RevisionControl",
-		arcadegame:    "Application;Game;ArcadeGame",
-		actiongame:    "Application;Game;ActionGame",
-		adventuregame: "Application;Game;AdventureGame",
-		logicgame:     "Application;Game;",
-		boardgame:     "Application;Game;BoardGame",
-		game:          "Application;Game",
-		programming:   "Application;Development",
-		system:        "Application;System",
+		model3d:          "Application;Graphics;3DGraphics",
+		multimedia:       "Application;Multimedia",
+		graphics:         "Application;Graphics",
+		network:          "Application;Network",
+		email:            "Application;Network;Email",
+		audiovideo:       "Application;AudioVideo",
+		office:           "Application;Office",
+		editor:           "Application;Development;TextEditor",
+		science:          "Application;Science",
+		vcs:              "Application;Development;RevisionControl",
+		arcadegame:       "Application;Game;ArcadeGame",
+		actiongame:       "Application;Game;ActionGame",
+		adventuregame:    "Application;Game;AdventureGame",
+		logicgame:        "Application;Game",
+		boardgame:        "Application;Game;BoardGame",
+		game:             "Application;Game",
+		programming:      "Application;Development",
+		system:           "Application;System",
+		texttools:        "Application;TextTools",
+		graphics2d:       "Application;Graphics;2DGraphics",
+		scanning:         "Application;Grahpics;Scanning",
+		utility:          "Application;Utility",
+		settings:         "Application;Settings",
+		hardwaresettings: "Application;HardwareSettings;Settings",
+		audio:            "Application;AudioVideo;Audio",
+		video:            "Application;AudioVideo;Video",
+		education:        "Application;Science",
+		math:             "Application;Science;Math",
+		cs:               "Application;Science;ComputerScience",
+		compression:      "Application;Utility;Archiving",
+		filetools:        "Application;System;FileTools",
 	}
 )
+
+func ValidCategoryWords(categoryWords []string) error {
+	var validWords []string
+	for _, v := range categorymap {
+		fields := strings.Split(v, ";")
+		for _, field := range fields {
+			if !hasS(validWords, field) {
+				validWords = append(validWords, field)
+			}
+		}
+	}
+	for _, word := range categoryWords {
+		if !hasS(validWords, word) {
+			return errors.New(word + " is an unrecognized category")
+		}
+	}
+	return nil
+}
 
 // GuessCategory will try to guess which category an application belongs to,
 // given a short package description.
