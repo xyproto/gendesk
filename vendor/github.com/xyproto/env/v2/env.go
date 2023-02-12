@@ -66,6 +66,12 @@ func Bool(envName string) bool {
 	return AsBool(Str(envName))
 }
 
+// BoolSimple returns the bool value of the given environment variable name.
+// Returns false if it is not declared or empty. Only "1" is true.
+func BoolSimple(envName string) bool {
+	return AsBoolSimple(Str(envName))
+}
+
 // Has returns true if the given environment variable name is set and not empty.
 func Has(envName string) bool {
 	return Str(envName) != ""
@@ -224,6 +230,11 @@ func AsBool(s string) bool {
 	default:
 		return false
 	}
+}
+
+// AsBoolSimple can be used to interpret a string value as either true or false. Only "1" is true, anything else is false.
+func AsBoolSimple(s string) bool {
+	return s == "1"
 }
 
 // HomeDir returns the path to the home directory of the user, if available.

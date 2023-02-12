@@ -10,7 +10,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/xyproto/env"
+	"github.com/xyproto/env/v2"
 	"github.com/xyproto/textoutput"
 )
 
