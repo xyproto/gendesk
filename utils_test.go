@@ -30,6 +30,7 @@ func Example_between() {
 	//
 	// hi
 }
+
 func Example_betweenQuotes() {
 	fmt.Println(betweenQuotes(`"hi"`))
 	fmt.Println(betweenQuotes(`asdf "hi" asdf`))

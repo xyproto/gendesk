@@ -47,7 +47,7 @@ func MustDownloadFile(url, filename string, o *textoutput.TextOutput, force bool
 		o.ErrExit("no! " + filename + " already exists. Use -f to overwrite.")
 	}
 
-	err = ioutil.WriteFile(filename, b, 0644)
+	err = ioutil.WriteFile(filename, b, 0o644)
 	if err != nil {
 		o.ErrExit("Could not write to " + filename + "!")
 	}
@@ -194,7 +194,7 @@ func WriteIconFile(name string, o *textoutput.TextOutput, force bool) error {
 		o.ErrExit(filename + " already exists, use -f to overwrite")
 	}
 
-	err = ioutil.WriteFile(filename, b, 0644)
+	err = ioutil.WriteFile(filename, b, 0o644)
 	if err != nil {
 		o.ErrExit("Could not write icon to: " + filename)
 	}
