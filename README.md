@@ -201,6 +201,11 @@ TODO
 - [ ] Move kw/category mappings into a separate configuration file.
 
 
+Requirements
+------------
+
+* Go 1.17 or later.
+
 Troubleshooting
 ---------------
 
