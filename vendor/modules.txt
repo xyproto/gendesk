@@ -16,13 +16,10 @@ github.com/pkg/term/termios
 # github.com/unknwon/goconfig v1.0.0
 ## explicit
 github.com/unknwon/goconfig
-# github.com/xyproto/env v1.9.1
-## explicit; go 1.15
-github.com/xyproto/env
 # github.com/xyproto/env/v2 v2.0.0
 ## explicit; go 1.15
 github.com/xyproto/env/v2
-# github.com/xyproto/textoutput v1.14.1
+# github.com/xyproto/textoutput v1.14.2
 ## explicit; go 1.10
 github.com/xyproto/textoutput
 # github.com/xyproto/vt100 v1.11.5
