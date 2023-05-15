@@ -1,7 +1,7 @@
 package main
 
 import (
-	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/xyproto/env/v2"
@@ -60,7 +60,7 @@ func resolve(vars map[string]string, s *string) {
 
 func parsePKGBUILD(o *textoutput.TextOutput, filename string, iconurl, pkgname *string, pkgnames *[]string, pkgdescMap, execMap, nameMap, genericNameMap, mimeTypesMap, commentMap, categoriesMap, customMap *map[string]string) {
 	// Fill in the dictionaries using a PKGBUILD
-	filedata, err := ioutil.ReadFile(filename)
+	filedata, err := os.ReadFile(filename)
 	if err != nil {
 		o.ErrExit("Could not read " + filename)
 	}

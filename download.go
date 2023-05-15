@@ -5,7 +5,7 @@ import (
 	"crypto/md5"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"os/user"
@@ -37,7 +37,7 @@ func MustDownloadFile(url, filename string, o *textoutput.TextOutput, force bool
 		o.ErrExit("Could not download " + url)
 	}
 	defer resp.Body.Close()
-	b, err := ioutil.ReadAll(resp.Body)
+	b, err := io.ReadAll(resp.Body)
 	if err != nil {
 		o.ErrExit("Could not dump body")
 	}
@@ -47,7 +47,7 @@ func MustDownloadFile(url, filename string, o *textoutput.TextOutput, force bool
 		o.ErrExit("no! " + filename + " already exists. Use -f to overwrite.")
 	}
 
-	err = ioutil.WriteFile(filename, b, 0644)
+	err = os.WriteFile(filename, b, 0644)
 	if err != nil {
 		o.ErrExit("Could not write to " + filename + "!")
 	}
@@ -172,7 +172,7 @@ func WriteIconFile(name string, o *textoutput.TextOutput, force bool) error {
 		return err
 	}
 	defer resp.Body.Close()
-	b, err := ioutil.ReadAll(resp.Body)
+	b, err := io.ReadAll(resp.Body)
 	if err != nil {
 		o.ErrExit("could not dump body")
 	}
@@ -194,7 +194,7 @@ func WriteIconFile(name string, o *textoutput.TextOutput, force bool) error {
 		o.ErrExit(filename + " already exists, use -f to overwrite")
 	}
 
-	err = ioutil.WriteFile(filename, b, 0644)
+	err = os.WriteFile(filename, b, 0644)
 	if err != nil {
 		o.ErrExit("Could not write icon to: " + filename)
 	}
