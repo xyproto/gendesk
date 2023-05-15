@@ -208,12 +208,11 @@ func s2b(attribute string) byte {
 	case "White", "white":
 		return 37
 	}
-	num, err := strconv.Atoi(attribute)
-	if err != nil {
-		// Not an int and not one of the words above
-		return 0
+	if num, err := strconv.Atoi(attribute); err == nil { // success
+		return byte(num)
 	}
-	return byte(num)
+	// Not an int and not one of the words above
+	return 0
 }
 
 func NewAttributeColor(attributes ...string) AttributeColor {
@@ -254,7 +253,14 @@ func (ac AttributeColor) Background() AttributeColor {
 }
 
 func b2s(b byte) string {
-	return strconv.Itoa(int(b))
+	switch b {
+	case 0:
+		return "0"
+	case 1, 2, 3, 4, 5, 6, 7, 8, 9:
+		return string('0' + b)
+	default:
+		return strconv.Itoa(int(b))
+	}
 }
 
 var (
@@ -307,9 +313,16 @@ func (ac AttributeColor) Stop(text string) string {
 	return text + NoColor()
 }
 
+var maybeNoColor *string
+
 // Return a string for resetting the attributes
 func Stop() string {
-	return NoColor()
+	if maybeNoColor != nil {
+		return *maybeNoColor
+	}
+	s := NoColor()
+	maybeNoColor = &s
+	return s
 }
 
 // Use this color to output the given text. Will reset the attributes at the end of the string. Outputs a newline.
