@@ -43,7 +43,7 @@ func MustDownloadFile(url, filename string, o *textoutput.TextOutput, force bool
 	}
 
 	// Check if the file exists (and that force is not enabled)
-	if _, err := os.Stat(filename); err == nil && (!force) {
+	if exists(filename) && !force {
 		o.ErrExit("no! " + filename + " already exists. Use -f to overwrite.")
 	}
 
@@ -190,7 +190,7 @@ func WriteIconFile(name string, o *textoutput.TextOutput, force bool) error {
 	}
 
 	// Check if the file exists (and that force is not enabled)
-	if _, err := os.Stat(filename); err == nil && (!force) {
+	if exists(filename) && !force {
 		o.ErrExit(filename + " already exists, use -f to overwrite")
 	}
 

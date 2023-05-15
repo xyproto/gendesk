@@ -95,7 +95,7 @@ func writeWindowManagerDesktopFile(pkgname, name, execCommand, custom string, fo
 		buf.WriteString(custom + "\n")
 	}
 	// Check if the file exists (and that force is not enabled)
-	if _, err := os.Stat(pkgname + ".desktop"); err == nil && (!force) {
+	if exists(pkgname+".desktop") && !force {
 		o.Err("no")
 		o.Fprintln(os.Stderr, pkgname+".desktop already exists. Use -f as the first argument to overwrite it.")
 		os.Exit(1)
@@ -136,7 +136,7 @@ func writeDesktopFile(pkgname, name, comment, execCommand, icon, path, categorie
 	}
 
 	// Check if the file exists (and that force is not enabled)
-	if _, err := os.Stat(pkgname + ".desktop"); err == nil && (!force) {
+	if exists(pkgname+".desktop") && !force {
 		o.Err("no")
 		o.Fprintln(os.Stderr, pkgname+".desktop already exists. Use -f as the first argument to overwrite it.")
 		os.Exit(1)
