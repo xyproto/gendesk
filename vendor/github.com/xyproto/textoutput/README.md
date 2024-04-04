@@ -4,27 +4,14 @@
 
 Package for controlling text output, with or without colors, using VT100 terminal codes.
 
-## Example use
+[![example use](img/example_use.png)](cmd/print/main.go)
 
-```go
-package main
+## Requirements
 
-import (
-    "github.com/xyproto/textoutput"
-)
-
-func main() {
-    // Prepare to output colored text, but respect the NO_COLOR environment variable
-    o := textoutput.New()
-
-    o.Print("<blue>hi</blue> ")
-    o.Println("<yellow>there</yellow>")
-    o.Printf("<green>%s: <red>%d<off>\n", "number", 42)
-}
-```
+* Go 1.17 or later
 
 ## General info
 
-* Version: 1.14.2
+* Version: 1.16.3
 * License: BSD-3
 * Author: Alexander F. Rødseth &lt;xyproto@archlinux.org&gt;
