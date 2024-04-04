@@ -102,6 +102,8 @@ var (
 	}
 )
 
+// ValidCategoryWords validates each word in 'categoryWords' against a list of accepted categories derived from 'categorymap'.
+// It ensures all provided words represent valid application categories, returning an error for any unrecognized category.
 func ValidCategoryWords(categoryWords []string) error {
 	var validWords []string
 	for _, v := range categorymap {
