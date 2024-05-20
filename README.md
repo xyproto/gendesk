@@ -12,6 +12,16 @@ Pull requests are welcome.
 
 ## Changes from 1.0.9 to 1.0.10
 
+* Update documentation.
+* Update CI configuration.
+* Switch from the MIT to the BSD-3 license.
+* Resolve issue #26 by renaming `default.png` to `gendesk.png`.
+* Some refactoring.
+* Add support for `.svg` icons in `PKGBUILD` files, ref #22.
+* Add a category check and warning, ref #21.
+* Use `io` instead of the deprecated `ioutil` package.
+* Update dependencies.
+
 ## Changes from 1.0.8 to 1.0.9
 
 * Update documentation.
