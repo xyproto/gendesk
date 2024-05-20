@@ -23,10 +23,10 @@ github.com/xyproto/burnfont v1.2.3 h1:4MHSRrmVqZT8i1XmDrEG/5qcg2G1bSEDlOoO3BCl11
 github.com/xyproto/burnfont v1.2.3/go.mod h1:NlQwt/VHpxq17k8CkHcWvWTGhBim818XB4onh+TeZRo=
 github.com/xyproto/env/v2 v2.2.5 h1:FNrp56sptc7ebC2QpM8lqKSGEb3UoYUJZZFl4bmcrPs=
 github.com/xyproto/env/v2 v2.2.5/go.mod h1:F81ZEzu15s3TWUZJ1uzBl9iNeq9zcfHvxMkQJaLZUl0=
-github.com/xyproto/textoutput v1.16.3 h1:fDtUjNbk8dSbIRTMnd64AqOzJqkX9gv1UyssOJlVs7o=
-github.com/xyproto/textoutput v1.16.3/go.mod h1:B/DiXN/u6sEPtIKOz0+QEWAIjDMao9qz4t40m+6mP/U=
-github.com/xyproto/vt100 v1.14.3 h1:h45vq7VJ2FhqvFv4KZ1e3AAwPdQ0KkvckuzushLaINk=
-github.com/xyproto/vt100 v1.14.3/go.mod h1:2oVCdJyXbQjfmUuNJexKgwigV6P0hqlNOYKUMcd9AGo=
+github.com/xyproto/textoutput v1.16.4 h1:fNJdnsDpQHOGqsOmeMw8oqAwAVuDQ30762ck9B6GUO4=
+github.com/xyproto/textoutput v1.16.4/go.mod h1:9ObywN82UrMiIR3L4hGXurrV9kWcdbZc36hLdJdhN7s=
+github.com/xyproto/vt100 v1.14.4 h1:Sbl0swBJPtOksSWy6lY/pDNrUUp5kzkCHAdbqjT4zYE=
+github.com/xyproto/vt100 v1.14.4/go.mod h1:O2KVKLPD0X5zzrR3X4CibLHXWYMDJpU+Tp7insqRtPA=
 github.com/yhat/scrape v0.0.0-20161128144610-24b7890b0945 h1:6Ju8pZBYFTN9FaV/JvNBiIHcsgEmP4z4laciqjfjY8E=
 github.com/yhat/scrape v0.0.0-20161128144610-24b7890b0945/go.mod h1:4vRFPPNYllgCacoj+0FoKOjTW68rUhEfqPLiEJaK2w8=
 github.com/yuin/goldmark v1.4.13/go.mod h1:6yULJ656Px+3vBD8DxQVa3kxgyrAnzto9xy5taEt/CY=
