@@ -10,7 +10,8 @@ import (
 const (
 	// Decides the order of the keyword/category checks
 	// (try to order from the more specific/specialized categories to the more general)
-	texttools = iota
+	tracker = iota
+	texttools
 	graphics2d
 	scanning
 	utility
@@ -46,6 +47,7 @@ const (
 
 var (
 	keywordmap = map[int][]string{
+		tracker:       {"sequencer"},
 		model3d:       {"rendering", "modeling", "modelling", "modeler", "render", "raytracing", "CAD"},
 		multimedia:    {"non-linear", "audio", "sound", "graphics", "demo", "music"},
 		graphics:      {"draw", "pixelart", "animated"},
@@ -68,6 +70,7 @@ var (
 		system:      {"sensor", "bus", "calibration", "usb", "file"},
 	}
 	categorymap = map[int]string{
+		tracker:          "Application;Multimedia;Audio;Sequencer;Music",
 		model3d:          "Application;Graphics;3DGraphics",
 		multimedia:       "Application;Multimedia",
 		graphics:         "Application;Graphics",
