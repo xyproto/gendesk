@@ -112,6 +112,9 @@ func ValidCategoryWords(categoryWords []string) error {
 	for _, v := range categorymap {
 		fields := strings.Split(v, ";")
 		for _, field := range fields {
+			if strings.TrimSpace(field) == "" {
+				continue
+			}
 			if !hasS(validWords, field) {
 				validWords = append(validWords, field)
 			}
