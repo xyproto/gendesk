@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-// TODO: Use an external file to read the mappings from (possibly JSON)
+// TODO: Use a config file for the mappings
 
 const (
 	// Decides the order of the keyword/category checks
