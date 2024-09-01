@@ -22,13 +22,13 @@ github.com/unknwon/goconfig
 # github.com/xyproto/burnfont v1.2.3
 ## explicit; go 1.9
 github.com/xyproto/burnfont
-# github.com/xyproto/env/v2 v2.3.0
+# github.com/xyproto/env/v2 v2.5.0
 ## explicit; go 1.19
 github.com/xyproto/env/v2
-# github.com/xyproto/textoutput v1.16.4
+# github.com/xyproto/textoutput v1.16.6
 ## explicit; go 1.22.0
 github.com/xyproto/textoutput
-# github.com/xyproto/vt100 v1.14.4
+# github.com/xyproto/vt100 v1.14.5
 ## explicit; go 1.22.0
 github.com/xyproto/vt100
 # github.com/yhat/scrape v0.0.0-20161128144610-24b7890b0945
