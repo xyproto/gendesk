@@ -135,6 +135,15 @@ func Int8(envName string, defaultValue int8) int8 {
 	return int8(i8)
 }
 
+// UInt returns the number stored in the environment variable, or the provided default value.
+func UInt(envName string, defaultValue uint) uint {
+	ui, err := strconv.ParseUint(Str(envName), 10, 64)
+	if err != nil {
+		return defaultValue
+	}
+	return uint(ui)
+}
+
 // UInt64 returns the number stored in the environment variable, or the provided default value.
 func UInt64(envName string, defaultValue uint64) uint64 {
 	ui64, err := strconv.ParseUint(Str(envName), 10, 64)
@@ -284,7 +293,8 @@ func HomeDir() string {
 }
 
 // ExpandUser replaces a leading ~ or $HOME with the path
-// to the home directory of the current user
+// to the home directory of the current user.
+// If no expansion is done, then the original given path is returned.
 func ExpandUser(path string) string {
 	// this is a simpler alternative to using os.UserHomeDir (which requires Go 1.12 or later)
 	if strings.HasPrefix(path, "~") {
@@ -294,6 +304,7 @@ func ExpandUser(path string) string {
 		// Expand a leading $HOME variable to the home directory
 		path = strings.Replace(path, "$HOME", HomeDir(), 1)
 	}
+	// Return the original given path
 	return path
 }
 

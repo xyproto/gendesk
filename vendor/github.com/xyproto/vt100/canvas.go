@@ -43,13 +43,7 @@ type canvasCopy struct {
 
 func NewCanvas() *Canvas {
 	c := &Canvas{}
-	var err error
-	c.w, c.h, err = TermSize()
-	if err != nil {
-		// Use 80x25 if the size can't be detected
-		c.w = 80
-		c.h = 25
-	}
+	c.w, c.h = MustTermSize()
 	c.chars = make([]ColorRune, c.w*c.h)
 	for i := 0; i < len(c.chars); i++ {
 		c.chars[i].fg = Default
@@ -255,9 +249,133 @@ func (c *Canvas) SetRunewise(b bool) {
 	c.runewise = b
 }
 
+// DrawAndSetCursor draws the entire canvas and then places the cursor at x,y
+func (c *Canvas) DrawAndSetCursor(x, y uint) {
+	c.Draw()
+	// Reposition the cursor
+	SetXY(x, y)
+}
+
+// HideCursorAndDraw will hide the cursor and then draw the entire canvas
+func (c *Canvas) HideCursorAndDraw() {
+
+	c.cursorVisible = false
+	c.SetShowCursor(false)
+
+	var (
+		lastfg = Default // AttributeColor
+		lastbg = Default // AttributeColor
+		cr     ColorRune
+		oldcr  ColorRune
+		sb     strings.Builder
+	)
+
+	cr.fg = Default
+	cr.bg = Default
+	oldcr.fg = Default
+	oldcr.bg = Default
+
+	// NOTE: If too many runes are written to the screen, the contents will scroll up,
+	// and it will appear like the first line(s) are lost!
+
+	c.mut.RLock()
+
+	if len((*c).chars) == 0 {
+		c.mut.RUnlock()
+		return
+	}
+
+	firstRun := len(c.oldchars) == 0
+	skipAll := !firstRun // true by default, except for the first run
+
+	size := c.w*c.h - 1
+	sb.Grow(int(size))
+
+	if !firstRun {
+		for index := uint(0); index < size; index++ {
+			cr = (*c).chars[index]
+			oldcr = (*c).oldchars[index]
+			if cr.fg.Equal(lastfg) && cr.fg.Equal(oldcr.fg) && cr.bg.Equal(lastbg) && cr.bg.Equal(oldcr.bg) && cr.r == oldcr.r {
+				// One is not skippable, can not skip all
+				skipAll = false
+			}
+			// Only output a color code if it's different from the last character, or it's the first one
+			if (index == 0) || !lastfg.Equal(cr.fg) || !lastbg.Equal(cr.bg) {
+				// Write to the string builder
+				sb.WriteString(cr.fg.Combine(cr.bg).String())
+			}
+			// Write the character
+			if cr.r != 0 {
+				sb.WriteRune(cr.r)
+			} else {
+				sb.WriteRune(' ')
+			}
+			lastfg = cr.fg
+			lastbg = cr.bg
+		}
+	} else {
+		for index := uint(0); index < size; index++ {
+			cr = (*c).chars[index]
+			// Only output a color code if it's different from the last character, or it's the first one
+			if (index == 0) || !lastfg.Equal(cr.fg) || !lastbg.Equal(cr.bg) {
+				// Write to the string builder
+				sb.WriteString(cr.fg.Combine(cr.bg).String())
+			}
+			// Write the character
+			if cr.r != 0 {
+				sb.WriteRune(cr.r)
+			} else {
+				sb.WriteRune(' ')
+			}
+			lastfg = cr.fg
+			lastbg = cr.bg
+		}
+	}
+
+	c.mut.RUnlock()
+
+	// The screenfull so far is correct (sb.String())
+
+	if skipAll {
+		return
+	}
+
+	// Enable line wrap, temporarily, if it's disabled
+	reDisableLineWrap := false
+	if !c.lineWrap {
+		c.SetLineWrap(true)
+		reDisableLineWrap = true
+	}
+
+	// Draw each and every line, or push one large string to screen?
+	if c.runewise {
+
+		Clear()
+		c.PlotAll()
+
+	} else {
+		c.mut.Lock()
+		SetXY(0, 0)
+		os.Stdout.Write([]byte(sb.String()))
+		c.mut.Unlock()
+	}
+
+	// Restore the line wrap, if it was temporarily enabled
+	if reDisableLineWrap {
+		c.SetLineWrap(false)
+	}
+
+	// Save the current state to oldchars
+	c.mut.Lock()
+	if lc := len(c.chars); len(c.oldchars) != lc {
+		c.oldchars = make([]ColorRune, lc)
+	}
+	copy(c.oldchars, c.chars)
+	c.mut.Unlock()
+}
+
 // Draw the entire canvas
 func (c *Canvas) Draw() {
-
 	var (
 		lastfg = Default // AttributeColor
 		lastbg = Default // AttributeColor
@@ -389,6 +507,15 @@ func (c *Canvas) Redraw() {
 	}
 	c.mut.Unlock()
 	c.Draw()
+}
+
+func (c *Canvas) HideCursorAndRedraw() {
+	c.mut.Lock()
+	for _, cr := range c.chars {
+		cr.drawn = false
+	}
+	c.mut.Unlock()
+	c.HideCursorAndDraw()
 }
 
 // At returns the rune at the given coordinates, or an error if out of bounds
@@ -546,10 +673,7 @@ func (c *Canvas) WriteRunesB(x, y uint, fg, bgb AttributeColor, r rune, count ui
 }
 
 func (c *Canvas) Resize() {
-	w, h, err := TermSize()
-	if err != nil {
-		return
-	}
+	w, h := MustTermSize()
 	c.mut.Lock()
 	if (w != c.w) || (h != c.h) {
 		// Resize to the new size
@@ -564,11 +688,7 @@ func (c *Canvas) Resize() {
 // Check if the canvas was resized, and adjust values accordingly.
 // Returns a new canvas, or nil.
 func (c *Canvas) Resized() *Canvas {
-	w, h, err := TermSize()
-	if err != nil {
-		fmt.Println(err)
-		return nil
-	}
+	w, h := MustTermSize()
 	if (w != c.w) || (h != c.h) {
 		// The terminal was resized!
 		oldc := c
