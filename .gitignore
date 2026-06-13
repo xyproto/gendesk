@@ -3,6 +3,7 @@ gendesk
 *.png
 ChangeLog.md
 dist/
- 
+!img/
+
 # Generated from README.md
 CHANGELOG.md
